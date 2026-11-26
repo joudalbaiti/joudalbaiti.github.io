@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KACST Motor Exams · Joud Albaiti</title>
+<meta name="description" content="Live webcam motor exams for Parkinson's research: finger tapping, open–close hand, whole-hand movement, smile and pronation/supination, with MediaPipe tracking and movement metrics. Built by Joud Albaiti at KACST.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--night:#0F1E2E;--deep:#13263A;--raised:#1A3149;--line:#2A4560;--text:#ECE6DA;--muted:#9AAEC0;
+  --teal:#4FB3A2;--saffron:#E3B23C;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--night);color:var(--text);font-family:"Readex Pro",system-ui,sans-serif;font-weight:300;font-size:16.5px;line-height:1.65}
+html[data-lang="en"] [data-l="ar"],html[data-lang="ar"] [data-l="en"]{display:none!important}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--saffron);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1100px;margin-inline:auto;padding-inline:24px}
+@media (max-width:600px){.wrap{padding-inline:16px}}
+header.top{display:flex;align-items:center;gap:16px;padding-block:22px}
+.back{color:var(--muted);text-decoration:none;font-size:15px}
+.back:hover{color:var(--text)}
+.lang{margin-inline-start:auto;font:inherit;font-size:14px;font-weight:500;color:var(--night);background:var(--teal);border:0;border-radius:999px;padding:6px 14px;cursor:pointer}
+h1{font-size:clamp(26px,3.4vw,38px);font-weight:500;line-height:1.2;margin:8px 0 10px}
+.sub{color:var(--muted);max-width:70ch;margin:0 0 28px}
+.layout{display:grid;grid-template-columns:320px 1fr;gap:28px;align-items:start;margin-bottom:56px}
+@media (max-width:900px){.layout{grid-template-columns:1fr}}
+.panel{background:var(--deep);border:1px solid var(--line);border-radius:14px;padding:20px}
+.panel h2{font-size:16px;font-weight:500;margin:0 0 12px}
+.exams{display:grid;gap:8px;margin-bottom:18px}
+.exam{display:flex;gap:10px;align-items:flex-start;text-align:start;font:inherit;color:var(--text);background:transparent;border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer}
+.exam small{display:block;color:var(--muted);font-size:13px;line-height:1.45}
+.exam[aria-pressed="true"]{border-color:var(--teal);background:rgba(79,179,162,.10)}
+.exam .dot{flex:none;width:16px;height:16px;border-radius:50%;border:2px solid var(--muted);margin-top:4px}
+.exam[aria-pressed="true"] .dot{border-color:var(--teal);background:radial-gradient(circle,var(--teal) 45%,transparent 50%)}
+label{display:block;font-size:13.5px;color:var(--muted);margin:10px 0 4px}
+input,select{width:100%;font:inherit;font-size:15px;color:var(--text);background:var(--night);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.row3{display:grid;grid-template-columns:2fr 1fr 1.3fr;gap:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-size:15.5px;font-weight:500;text-decoration:none;padding:11px 20px;border-radius:999px;border:1px solid var(--line);color:var(--text);background:transparent;cursor:pointer}
+.btn.primary{background:var(--saffron);border-color:var(--saffron);color:var(--night);width:100%;margin-top:16px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.stage{position:relative;background:#000;border-radius:14px;overflow:hidden;border:1px solid var(--line);aspect-ratio:4/3}
+canvas#view{width:100%;height:100%;display:block}
+.placeholder{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--muted);padding:24px}
+.status{margin:12px 0 0;min-height:1.6em;color:var(--muted)}
+.status b{color:var(--text);font-weight:500}
+.results{display:none;margin-top:28px}
+.results.show{display:block}
+.res-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:20px}
+@media (max-width:900px){.res-grid{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:start;padding:7px 10px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:400;position:sticky;top:0;background:var(--deep)}
+td:last-child{font-variant-numeric:tabular-nums}
+.tablebox{max-height:460px;overflow:auto;border-radius:10px}
+video{width:100%;border-radius:10px;background:#000}
+.acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.note{font-size:14px;color:var(--muted);margin-top:22px}
+footer{border-top:1px solid var(--line);padding-block:22px;color:var(--muted);font-size:14px}
+html[data-lang="ar"] body{line-height:1.85}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="back" href="./"><span data-l="en">Back to portfolio</span><span data-l="ar">العودة إلى الملف</span></a>
+    <button class="lang" id="langBtn" type="button"><span data-l="en" lang="ar">العربية</span><span data-l="ar" lang="en">English</span></button>
+  </header>
+
+  <h1><span data-l="en">Parkinson's motor exams from your webcam</span><span data-l="ar">فحوص حركية لمرض باركنسون عبر الكاميرا</span></h1>
+  <p class="sub">
+    <span data-l="en">The tool I built during my research internship at KACST. Choose an exam and press Start: a blue frame shows where to place your hand (or your face for the smile exam), you get 5 seconds to get in position, then 30 seconds of live hand and body tracking. At the end you get the full table of movement metrics, the CSV and the recorded video. Everything runs in your browser; nothing is stored.</span>
+    <span data-l="ar">الأداة التي بنيتها خلال تدريبي البحثي في مدينة الملك عبدالعزيز للعلوم والتقنية. اختر فحصًا واضغط ابدأ: يظهر إطار أزرق يحدد مكان اليد (أو الوجه في فحص الابتسامة)، ولديك 5 ثوانٍ لتأخذ وضعك، ثم 30 ثانية من التتبّع المباشر لليد والجسم. في النهاية تحصل على جدول المقاييس الحركية كاملًا وملف CSV والفيديو المسجّل. كل شيء يعمل في متصفحك ولا يُحفظ أي شيء.</span>
+  </p>
+
+  <div class="layout">
+    <div class="panel">
+      <h2><span data-l="en">1. Choose an exam</span><span data-l="ar">١. اختر الفحص</span></h2>
+      <div class="exams" id="exams" role="radiogroup">
+        <button class="exam" type="button" data-a="1" aria-pressed="true"><span class="dot"></span><span><span data-l="en">Finger tapping</span><span data-l="ar">نقر الأصابع</span><small><span data-l="en">Tap thumb and index finger as fast and wide as you can</span><span data-l="ar">انقر الإبهام بالسبابة بأسرع وأوسع ما يمكن</span></small></span></button>
+        <button class="exam" type="button" data-a="2" aria-pressed="false"><span class="dot"></span><span><span data-l="en">Open–close hand</span><span data-l="ar">فتح وإغلاق اليد</span><small><span data-l="en">Open and close your hand fully, again and again</span><span data-l="ar">افتح يدك وأغلقها بالكامل بشكل متكرر</span></small></span></button>
+        <button class="exam" type="button" data-a="3" aria-pressed="false"><span class="dot"></span><span><span data-l="en">Whole hand movement</span><span data-l="ar">حركة الذراع كاملة</span><small><span data-l="en">Move your arm with shoulder and hand in view</span><span data-l="ar">حرّك ذراعك مع ظهور الكتف واليد</span></small></span></button>
+        <button class="exam" type="button" data-a="4" aria-pressed="false"><span class="dot"></span><span><span data-l="en">Smile</span><span data-l="ar">الابتسامة</span><small><span data-l="en">Face the camera and smile repeatedly</span><span data-l="ar">واجه الكاميرا وابتسم بشكل متكرر</span></small></span></button>
+        <button class="exam" type="button" data-a="5" aria-pressed="false"><span class="dot"></span><span><span data-l="en">Hand pronation / supination</span><span data-l="ar">كبّ وبسط اليد</span><small><span data-l="en">Turn your palm down and up repeatedly</span><span data-l="ar">اقلب كفّك للأسفل وللأعلى بشكل متكرر</span></small></span></button>
+      </div>
+      <h2><span data-l="en">2. Your details (optional)</span><span data-l="ar">٢. بياناتك (اختياري)</span></h2>
+      <div class="row3">
+        <div><label for="name"><span data-l="en">Name</span><span data-l="ar">الاسم</span></label><input id="name" autocomplete="off"></div>
+        <div><label for="age"><span data-l="en">Age</span><span data-l="ar">العمر</span></label><input id="age" inputmode="numeric" autocomplete="off"></div>
+        <div><label for="gender"><span data-l="en">Gender</span><span data-l="ar">الجنس</span></label>
+          <select id="gender"><option value=""></option><option value="Female">Female / أنثى</option><option value="Male">Male / ذكر</option></select></div>
+      </div>
+      <button class="btn primary" id="start" type="button"><span data-l="en">Start</span><span data-l="ar">ابدأ</span></button>
+      <p class="note"><span data-l="en">Research tool, not a medical device. Use good light and keep the whole hand in view.</span><span data-l="ar">أداة بحثية وليست جهازًا طبيًا. استخدم إضاءة جيدة وأبقِ اليد كاملة في الصورة.</span></p>
+    </div>
+
+    <div>
+      <div class="stage">
+        <canvas id="view" width="640" height="480" aria-label="Camera view with tracking"></canvas>
+        <div class="placeholder" id="ph"><span><span data-l="en">Press Start and allow the camera. Everything stays in your browser.</span><span data-l="ar">اضغط ابدأ واسمح باستخدام الكاميرا. كل شيء يبقى في متصفحك.</span></span></div>
+      </div>
+      <p class="status" id="status" aria-live="polite"></p>
+
+      <section class="results" id="results" aria-label="Results">
+        <div class="res-grid">
+          <div class="panel">
+            <h2><span data-l="en">Movement metrics</span><span data-l="ar">المقاييس الحركية</span></h2>
+            <div class="tablebox"><table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody id="tbody"></tbody></table></div>
+            <div class="acts"><a class="btn" id="csv" download><span data-l="en">Download CSV</span><span data-l="ar">تنزيل CSV</span></a></div>
+          </div>
+          <div class="panel">
+            <h2><span data-l="en">Recorded session</span><span data-l="ar">الجلسة المسجّلة</span></h2>
+            <video id="rec" controls playsinline></video>
+            <div class="acts"><a class="btn" id="vid" download="recording.webm"><span data-l="en">Download video</span><span data-l="ar">تنزيل الفيديو</span></a>
+              <button class="btn" id="again" type="button"><span data-l="en">Do another exam</span><span data-l="ar">فحص آخر</span></button></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<footer><div class="wrap">
+  <span data-l="en">Built by Joud Albaiti at KACST, supervised by Dr. Roshayu Mohamad and Prof. Turky Alotaiby. Tracking by MediaPipe; metrics computed by the tool's original Python code.</span>
+  <span data-l="ar">من تطوير جود البيتي في مدينة الملك عبدالعزيز للعلوم والتقنية، بإشراف د. روشايو محمد و أ.د. تركي العتيبي. التتبّع بواسطة MediaPipe، والمقاييس تُحسب بكود الأداة الأصلي بلغة Python.</span>
+</div></footer>
+
+<script type="module">
+/* ---------- language ---------- */
+const root = document.documentElement;
+function setLang(l){ root.dataset.lang = l; root.lang = l; root.dir = l === 'ar' ? 'rtl' : 'ltr'; try{localStorage.setItem('lang', l)}catch(e){} }
+try{ const s = new URLSearchParams(location.search).get('lang') || localStorage.getItem('lang'); if (s) setLang(s); }catch(e){}
+document.getElementById('langBtn').onclick = () => setLang(root.dataset.lang === 'ar' ? 'en' : 'ar');
+const T = (en, ar) => root.dataset.lang === 'ar' ? ar : en;
+
+/* ---------- exam picker ---------- */
+let action = '1';
+document.querySelectorAll('.exam').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.exam').forEach(x => x.setAttribute('aria-pressed', 'false'));
+  b.setAttribute('aria-pressed', 'true'); action = b.dataset.a;
+});
+
+/* ---------- elements ---------- */
+const canvas = document.getElementById('view'), ctx = canvas.getContext('2d', {willReadFrequently: true});
+const W = 640, H = 480;
+const statusEl = document.getElementById('status'), startBtn = document.getElementById('start');
+const setStatus = (en, ar) => statusEl.innerHTML = T(en, ar);
+
+/* ---------- the tool's geometry and colours (OpenCV BGR (255,0,0) = blue) ---------- */
+const BLUE = 'rgb(0,0,255)', GREEN = 'rgb(0,255,0)', WHITE = 'rgb(255,255,255)', RED = 'rgb(255,0,0)';
+const FONT = '600 16px Arial, Helvetica, sans-serif';
+function frameFor(a){
+  if (a === '3') return [50, 20, 590, 440];
+  if (a === '4') return [0, 0, 640, 480];
+  return [200, 100, 400, 300];
+}
+const HEAD = [200, 100, 440, 340];
+const distance = (x0, y0, x1, y1) => Math.hypot(x0 - x1, y0 - y1);
+function calculate_angle(v1, v2){
+  const dot = v1[0]*v2[0] + v1[1]*v2[1];
+  let c = dot / (Math.hypot(v1[0], v1[1]) * Math.hypot(v2[0], v2[1]));
+  c = Math.min(1, Math.max(-1, c));
+  return Math.acos(c) * 180 / Math.PI;
+}
+function calculate_angle_PS(a, b, c){
+  let ang = Math.abs((Math.atan2(c[1]-b[1], c[0]-b[0]) - Math.atan2(a[1]-b[1], a[0]-b[0])) * 180 / Math.PI);
+  return ang > 180 ? 360 - ang : ang;
+}
+const inFrame = (lm, f) => lm.some(([x, y]) => f[0] < x && x < f[2] && f[1] < y && y < f[3]);
+function text(s, x, y, color){ ctx.font = FONT; ctx.fillStyle = color; ctx.fillText(s, x, y); }
+function rect(f, color = BLUE){ ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.strokeRect(f[0], f[1], f[2]-f[0], f[3]-f[1]); }
+function stamp(){
+  const d = new Date(), p = n => String(n).padStart(2, '0');
+  text(`${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`, 10, H - 10, WHITE);
+}
+function instruction(f, msg, remaining, gap = 10){
+  text(msg, f[0], f[1] - 10, BLUE);
+  ctx.font = FONT; const w = ctx.measureText(msg).width;
+  text(`(${remaining})`, f[0] + w + gap, f[1] - 10, BLUE);
+}
+
+/* ---------- models ---------- */
+let vision, handLM, poseLM, HAND_CONN;
+async function loadMediapipe(){
+  if (handLM) return;
+  setStatus('Loading the hand-tracking model…', 'جارٍ تحميل نموذج تتبّع اليد…');
+  vision = await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs');
+  const fs = await vision.FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm');
+  handLM = await vision.HandLandmarker.createFromOptions(fs, {
+    baseOptions: {modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task'},
+    runningMode: 'VIDEO', numHands: 2, minHandDetectionConfidence: 0.5, minTrackingConfidence: 0.5});
+  HAND_CONN = vision.HandLandmarker.HAND_CONNECTIONS;
+  window._fs = fs;
+}
+async function loadPose(){
+  if (poseLM) return;
+  setStatus('Loading the body-tracking model…', 'جارٍ تحميل نموذج تتبّع الجسم…');
+  poseLM = await vision.PoseLandmarker.createFromOptions(window._fs, {
+    baseOptions: {modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task'},
+    runningMode: 'VIDEO', numPoses: 1});
+}
+let cvReady = null, faceCascade, smileCascade;
+function loadOpenCV(){
+  if (cvReady) return cvReady;
+  setStatus('Loading face and smile detection (OpenCV)…', 'جارٍ تحميل كشف الوجه والابتسامة (OpenCV)…');
+  cvReady = new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = 'https://docs.opencv.org/4.10.0/opencv.js'; s.async = true;
+    s.onload = () => { const go = async () => {
+      const base = 'https://raw.githubusercontent.com/opencv/opencv/4.x/data/haarcascades/';
+      for (const f of ['haarcascade_frontalface_default.xml', 'haarcascade_smile.xml']) {
+        const buf = new Uint8Array(await (await fetch(base + f)).arrayBuffer());
+        cv.FS_createDataFile('/', f, buf, true, false, false);
+      }
+      faceCascade = new cv.CascadeClassifier(); faceCascade.load('haarcascade_frontalface_default.xml');
+      smileCascade = new cv.CascadeClassifier(); smileCascade.load('haarcascade_smile.xml');
+      res();
+    }; if (cv.Mat) go(); else cv.onRuntimeInitialized = go; };
+    s.onerror = rej; document.head.appendChild(s);
+  });
+  return cvReady;
+}
+
+/* ---------- hand landmarks like HandTrackerCustomized.handsFinder ---------- */
+function handsFinder(res, draw = true){
+  const lms = {left: null, right: null};
+  (res.landmarks || []).forEach((hand, i) => {
+    const cat = res.handedness[i][0];
+    const label = cat.categoryName.toLowerCase();
+    const pts = hand.map(p => [Math.trunc(p.x * W), Math.trunc(p.y * H)]);
+    if (cat.score > 0.9) {
+      lms[label] = pts;
+      if (draw) drawHand(pts);
+    }
+    if (action === '5') pronationSupination(pts);
+  });
+  return lms;
+}
+function drawHand(pts){
+  ctx.strokeStyle = WHITE; ctx.lineWidth = 2;
+  for (const c of HAND_CONN) { ctx.beginPath(); ctx.moveTo(...pts[c.start]); ctx.lineTo(...pts[c.end]); ctx.stroke(); }
+  ctx.fillStyle = RED;
+  for (const p of pts) { ctx.beginPath(); ctx.arc(p[0], p[1], 3, 0, 2*Math.PI); ctx.fill(); }
+}
+function pronationSupination(pts){
+  drawHand(pts);
+  const wrist = pts[0], cmc = pts[1], tip = pts[4];
+  ctx.strokeStyle = BLUE; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(...cmc); ctx.lineTo(...wrist); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(...tip); ctx.lineTo(...cmc); ctx.stroke();
+  const angle = calculate_angle_PS(tip, cmc, wrist);
+  text(`Angle: ${Math.trunc(angle)}`, 10, 30, BLUE);
+  text(tip[0] < wrist[0] ? 'Supination (S)' : 'Pronation (P)', 10, 70, BLUE);
+}
+
+/* ---------- session ---------- */
+let stream, video, recorder, chunks = [], data, running = false;
+function resetData(){
+  data = {D_left: [], D_right: [], W_left: [], W_right: [], SW_left: [], SW_right: [],
+          smile_intensity: [], lip_movement: [], smile_symmetry: [], num_frames: 0};
+}
+function drawCamera(){
+  const vw = video.videoWidth, vh = video.videoHeight, s = Math.max(W / vw, H / vh);
+  const dw = vw * s, dh = vh * s;
+  ctx.save(); ctx.translate(W, 0); ctx.scale(-1, 1);              // cv.flip(frame, 1)
+  ctx.drawImage(video, (W - dw) / 2, (H - dh) / 2, dw, dh); ctx.restore();
+}
+
+async function start(){
+  if (running) return;
+  running = true; startBtn.disabled = true;
+  document.getElementById('results').classList.remove('show');
+  try {
+    await loadMediapipe();
+    if (action === '3') await loadPose();
+    if (action === '4') await loadOpenCV();
+    setStatus('Allow the camera when your browser asks.', 'اسمح باستخدام الكاميرا عندما يطلب المتصفح.');
+    stream = await navigator.mediaDevices.getUserMedia({video: {width: {ideal: 640}, height: {ideal: 480}, facingMode: 'user'}, audio: false});
+  } catch (e) {
+    setStatus('The camera or the tracking model could not start. Check camera permission and try again.',
+              'تعذّر تشغيل الكاميرا أو نموذج التتبّع. تحقّق من إذن الكاميرا وحاول مجددًا.');
+    running = false; startBtn.disabled = false; return;
+  }
+  video = document.createElement('video'); video.playsInline = true; video.muted = true; video.srcObject = stream;
+  await video.play();
+  document.getElementById('ph').style.display = 'none';
+  resetData();
+  const f = frameFor(action);
+  let phase = 'position', t0 = performance.now(), firstHand = null;
+  setStatus('<b>Get ready:</b> place your ' + (action === '4' ? 'head' : 'hand') + ' inside the blue frame.',
+            '<b>استعد:</b> ضع ' + (action === '4' ? 'رأسك' : 'يدك') + ' داخل الإطار الأزرق.');
+
+  const onFrame = () => {
+    if (!running) return;
+    const now = performance.now(), el = (now - t0) / 1000;
+    if (phase === 'position' && el >= 5) {
+      phase = 'record'; t0 = now;
+      chunks = []; recorder = new MediaRecorder(canvas.captureStream(30), {mimeType: MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9' : 'video/webm'});
+      recorder.ondataavailable = e => e.data.size && chunks.push(e.data); recorder.start(500);
+      setStatus('<b>Recording:</b> 30 seconds. Keep going until the timer ends.', '<b>جارٍ التسجيل:</b> 30 ثانية. استمر حتى ينتهي العدّاد.');
+    } else if (phase === 'record' && el >= 30) {
+      phase = 'remove'; t0 = now; recorder.stop();
+      setStatus('Done recording. Remove your ' + (action === '4' ? 'head' : 'hand') + '.', 'انتهى التسجيل. أبعد ' + (action === '4' ? 'رأسك' : 'يدك') + '.');
+    } else if (phase === 'remove' && el >= 2) {
+      finish(); return;
+    }
+    const e2 = (performance.now() - t0) / 1000;
+
+    drawCamera();
+    const ts = performance.now();
+    const handRes = handLM.detectForVideo(canvas, ts);
+    const smileFrame = (action === '4' && phase === 'record') ? cv.imread(canvas) : null;
+    const poseRes = (action === '3' && phase === 'record') ? poseLM.detectForVideo(canvas, ts) : null;
+    const lms = handsFinder(handRes, true);
+
+    if (phase === 'position' || phase === 'remove') {
+      const msg = phase === 'position'
+        ? (action === '4' ? 'Place your head within the frame' : 'Place your hand within the frame')
+        : (action === '4' ? 'Remove your head' : 'Remove your hand');
+      const box = action === '4' ? HEAD : f;
+      rect(box); instruction(box, msg, (phase === 'position' ? 5 : 2) - Math.trunc(e2), phase === 'position' ? 10 : 5);
+      if (phase === 'position') stamp();
+    } else {
+      data.num_frames += 1;
+      if (action === '4') {
+        rect(HEAD); instruction(HEAD, 'Keep your head within the frame', 30 - Math.trunc(e2));
+      } else {
+        rect(f); instruction(f, 'Keep your hand within the frame', 30 - Math.trunc(e2));
+      }
+      stamp();
+      if (action === '4') smile(smileFrame, f);
+      else measureHand(lms, f, poseRes);
+    }
+    if (smileFrame) smileFrame.delete();
+    video.requestVideoFrameCallback ? video.requestVideoFrameCallback(onFrame) : requestAnimationFrame(onFrame);
+  };
+  video.requestVideoFrameCallback ? video.requestVideoFrameCallback(onFrame) : requestAnimationFrame(onFrame);
+
+  function measureHand(lms, f, poseRes){
+    if (!firstHand) {
+      if (lms.left && inFrame(lms.left, f)) firstHand = 'left';
+      else if (lms.right && inFrame(lms.right, f)) firstHand = 'right';
+    }
+    if (!firstHand || !lms[firstHand]) return;
+    const L = lms[firstHand], side = firstHand === 'left' ? 'Left' : 'Right';
+    const [wx, wy] = L[0], [tx, ty] = L[4], [ix, iy] = L[8], [cx, cy] = L[1];
+    if (action === '1' || action === '2' || action === '5') {
+      data['D_' + firstHand].push(calculate_angle([tx - wx, ty - wy], [ix - wx, iy - wy]));
+      data['W_' + firstHand].push([cx, cy]);
+      text(`${side} Hand Detected`, f[0] + 10, f[3] + 20, BLUE);
+    } else if (action === '3' && poseRes && poseRes.landmarks && poseRes.landmarks[0]) {
+      const P = poseRes.landmarks[0];
+      ctx.fillStyle = BLUE;
+      for (const p of P) { ctx.beginPath(); ctx.arc(Math.trunc(p.x * W), Math.trunc(p.y * H), 5, 0, 2*Math.PI); ctx.fill(); }
+      const sh = P[firstHand === 'left' ? 11 : 12];
+      if ((sh.visibility ?? 1) > 0.5) {
+        const sx = Math.trunc(sh.x * W), sy = Math.trunc(sh.y * H);
+        data['D_' + firstHand].push(distance(sx, sy, wx, wy));
+        data['W_' + firstHand].push([wx, wy]);
+        data['SW_' + firstHand].push([sx, sy]);
+        ctx.strokeStyle = WHITE; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(wx, wy); ctx.stroke();
+        ctx.fillStyle = BLUE; [[sx, sy], [wx, wy]].forEach(([x, y]) => { ctx.beginPath(); ctx.arc(x, y, 5, 0, 2*Math.PI); ctx.fill(); });
+        text(`${side} Arm Detected`, f[0] + 10, f[3] + 20, BLUE);
+      }
+    }
+  }
+
+  function smile(src, f){
+    const gray = new cv.Mat(); cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
+    const faces = new cv.RectVector();
+    faceCascade.detectMultiScale(gray, faces, 1.3, 5);
+    let faceFound = false;
+    for (let i = 0; i < faces.size(); i++) {
+      const r = faces.get(i), roi = gray.roi(r), smiles = new cv.RectVector();
+      smileCascade.detectMultiScale(roi, smiles, 1.8, 20);
+      for (let j = 0; j < smiles.size(); j++) {
+        const s = smiles.get(j);
+        ctx.strokeStyle = BLUE; ctx.lineWidth = 2; ctx.strokeRect(r.x + s.x, r.y + s.y, s.width, s.height);
+        data.smile_intensity.push(s.width);
+        data.lip_movement.push(s.height);
+        data.smile_symmetry.push(Math.abs((r.y + r.height / 2) - (r.y + s.height / 2)));
+      }
+      roi.delete(); smiles.delete();
+      text('Smile Detected', HEAD[0], HEAD[3] + 30, GREEN);
+      faceFound = true;
+    }
+    if (!faceFound) text('No face detected in frame', f[0] + 10, f[3] + 20, BLUE);
+    gray.delete(); faces.delete();
+  }
+}
+
+async function finish(){
+  running = false;
+  stream.getTracks().forEach(t => t.stop());
+  setStatus('Computing the metrics with the tool\'s Python code… (the first run can take up to a minute while the server wakes up)',
+            'جارٍ حساب المقاييس بكود الأداة الأصلي… (قد يستغرق أول تشغيل دقيقة حتى يستيقظ الخادم)');
+  await new Promise(r => setTimeout(r, 300));
+  const blob = new Blob(chunks, {type: 'video/webm'}), vurl = URL.createObjectURL(blob);
+  document.getElementById('rec').src = vurl; document.getElementById('vid').href = vurl;
+  const payload = {action, ...data,
+    name: document.getElementById('name').value, age: document.getElementById('age').value,
+    gender: document.getElementById('gender').value};
+  try {
+    const {Client} = await import('https://cdn.jsdelivr.net/npm/@gradio/client@1/dist/index.min.js');
+    const app = await Client.connect('joudalbaiti/ai-lab');
+    const r = await app.predict('/fx_metrics', {payload: JSON.stringify(payload)});
+    const out = JSON.parse(r.data[0]);
+    if (out.error) { setStatus(out.error, out.error); }
+    else {
+      document.getElementById('tbody').innerHTML = out.rows.map(([k, v]) =>
+        `<tr><td>${k}</td><td>${v === null ? '–' : v}</td></tr>`).join('');
+      const c = document.getElementById('csv');
+      c.href = URL.createObjectURL(new Blob([out.csv], {type: 'text/csv'})); c.download = out.file;
+      setStatus(`<b>Done.</b> ${out.rows.length} metrics computed.`, `<b>تم.</b> حُسب ${out.rows.length} مقياسًا.`);
+    }
+  } catch (e) {
+    setStatus('The metrics server could not be reached. Please try again in a minute.', 'تعذّر الوصول إلى خادم المقاييس. حاول مجددًا بعد دقيقة.');
+  }
+  document.getElementById('results').classList.add('show');
+  startBtn.disabled = false;
+}
+
+startBtn.onclick = start;
+document.getElementById('again').onclick = () => { document.getElementById('results').classList.remove('show'); window.scrollTo({top: 0, behavior: 'smooth'}); };
+</script>
+</body>
+</html>
