@@ -401,10 +401,15 @@ async function finish(){
     name: document.getElementById('name').value, age: document.getElementById('age').value,
     gender: document.getElementById('gender').value};
   try {
-    const {Client} = await import('https://cdn.jsdelivr.net/npm/@gradio/client@1/dist/index.min.js');
-    const app = await Client.connect('joudalbaiti/ai-lab');
-    const r = await app.predict('/fx_metrics', {payload: JSON.stringify(payload)});
-    const out = JSON.parse(r.data[0]);
+    // FX-new.py's own post-processing runs on the AI Lab server (Hugging Face Space)
+    const api = 'https://joudalbaiti-ai-lab.hf.space/gradio_api/call/fx_metrics';
+    const r1 = await fetch(api, {method: 'POST', headers: {'Content-Type': 'application/json'},
+                                 body: JSON.stringify({data: [JSON.stringify(payload)]})});
+    const {event_id} = await r1.json();
+    const sse = await (await fetch(`${api}/${event_id}`)).text();
+    const m = sse.match(/event: complete\s*\ndata: (.*)/);
+    if (!m) throw new Error('no result');
+    const out = JSON.parse(JSON.parse(m[1])[0]);
     if (out.error) { setStatus(out.error, out.error); }
     else {
       document.getElementById('tbody').innerHTML = out.rows.map(([k, v]) =>
