@@ -39,6 +39,7 @@ input,select{width:100%;font:inherit;font-size:15px;color:var(--text);background
 .row3{display:grid;grid-template-columns:2fr 1fr 1.3fr;gap:8px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-size:15.5px;font-weight:500;text-decoration:none;padding:11px 20px;border-radius:999px;border:1px solid var(--line);color:var(--text);background:transparent;cursor:pointer}
 .btn.primary{background:var(--saffron);border-color:var(--saffron);color:var(--night);width:100%;margin-top:16px}
+[hidden]{display:none!important}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .stage{position:relative;background:#000;border-radius:14px;overflow:hidden;border:1px solid var(--line);aspect-ratio:4/3}
 canvas#view{width:100%;height:100%;display:block}
@@ -107,7 +108,8 @@ html[data-lang="ar"] body{line-height:1.85}
           <div class="panel">
             <h2><span data-l="en">Movement metrics</span><span data-l="ar">المقاييس الحركية</span></h2>
             <div class="tablebox"><table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody id="tbody"></tbody></table></div>
-            <div class="acts"><a class="btn" id="csv" download><span data-l="en">Download CSV</span><span data-l="ar">تنزيل CSV</span></a></div>
+            <div class="acts"><a class="btn" id="csv" download><span data-l="en">Download CSV</span><span data-l="ar">تنزيل CSV</span></a>
+              <button class="btn" id="retry" type="button" hidden><span data-l="en">Try again</span><span data-l="ar">حاول مجددًا</span></button></div>
           </div>
           <div class="panel">
             <h2><span data-l="en">Recorded session</span><span data-l="ar">الجلسة المسجّلة</span></h2>
@@ -389,6 +391,40 @@ async function start(){
   }
 }
 
+let lastPayload = null;
+async function computeMetrics(payload){
+  // FX-new.py's own post-processing runs on the AI Lab server (Hugging Face Space)
+  const api = 'https://joudalbaiti-ai-lab.hf.space/gradio_api/call/fx_metrics';
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const r1 = await fetch(api, {method: 'POST', headers: {'Content-Type': 'application/json'},
+                                   body: JSON.stringify({data: [JSON.stringify(payload)]})});
+      if (!r1.ok) throw new Error('HTTP ' + r1.status);
+      const {event_id} = await r1.json();
+      const sse = await (await fetch(`${api}/${event_id}`)).text();
+      const m = sse.match(/event: complete\s*\ndata: (.*)/);
+      if (m) return JSON.parse(JSON.parse(m[1])[0]);
+      console.warn('metrics server reply', sse.slice(0, 300));
+    } catch (e) { console.warn('metrics attempt failed', e); }
+    await new Promise(r => setTimeout(r, 4000));   // the server may be waking up
+  }
+  return null;
+}
+function showMetrics(out){
+  const retry = document.getElementById('retry');
+  if (!out) {
+    setStatus('The metrics server did not answer. It may be waking up: press <b>Try again</b> in a few seconds (your recording is kept).',
+              'لم يستجب خادم المقاييس، ربما لأنه يستيقظ. اضغط <b>حاول مجددًا</b> بعد ثوانٍ (التسجيل محفوظ).');
+    retry.hidden = false; return;
+  }
+  retry.hidden = true;
+  if (out.error) { setStatus(out.error, out.error); return; }
+  document.getElementById('tbody').innerHTML = out.rows.map(([k, v]) =>
+    `<tr><td>${k}</td><td>${v === null ? '–' : v}</td></tr>`).join('');
+  const c = document.getElementById('csv');
+  c.href = URL.createObjectURL(new Blob([out.csv], {type: 'text/csv'})); c.download = out.file;
+  setStatus(`<b>Done.</b> ${out.rows.length} metrics computed.`, `<b>تم.</b> حُسب ${out.rows.length} مقياسًا.`);
+}
 async function finish(){
   running = false;
   stream.getTracks().forEach(t => t.stop());
@@ -397,33 +433,19 @@ async function finish(){
   await new Promise(r => setTimeout(r, 300));
   const blob = new Blob(chunks, {type: 'video/webm'}), vurl = URL.createObjectURL(blob);
   document.getElementById('rec').src = vurl; document.getElementById('vid').href = vurl;
-  const payload = {action, ...data,
+  lastPayload = {action, ...data,
     name: document.getElementById('name').value, age: document.getElementById('age').value,
     gender: document.getElementById('gender').value};
-  try {
-    // FX-new.py's own post-processing runs on the AI Lab server (Hugging Face Space)
-    const api = 'https://joudalbaiti-ai-lab.hf.space/gradio_api/call/fx_metrics';
-    const r1 = await fetch(api, {method: 'POST', headers: {'Content-Type': 'application/json'},
-                                 body: JSON.stringify({data: [JSON.stringify(payload)]})});
-    const {event_id} = await r1.json();
-    const sse = await (await fetch(`${api}/${event_id}`)).text();
-    const m = sse.match(/event: complete\s*\ndata: (.*)/);
-    if (!m) throw new Error('no result');
-    const out = JSON.parse(JSON.parse(m[1])[0]);
-    if (out.error) { setStatus(out.error, out.error); }
-    else {
-      document.getElementById('tbody').innerHTML = out.rows.map(([k, v]) =>
-        `<tr><td>${k}</td><td>${v === null ? '–' : v}</td></tr>`).join('');
-      const c = document.getElementById('csv');
-      c.href = URL.createObjectURL(new Blob([out.csv], {type: 'text/csv'})); c.download = out.file;
-      setStatus(`<b>Done.</b> ${out.rows.length} metrics computed.`, `<b>تم.</b> حُسب ${out.rows.length} مقياسًا.`);
-    }
-  } catch (e) {
-    setStatus('The metrics server could not be reached. Please try again in a minute.', 'تعذّر الوصول إلى خادم المقاييس. حاول مجددًا بعد دقيقة.');
-  }
   document.getElementById('results').classList.add('show');
   startBtn.disabled = false;
+  showMetrics(await computeMetrics(lastPayload));
 }
+document.getElementById('retry').onclick = async () => {
+  if (!lastPayload) return;
+  document.getElementById('retry').hidden = true;
+  setStatus('Computing the metrics…', 'جارٍ حساب المقاييس…');
+  showMetrics(await computeMetrics(lastPayload));
+};
 
 startBtn.onclick = start;
 document.getElementById('again').onclick = () => { document.getElementById('results').classList.remove('show'); window.scrollTo({top: 0, behavior: 'smooth'}); };
