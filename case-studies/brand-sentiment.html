@@ -11,7 +11,7 @@
 <style>
   :root {
     --ink:#ECE6DA; --paper:#0F1E2E; --card:#13263A; --accent:#4FB3A2; --amber:#E3B23C;
-    --neg:#D0654F; --neu:#6F8496; --hairline:#2A4560; --muted:#9AAEC0; --track:#1A3149; --on-ink:#0F1E2E;
+    --neg:#D0654F; --neu:#6F8496; --hairline:#2A4560; --muted:#9AAEC0; --track:#1A3149; --on-ink:#0F1E2E; --s1:#1FA88E; --s2:#CC9222;
     color-scheme:dark;
     --step--1:0.875rem; --step-0:1.0625rem; --step-1:1.375rem; --step-2:2rem;
     --step-3:clamp(2rem,6vw,3.5rem); --measure:64ch;
@@ -78,10 +78,21 @@
   .en p{margin:0}
   footer.site{border-block-start:1px solid var(--hairline);padding-block:2rem 3rem;font-size:var(--step--1);color:var(--muted)}
 
-  @media (max-width:36rem){ .bars li{grid-template-columns:1fr 3rem} .bars .label{grid-column:1/-1} }
+  .chart{width:100%;height:auto;max-width:44rem;display:block;margin:.5rem 0 .25rem;font-family:inherit}
+  .chart .lab{fill:var(--ink);font-size:13px;font-weight:400}
+  .chart .sub,.chart .tick{fill:var(--muted);font-size:11px}
+  .chart .val{fill:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}
+  .chart .in{fill:#fff;font-size:11.5px;font-weight:600}
+  .chart .grid{stroke:var(--hairline);stroke-width:1}
+  .chart .pos{fill:var(--accent)} .chart .neu{fill:var(--neu)} .chart .neg{fill:var(--neg)}
+  .chart .s1{fill:var(--s1)} .chart .s2{fill:var(--s2)}
+  .chart rect:hover,.chart path:hover{opacity:.8}
+  .legend i.s1{background:var(--s1)} .legend i.s2{background:var(--s2)}
+  @media (max-width:36rem){ .chart .lab{font-size:19px} .chart .sub,.chart .tick,.chart .val{font-size:16px} .chart .in{font-size:15px}
+    .bars li{grid-template-columns:1fr 3rem} .bars .label{grid-column:1/-1} }
   @media print{
     @page{size:A4;margin:14mm 13mm}
-    :root{--ink:#101E26;--paper:#fff;--card:#fff;--accent:#2F6F62;--amber:#B07A12;--neg:#A64B3C;--neu:#8A979B;--hairline:#D2D8D5;--muted:#5C6B70;--track:#E6EAE8;--on-ink:#fff;color-scheme:light}
+    :root{--ink:#101E26;--paper:#fff;--card:#fff;--accent:#2F6F62;--amber:#B07A12;--neg:#A64B3C;--neu:#8A979B;--hairline:#D2D8D5;--muted:#5C6B70;--track:#E6EAE8;--on-ink:#fff;--s1:#0B8A70;--s2:#A8740E;color-scheme:light}
     body{background:#fff;font-size:10.5pt;line-height:1.75}
     .no-print{display:none!important}
     .wrap{max-width:none;padding:0}
@@ -214,18 +225,58 @@
   <div class="legend"><span><i class="pos"></i>إيجابي</span><span><i class="neu"></i>محايد</span><span><i class="neg"></i>سلبي</span></div>
 
   <h3>عن ماذا تحدّث المعلّقون؟ وأين ذهبت اللايكات؟</h3>
-  <p class="note">العمود الأول نسبة التعليقات، والثاني نسبة اللايكات التي حصلت عليها تعليقات هذا الموضوع، أي ما تفاعل معه الجمهور أكثر.</p>
-  <ul class="bars">
-    <li><span class="label">شكل المؤثر وحلاقة لحيته ومن يشبه</span><span class="track"><span class="fill neu" style="width:100%;display:block"></span></span><span class="num">32% · 41%</span></li>
-    <li><span class="label">أسئلة وآراء عن المنتج (سعر، سعرات، طعم)</span><span class="track"><span class="fill neu" style="width:49.8%;display:block"></span></span><span class="num">16% · 2%</span></li>
-    <li><span class="label">نكتة حطين و«ريحة الشاورما»</span><span class="track"><span class="fill pos" style="width:48.9%;display:block"></span></span><span class="num">16% · 24%</span></li>
-    <li><span class="label">مدح الإعلان والإبداع واللهجة</span><span class="track"><span class="fill pos" style="width:47.7%;display:block"></span></span><span class="num">15% · 1%</span></li>
-    <li><span class="label">ملاحظات على منطق المشهد</span><span class="track"><span class="fill neu" style="width:24.4%;display:block"></span></span><span class="num">8% · 0.3%</span></li>
-    <li><span class="label">شكاوى خدمة (نفاد، تطبيق، توفر)</span><span class="track"><span class="fill neg" style="width:10%;display:block"></span></span><span class="num">3% · 0%</span></li>
-    <li><span class="label">اعتراض ديني على حلق اللحية</span><span class="track"><span class="fill neg" style="width:6.7%;display:block"></span></span><span class="num">2% · 9%</span></li>
-    <li><span class="label">ترديد جمل الإعلان</span><span class="track"><span class="fill pos" style="width:6.7%;display:block"></span></span><span class="num">2% · 23%</span></li>
-    <li><span class="label">«جربته بسبب الإعلان» أو سأشتريه</span><span class="track"><span class="fill pos" style="width:3.3%;display:block"></span></span><span class="num">1% · 0%</span></li>
-  </ul>
+  <p class="note">لكل موضوع عمودان: نسبته من التعليقات، ونسبة اللايكات التي حصلت عليها تعليقاته. الفرق بينهما يكشف ما تفاعل معه الجمهور فعلاً.</p>
+  <div class="legend"><span><i class="s1"></i>من التعليقات</span><span><i class="s2"></i>من اللايكات</span></div>
+  <svg class="chart" viewBox="0 0 640 414" role="img" aria-label="نسبة التعليقات مقابل نسبة اللايكات لكل موضوع في إعلان عنوان القهوة" direction="rtl">
+<line x1="410.0" x2="410.0" y1="22" y2="392" class="grid"/><text x="410.0" y="406" class="tick" direction="ltr" text-anchor="middle">0%</text>
+<line x1="331.3" x2="331.3" y1="22" y2="392" class="grid"/><text x="331.3" y="406" class="tick" direction="ltr" text-anchor="middle">10%</text>
+<line x1="252.7" x2="252.7" y1="22" y2="392" class="grid"/><text x="252.7" y="406" class="tick" direction="ltr" text-anchor="middle">20%</text>
+<line x1="174.0" x2="174.0" y1="22" y2="392" class="grid"/><text x="174.0" y="406" class="tick" direction="ltr" text-anchor="middle">30%</text>
+<line x1="95.3" x2="95.3" y1="22" y2="392" class="grid"/><text x="95.3" y="406" class="tick" direction="ltr" text-anchor="middle">40%</text>
+<text x="636" y="43" class="lab" text-anchor="start">شكل المؤثر ولحيته</text>
+<path class="s1" d="M410,26 h-250.1 a4,4 0 0 0 -4,4 v5 a4,4 0 0 0 4,4 h250.1 z" ><title>شكل المؤثر ولحيته: 32.3% من التعليقات</title></path>
+<text x="150.9" y="36.5" class="val" direction="ltr" text-anchor="end">32%</text>
+<path class="s2" d="M410,41 h-317.0 a4,4 0 0 0 -4,4 v5 a4,4 0 0 0 4,4 h317.0 z" ><title>شكل المؤثر ولحيته: 40.8% من اللايكات</title></path>
+<text x="84.0" y="51.5" class="val" direction="ltr" text-anchor="end">41%</text>
+<text x="636" y="83" class="lab" text-anchor="start">نكتة «ريحة الشاورما»</text>
+<path class="s1" d="M410,66 h-120.3 a4,4 0 0 0 -4,4 v5 a4,4 0 0 0 4,4 h120.3 z" ><title>نكتة «ريحة الشاورما»: 15.8% من التعليقات</title></path>
+<text x="280.7" y="76.5" class="val" direction="ltr" text-anchor="end">16%</text>
+<path class="s2" d="M410,81 h-182.4 a4,4 0 0 0 -4,4 v5 a4,4 0 0 0 4,4 h182.4 z" ><title>نكتة «ريحة الشاورما»: 23.7% من اللايكات</title></path>
+<text x="218.6" y="91.5" class="val" direction="ltr" text-anchor="end">24%</text>
+<text x="636" y="123" class="lab" text-anchor="start">ترديد جمل الإعلان</text>
+<path class="s1" d="M410,106 h-13.3 a4,4 0 0 0 -4,4 v5 a4,4 0 0 0 4,4 h13.3 z" ><title>ترديد جمل الإعلان: 2.2% من التعليقات</title></path>
+<text x="387.7" y="116.5" class="val" direction="ltr" text-anchor="end">2%</text>
+<path class="s2" d="M410,121 h-180.1 a4,4 0 0 0 -4,4 v5 a4,4 0 0 0 4,4 h180.1 z" ><title>ترديد جمل الإعلان: 23.4% من اللايكات</title></path>
+<text x="220.9" y="131.5" class="val" direction="ltr" text-anchor="end">23%</text>
+<text x="636" y="163" class="lab" text-anchor="start">اعتراض على الحلاقة</text>
+<path class="s1" d="M410,146 h-13.3 a4,4 0 0 0 -4,4 v5 a4,4 0 0 0 4,4 h13.3 z" ><title>اعتراض على الحلاقة: 2.2% من التعليقات</title></path>
+<text x="387.7" y="156.5" class="val" direction="ltr" text-anchor="end">2%</text>
+<path class="s2" d="M410,161 h-63.7 a4,4 0 0 0 -4,4 v5 a4,4 0 0 0 4,4 h63.7 z" ><title>اعتراض على الحلاقة: 8.6% من اللايكات</title></path>
+<text x="337.3" y="171.5" class="val" direction="ltr" text-anchor="end">9%</text>
+<text x="636" y="203" class="lab" text-anchor="start">الحديث عن المنتج</text>
+<path class="s1" d="M410,186 h-122.7 a4,4 0 0 0 -4,4 v5 a4,4 0 0 0 4,4 h122.7 z" ><title>الحديث عن المنتج: 16.1% من التعليقات</title></path>
+<text x="278.3" y="196.5" class="val" direction="ltr" text-anchor="end">16%</text>
+<path class="s2" d="M410,201 h-10.2 a4,4 0 0 0 -4,4 v5 a4,4 0 0 0 4,4 h10.2 z" ><title>الحديث عن المنتج: 1.8% من اللايكات</title></path>
+<text x="390.8" y="211.5" class="val" direction="ltr" text-anchor="end">2%</text>
+<text x="636" y="243" class="lab" text-anchor="start">مدح الإعلان</text>
+<path class="s1" d="M410,226 h-117.1 a4,4 0 0 0 -4,4 v5 a4,4 0 0 0 4,4 h117.1 z" ><title>مدح الإعلان: 15.4% من التعليقات</title></path>
+<text x="283.9" y="236.5" class="val" direction="ltr" text-anchor="end">15%</text>
+<path class="s2" d="M410,241 h-6.2 a4,4 0 0 0 -4,4 v5 a4,4 0 0 0 4,4 h6.2 z" ><title>مدح الإعلان: 1.3% من اللايكات</title></path>
+<text x="394.8" y="251.5" class="val" direction="ltr" text-anchor="end">1%</text>
+<text x="636" y="283" class="lab" text-anchor="start">منطق المشهد</text>
+<path class="s1" d="M410,266 h-58.1 a4,4 0 0 0 -4,4 v5 a4,4 0 0 0 4,4 h58.1 z" ><title>منطق المشهد: 7.9% من التعليقات</title></path>
+<text x="342.9" y="276.5" class="val" direction="ltr" text-anchor="end">8%</text>
+<rect class="s2" x="407.6" y="281" width="2.4" height="13"><title>منطق المشهد: 0.3% من اللايكات</title></rect>
+<text x="402.6" y="291.5" class="val" text-anchor="end">0.3%</text>
+<text x="636" y="323" class="lab" text-anchor="start">شكاوى الخدمة</text>
+<path class="s1" d="M410,306 h-21.2 a4,4 0 0 0 -4,4 v5 a4,4 0 0 0 4,4 h21.2 z" ><title>شكاوى الخدمة: 3.2% من التعليقات</title></path>
+<text x="379.8" y="316.5" class="val" direction="ltr" text-anchor="end">3%</text>
+<text x="405.0" y="331.5" class="val" text-anchor="end">0%</text>
+<text x="636" y="363" class="lab" text-anchor="start">«جربته» أو «بشتريه»</text>
+<path class="s1" d="M410,346 h-4.7 a4,4 0 0 0 -4,4 v5 a4,4 0 0 0 4,4 h4.7 z" ><title>«جربته» أو «بشتريه»: 1.1% من التعليقات</title></path>
+<text x="396.3" y="356.5" class="val" direction="ltr" text-anchor="end">1%</text>
+<text x="405.0" y="371.5" class="val" text-anchor="end">0%</text>
+</svg>
 
   <div class="quotes">
     <blockquote class="p">«ريحة شاورما ههههه مدرسة بالتسويق وربي»<cite>نكتة حطين</cite></blockquote>
@@ -237,6 +288,34 @@
   <h3>ماذا تعني هذه الأرقام؟</h3>
   <p>الإعلان نجح في أن يُشاهَد ويُحَب، فالتعليقات الإيجابية أكثر بثلاث مرات ونصف من السلبية، وتكرر كثيراً أن هذا «أول إعلان أكمله للنهاية». وأذكى ما فيه كان التوقيت: نكتة حطين جاءت والقصة ما زالت حاضرة، فصارت أكثر لحظة يتذكرها الناس ويقتبسونها، وحصلت تعليقاتها على ربع اللايكات تقريباً. لكن الأرقام تكشف أيضاً أن الانتباه ذهب للمؤثر أكثر من المشروب: الحديث عن شكله ولحيته استحوذ على ثلث التعليقات و41% من اللايكات، بينما لم تتجاوز تعليقات المنتج 2% من اللايكات، والسلبي فيها (السعر والسعرات وطعم الفول السوداني) أكثر من الإيجابي. وظهرت ثلاثة تعليقات فقط تقول صراحة إن أصحابها جرّبوا المشروب أو سيشترونه بسبب الإعلان. هذا لا يعني أن الإعلان لم يبع، فالتعليقات لا تقيس المبيعات، لكنه يعني أن رسالة المنتج نفسها لم تكن ما بقي في ذهن الجمهور.</p>
   <p class="note">للتأكد من أن الصورة لا تخص التعليقات الأبرز وحدها، فحصت كل التعليقات العربية المتاحة (1,927 تعليقاً من أصل 2,172 أمكن جمعها) بالكلمات المفتاحية: 11% منها ذكرت حطين أو الشاورما، ونحو 16% علّقت على شكل المؤثر أو لحيته أو من يشبه، مقابل 5% فقط ذكرت السعر أو السعرات، و2% تحدثت عن تجربة المشروب أو شرائه. الاتجاه نفسه.</p>
+</section>
+
+<section class="block" id="compare">
+  <h2>الحالات الثلاث جنباً إلى جنب</h2>
+  <p>ثلاثة ترندات بثلاث صور مختلفة: جدل حطين بدا غاضباً في التغطيات لكنه كان في معظمه إيجابياً أو ساخراً، ومقاطعة تيك توك كانت غضباً شبه كامل، وإعلان عنوان القهوة حصد إعجاباً أكبر بكثير من النقد مع كتلة محايدة كبيرة انشغلت بالمؤثر.</p>
+  <div class="legend"><span><i class="neg"></i>سلبي</span><span><i class="neu"></i>محايد</span><span><i class="pos"></i>إيجابي</span></div>
+  <svg class="chart" viewBox="0 0 640 202" role="img" aria-label="مقارنة المشاعر في الحالات الثلاث" direction="rtl">
+<text x="636" y="43" class="lab" text-anchor="start">بيت الشاورما</text><text x="636" y="61" class="sub" text-anchor="start">126 تغريدة</text>
+<rect class="neg" x="12.0" y="34" width="38.7" height="22" rx="4"><title>بيت الشاورما — سلبي: 8.7%</title></rect>
+<text x="32.4" y="49.5" class="in" direction="ltr" text-anchor="middle">9%</text>
+<rect class="neu" x="52.7" y="34" width="195.0" height="22" rx="0"><title>بيت الشاورما — محايد: 42.1%</title></rect>
+<text x="151.2" y="49.5" class="in" direction="ltr" text-anchor="middle">42%</text>
+<rect class="pos" x="249.7" y="34" width="230.3" height="22" rx="4"><title>بيت الشاورما — إيجابي: 49.2%</title></rect>
+<text x="364.9" y="49.5" class="in" direction="ltr" text-anchor="middle">49%</text>
+<text x="636" y="97" class="lab" text-anchor="start">مقاطعة تيك توك</text><text x="636" y="115" class="sub" text-anchor="start">249 تغريدة</text>
+<rect class="neg" x="12.0" y="88" width="349.5" height="22" rx="4"><title>مقاطعة تيك توك — سلبي: 75.1%</title></rect>
+<text x="187.7" y="103.5" class="in" direction="ltr" text-anchor="middle">75%</text>
+<rect class="neu" x="363.5" y="88" width="110.8" height="22" rx="0"><title>مقاطعة تيك توك — محايد: 24.1%</title></rect>
+<text x="419.9" y="103.5" class="in" direction="ltr" text-anchor="middle">24%</text>
+<rect class="pos" x="476.3" y="88" width="3.7" height="22" rx="4"><title>مقاطعة تيك توك — إيجابي: 0.8%</title></rect>
+<text x="636" y="151" class="lab" text-anchor="start">عنوان القهوة</text><text x="636" y="169" class="sub" text-anchor="start">279 تعليقاً</text>
+<rect class="neg" x="12.0" y="142" width="51.8" height="22" rx="4"><title>عنوان القهوة — سلبي: 11.5%</title></rect>
+<text x="38.9" y="157.5" class="in" direction="ltr" text-anchor="middle">12%</text>
+<rect class="neu" x="65.8" y="142" width="221.2" height="22" rx="0"><title>عنوان القهوة — محايد: 47.7%</title></rect>
+<text x="177.4" y="157.5" class="in" direction="ltr" text-anchor="middle">48%</text>
+<rect class="pos" x="289.1" y="142" width="191.4" height="22" rx="4"><title>عنوان القهوة — إيجابي: 40.9%</title></rect>
+<text x="384.8" y="157.5" class="in" direction="ltr" text-anchor="middle">41%</text>
+</svg>
 </section>
 
 <section class="block" id="takeaways">
