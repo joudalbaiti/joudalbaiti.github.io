@@ -99,7 +99,7 @@
   .seg button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
   .ex-title{font-weight:500;margin:.25rem 0 .5rem}
   #exOut{position:relative}
-  .ex-tip{position:absolute;transform:translate(50%,-100%);background:var(--ink);color:var(--paper);font-size:.8rem;padding:.3rem .6rem;border-radius:6px;pointer-events:none;white-space:nowrap;z-index:2}
+  .ex-tip{position:absolute;transform:translate(-50%,-100%);background:var(--ink);color:var(--paper);font-size:.8rem;padding:.3rem .6rem;border-radius:6px;pointer-events:none;white-space:nowrap;z-index:2}
   #explore .ex-tip{top:0;left:0}
   .tbl-wrap{overflow-x:auto;max-width:44rem}
   .ex-tbl{border-collapse:collapse;width:100%;font-size:.92rem}
@@ -107,6 +107,11 @@
   .ex-tbl th{color:var(--muted);font-weight:500;font-size:.85rem}
   .chart.ex .hit{cursor:pointer}
   @media (max-width:36rem){.chart.ex .lab{font-size:13px}.chart.ex .val{font-size:11px}}
+  html[lang="en"] [data-l="ar"], html[lang="ar"] [data-l="en"]{display:none!important}
+  html[lang="en"] #english{display:none}
+  html[lang="en"] body{line-height:1.7}
+  html[lang="en"] h1{line-height:1.15}
+  .hdr-r{display:flex;gap:.5rem;align-items:center}
   @media (max-width:36rem){ .chart .lab{font-size:19px} .chart .sub,.chart .tick,.chart .val{font-size:16px} .chart .in{font-size:15px}
     .bars li{grid-template-columns:1fr 3rem} .bars .label{grid-column:1/-1} }
   @media print{
@@ -129,7 +134,8 @@
 
 <header class="site no-print">
   <a class="mark" href="../">جود البيتي</a>
-  <a class="btn" href="brand-sentiment.pdf" download data-goatcounter-click="pdf-download" data-goatcounter-title="تحميل PDF — تحليل مشاعر البراندات">تحميل PDF ↓</a>
+  <div class="hdr-r"><button class="btn ghost lang-btn" id="langBtn" type="button" lang="en">English</button>
+  <a class="btn" href="brand-sentiment.pdf" download data-goatcounter-click="pdf-download" data-goatcounter-title="تحميل PDF — تحليل مشاعر البراندات">تحميل PDF ↓</a></div>
 </header>
 
 <section class="hero">
@@ -143,7 +149,7 @@
   <div class="stats">
     <div class="stat"><b>654</b><span>تغريدة وتعليقاً صُنّفت بعد التنظيف من أصل نحو 1,800 جُمعت</span></div>
     <div class="stat"><b>8.7%</b><span>فقط من الحديث عن بيت الشاورما كان سلبياً رغم ضجة الجدل</span></div>
-    <div class="stat"><b dir="ltr" style="text-align:right">−80%</b><span>تراجع حجم الحديث عن مقاطعة تيك توك في اليوم التالي للحملة</span></div>
+    <div class="stat"><b><bdi>−80%</bdi></b><span>تراجع حجم الحديث عن مقاطعة تيك توك في اليوم التالي للحملة</span></div>
     <div class="stat"><b>24%</b><span>من لايكات تعليقات إعلان عنوان القهوة ذهبت لجملة «ريحة الشاورما»</span></div>
   </div>
 </section>
@@ -246,7 +252,7 @@
   <h3>عن ماذا تحدّث المعلّقون؟ وأين ذهبت اللايكات؟</h3>
   <p class="note">لكل موضوع عمودان: نسبته من التعليقات، ونسبة اللايكات التي حصلت عليها تعليقاته. الفرق بينهما يكشف ما تفاعل معه الجمهور فعلاً.</p>
   <div class="legend"><span><i class="s1"></i>من التعليقات</span><span><i class="s2"></i>من اللايكات</span></div>
-  <svg class="chart" viewBox="0 0 640 414" role="img" aria-label="نسبة التعليقات مقابل نسبة اللايكات لكل موضوع في إعلان عنوان القهوة" direction="rtl">
+  <svg class="chart" data-l="ar" viewBox="0 0 640 414" role="img" aria-label="نسبة التعليقات مقابل نسبة اللايكات لكل موضوع في إعلان عنوان القهوة" direction="rtl">
 <line x1="410.0" x2="410.0" y1="22" y2="392" class="grid"/><text x="410.0" y="406" class="tick" direction="ltr" text-anchor="middle">0%</text>
 <line x1="331.3" x2="331.3" y1="22" y2="392" class="grid"/><text x="331.3" y="406" class="tick" direction="ltr" text-anchor="middle">10%</text>
 <line x1="252.7" x2="252.7" y1="22" y2="392" class="grid"/><text x="252.7" y="406" class="tick" direction="ltr" text-anchor="middle">20%</text>
@@ -296,6 +302,56 @@
 <text x="396.3" y="356.5" class="val" direction="ltr" text-anchor="end">1%</text>
 <text x="405.0" y="371.5" class="val" text-anchor="end">0%</text>
 </svg>
+  <svg class="chart" data-l="en" viewBox="0 0 640 414" role="img" aria-label="Share of comments versus share of likes for each topic in the Coffee Address ad">
+<line x1="200.0" x2="200.0" y1="22" y2="392" class="grid"/><text x="200.0" y="406" class="tick" text-anchor="middle">0%</text>
+<line x1="285.3" x2="285.3" y1="22" y2="392" class="grid"/><text x="285.3" y="406" class="tick" text-anchor="middle">10%</text>
+<line x1="370.7" x2="370.7" y1="22" y2="392" class="grid"/><text x="370.7" y="406" class="tick" text-anchor="middle">20%</text>
+<line x1="456.0" x2="456.0" y1="22" y2="392" class="grid"/><text x="456.0" y="406" class="tick" text-anchor="middle">30%</text>
+<line x1="541.3" x2="541.3" y1="22" y2="392" class="grid"/><text x="541.3" y="406" class="tick" text-anchor="middle">40%</text>
+<text x="4" y="43" class="lab">Creator’s look and beard</text>
+<path class="s1" d="M200,26 h271.6 a4,4 0 0 1 4,4 v5 a4,4 0 0 1 -4,4 h-271.6 z"><title>Creator’s look and beard: 32.3% of comments</title></path>
+<text x="480.6" y="36.5" class="val">32%</text>
+<path class="s2" d="M200,41 h344.2 a4,4 0 0 1 4,4 v5 a4,4 0 0 1 -4,4 h-344.2 z"><title>Creator’s look and beard: 40.8% of likes</title></path>
+<text x="553.2" y="51.5" class="val">41%</text>
+<text x="4" y="83" class="lab">The “shawarma smell” joke</text>
+<path class="s1" d="M200,66 h130.8 a4,4 0 0 1 4,4 v5 a4,4 0 0 1 -4,4 h-130.8 z"><title>The “shawarma smell” joke: 15.8% of comments</title></path>
+<text x="339.8" y="76.5" class="val">16%</text>
+<path class="s2" d="M200,81 h198.2 a4,4 0 0 1 4,4 v5 a4,4 0 0 1 -4,4 h-198.2 z"><title>The “shawarma smell” joke: 23.7% of likes</title></path>
+<text x="407.2" y="91.5" class="val">24%</text>
+<text x="4" y="123" class="lab">Quoting lines from the ad</text>
+<path class="s1" d="M200,106 h14.8 a4,4 0 0 1 4,4 v5 a4,4 0 0 1 -4,4 h-14.8 z"><title>Quoting lines from the ad: 2.2% of comments</title></path>
+<text x="223.8" y="116.5" class="val">2%</text>
+<path class="s2" d="M200,121 h195.7 a4,4 0 0 1 4,4 v5 a4,4 0 0 1 -4,4 h-195.7 z"><title>Quoting lines from the ad: 23.4% of likes</title></path>
+<text x="404.7" y="131.5" class="val">23%</text>
+<text x="4" y="163" class="lab">Objection to shaving</text>
+<path class="s1" d="M200,146 h14.8 a4,4 0 0 1 4,4 v5 a4,4 0 0 1 -4,4 h-14.8 z"><title>Objection to shaving: 2.2% of comments</title></path>
+<text x="223.8" y="156.5" class="val">2%</text>
+<path class="s2" d="M200,161 h69.4 a4,4 0 0 1 4,4 v5 a4,4 0 0 1 -4,4 h-69.4 z"><title>Objection to shaving: 8.6% of likes</title></path>
+<text x="278.4" y="171.5" class="val">9%</text>
+<text x="4" y="203" class="lab">Talk about the product</text>
+<path class="s1" d="M200,186 h133.4 a4,4 0 0 1 4,4 v5 a4,4 0 0 1 -4,4 h-133.4 z"><title>Talk about the product: 16.1% of comments</title></path>
+<text x="342.4" y="196.5" class="val">16%</text>
+<path class="s2" d="M200,201 h11.4 a4,4 0 0 1 4,4 v5 a4,4 0 0 1 -4,4 h-11.4 z"><title>Talk about the product: 1.8% of likes</title></path>
+<text x="220.4" y="211.5" class="val">2%</text>
+<text x="4" y="243" class="lab">Praise for the ad</text>
+<path class="s1" d="M200,226 h127.4 a4,4 0 0 1 4,4 v5 a4,4 0 0 1 -4,4 h-127.4 z"><title>Praise for the ad: 15.4% of comments</title></path>
+<text x="336.4" y="236.5" class="val">15%</text>
+<path class="s2" d="M200,241 h7.1 a4,4 0 0 1 4,4 v5 a4,4 0 0 1 -4,4 h-7.1 z"><title>Praise for the ad: 1.3% of likes</title></path>
+<text x="216.1" y="251.5" class="val">1%</text>
+<text x="4" y="283" class="lab">Logic of the scene</text>
+<path class="s1" d="M200,266 h63.4 a4,4 0 0 1 4,4 v5 a4,4 0 0 1 -4,4 h-63.4 z"><title>Logic of the scene: 7.9% of comments</title></path>
+<text x="272.4" y="276.5" class="val">8%</text>
+<rect class="s2" x="200" y="281" width="2.6" height="13"><title>Logic of the scene: 0.3% of likes</title></rect>
+<text x="207.6" y="291.5" class="val">0.3%</text>
+<text x="4" y="323" class="lab">Service complaints</text>
+<path class="s1" d="M200,306 h23.3 a4,4 0 0 1 4,4 v5 a4,4 0 0 1 -4,4 h-23.3 z"><title>Service complaints: 3.2% of comments</title></path>
+<text x="232.3" y="316.5" class="val">3%</text>
+<text x="205.0" y="331.5" class="val">0%</text>
+<text x="4" y="363" class="lab">“Tried it” / “will buy”</text>
+<path class="s1" d="M200,346 h5.4 a4,4 0 0 1 4,4 v5 a4,4 0 0 1 -4,4 h-5.4 z"><title>“Tried it” / “will buy”: 1.1% of comments</title></path>
+<text x="214.4" y="356.5" class="val">1%</text>
+<text x="205.0" y="371.5" class="val">0%</text>
+</svg>
 
   <div class="quotes">
     <blockquote class="p">«ريحة شاورما ههههه مدرسة بالتسويق وربي»<cite>نكتة حطين</cite></blockquote>
@@ -313,7 +369,7 @@
   <h2>الحالات الثلاث جنباً إلى جنب</h2>
   <p>ثلاثة ترندات بثلاث صور مختلفة: جدل حطين بدا غاضباً في التغطيات لكنه كان في معظمه إيجابياً أو ساخراً، ومقاطعة تيك توك كانت غضباً شبه كامل، وإعلان عنوان القهوة حصد إعجاباً أكبر بكثير من النقد مع كتلة محايدة كبيرة انشغلت بالمؤثر.</p>
   <div class="legend"><span><i class="neg"></i>سلبي</span><span><i class="neu"></i>محايد</span><span><i class="pos"></i>إيجابي</span></div>
-  <svg class="chart" viewBox="0 0 640 202" role="img" aria-label="مقارنة المشاعر في الحالات الثلاث" direction="rtl">
+  <svg class="chart" data-l="ar" viewBox="0 0 640 202" role="img" aria-label="مقارنة المشاعر في الحالات الثلاث" direction="rtl">
 <text x="636" y="43" class="lab" text-anchor="start">بيت الشاورما</text><text x="636" y="61" class="sub" text-anchor="start">126 تغريدة</text>
 <rect class="neg" x="12.0" y="34" width="38.7" height="22" rx="4"><title>بيت الشاورما — سلبي: 8.7%</title></rect>
 <text x="32.4" y="49.5" class="in" direction="ltr" text-anchor="middle">9%</text>
@@ -334,6 +390,28 @@
 <text x="177.4" y="157.5" class="in" direction="ltr" text-anchor="middle">48%</text>
 <rect class="pos" x="289.1" y="142" width="191.4" height="22" rx="4"><title>عنوان القهوة — إيجابي: 40.9%</title></rect>
 <text x="384.8" y="157.5" class="in" direction="ltr" text-anchor="middle">41%</text>
+</svg>
+  <svg class="chart" data-l="en" viewBox="0 0 640 202" role="img" aria-label="Sentiment compared across the three cases">
+<text x="4" y="43" class="lab">Shawarma House</text><text x="4" y="61" class="sub">126 posts</text>
+<rect class="neg" x="150.0" y="34" width="39.6" height="22" rx="4"><title>Shawarma House — Negative: 8.7%</title></rect>
+<text x="170.8" y="49.5" class="in" text-anchor="middle">9%</text>
+<rect class="neu" x="191.6" y="34" width="199.2" height="22" rx="0"><title>Shawarma House — Neutral: 42.1%</title></rect>
+<text x="292.2" y="49.5" class="in" text-anchor="middle">42%</text>
+<rect class="pos" x="392.8" y="34" width="235.2" height="22" rx="4"><title>Shawarma House — Positive: 49.2%</title></rect>
+<text x="510.4" y="49.5" class="in" text-anchor="middle">49%</text>
+<text x="4" y="97" class="lab">TikTok boycott</text><text x="4" y="115" class="sub">249 posts</text>
+<rect class="neg" x="150.0" y="88" width="357.0" height="22" rx="4"><title>TikTok boycott — Negative: 75.1%</title></rect>
+<text x="329.5" y="103.5" class="in" text-anchor="middle">75%</text>
+<rect class="neu" x="509.0" y="88" width="113.2" height="22" rx="0"><title>TikTok boycott — Neutral: 24.1%</title></rect>
+<text x="566.6" y="103.5" class="in" text-anchor="middle">24%</text>
+<rect class="pos" x="624.2" y="88" width="3.8" height="22" rx="4"><title>TikTok boycott — Positive: 0.8%</title></rect>
+<text x="4" y="151" class="lab">Coffee Address</text><text x="4" y="169" class="sub">279 comments</text>
+<rect class="neg" x="150.0" y="142" width="53.0" height="22" rx="4"><title>Coffee Address — Negative: 11.5%</title></rect>
+<text x="177.5" y="157.5" class="in" text-anchor="middle">12%</text>
+<rect class="neu" x="205.0" y="142" width="226.0" height="22" rx="0"><title>Coffee Address — Neutral: 47.7%</title></rect>
+<text x="319.0" y="157.5" class="in" text-anchor="middle">48%</text>
+<rect class="pos" x="433.0" y="142" width="195.5" height="22" rx="4"><title>Coffee Address — Positive: 40.9%</title></rect>
+<text x="530.7" y="157.5" class="in" text-anchor="middle">41%</text>
 </svg>
 </section>
 
@@ -359,10 +437,12 @@
 </section>
 <script>
 (function(){
-  const D={"shawarma": {"total": 126, "likes": 0, "sent": {"P": 62, "U": 53, "N": 11}, "themes": [{"key": "G", "name": "ذكر عادي واشتهاء", "n": 33, "P": 17, "U": 16, "N": 0, "likes": 0}, {"key": "H", "name": "نكت وسخرية على القصة", "n": 33, "P": 0, "U": 33, "N": 0, "likes": 0}, {"key": "E", "name": "مطالبة بفرع في مدينتهم", "n": 14, "P": 13, "U": 1, "N": 0, "likes": 0}, {"key": "Q", "name": "مدح الأكل والتجربة", "n": 12, "P": 10, "U": 1, "N": 1, "likes": 0}, {"key": "C", "name": "تهنئة بالافتتاح", "n": 9, "P": 9, "U": 0, "N": 0, "likes": 0}, {"key": "D", "name": "دفاع ضد الطبقية", "n": 8, "P": 8, "U": 0, "N": 0, "likes": 0}, {"key": "M", "name": "قراءة تسويقية", "n": 7, "P": 5, "U": 2, "N": 0, "likes": 0}, {"key": "A", "name": "رفض الفرع في حطين", "n": 5, "P": 0, "U": 0, "N": 5, "likes": 0}, {"key": "O", "name": "شكاوى تشغيلية", "n": 4, "P": 0, "U": 0, "N": 4, "likes": 0}, {"key": "F", "name": "عملاء يشعرون بالتفرقة", "n": 1, "P": 0, "U": 0, "N": 1, "likes": 0}]}, "tiktok": {"total": 249, "likes": 0, "sent": {"P": 2, "U": 60, "N": 187}, "themes": [{"key": "B", "name": "الدعوة للمقاطعة والمشاركة", "n": 113, "P": 0, "U": 5, "N": 108, "likes": 0}, {"key": "R", "name": "تنظيم التقييم بنجمة", "n": 40, "P": 0, "U": 1, "N": 39, "likes": 0}, {"key": "H", "name": "نكت وأعراض انسحاب", "n": 35, "P": 0, "U": 34, "N": 1, "likes": 0}, {"key": "C", "name": "شكاوى حذف المحتوى", "n": 21, "P": 0, "U": 0, "N": 21, "likes": 0}, {"key": "M", "name": "نقاش حول الجدوى", "n": 14, "P": 0, "U": 11, "N": 3, "likes": 0}, {"key": "I", "name": "محاسبة المشاهير", "n": 11, "P": 0, "U": 1, "N": 10, "likes": 0}, {"key": "A", "name": "الانتقال لمنصات بديلة", "n": 10, "P": 0, "U": 5, "N": 5, "likes": 0}, {"key": "S", "name": "مشككون في الحملة", "n": 5, "P": 2, "U": 3, "N": 0, "likes": 0}]}, "coffee": {"total": 279, "likes": 47202, "sent": {"P": 114, "U": 133, "N": 32}, "themes": [{"key": "LK", "name": "شكل المؤثر ولحيته", "n": 90, "P": 0, "U": 90, "N": 0, "likes": 19278}, {"key": "PR", "name": "الحديث عن المنتج", "n": 45, "P": 8, "U": 21, "N": 16, "likes": 827}, {"key": "T", "name": "نكتة «ريحة الشاورما»", "n": 44, "P": 44, "U": 0, "N": 0, "likes": 11196}, {"key": "AD", "name": "مدح الإعلان", "n": 43, "P": 42, "U": 0, "N": 1, "likes": 609}, {"key": "LOG", "name": "منطق المشهد", "n": 22, "P": 0, "U": 22, "N": 0, "likes": 121}, {"key": "L", "name": "ضحك عام", "n": 9, "P": 9, "U": 0, "N": 0, "likes": 21}, {"key": "SV", "name": "شكاوى الخدمة", "n": 9, "P": 0, "U": 0, "N": 9, "likes": 8}, {"key": "Q", "name": "ترديد جمل الإعلان", "n": 6, "P": 6, "U": 0, "N": 0, "likes": 11061}, {"key": "BR", "name": "اعتراض على الحلاقة", "n": 6, "P": 0, "U": 0, "N": 6, "likes": 4075}, {"key": "CV", "name": "«جربته» أو «بشتريه»", "n": 3, "P": 3, "U": 0, "N": 0, "likes": 4}, {"key": "EX", "name": "طلب فرع جديد", "n": 2, "P": 2, "U": 0, "N": 0, "likes": 2}]}};
+  const D={"shawarma": {"total": 126, "likes": 0, "sent": {"P": 62, "U": 53, "N": 11}, "themes": [{"key": "G", "name": "ذكر عادي واشتهاء", "n": 33, "P": 17, "U": 16, "N": 0, "likes": 0, "en": "Everyday mentions"}, {"key": "H", "name": "نكت وسخرية على القصة", "n": 33, "P": 0, "U": 33, "N": 0, "likes": 0, "en": "Jokes and satire"}, {"key": "E", "name": "مطالبة بفرع في مدينتهم", "n": 14, "P": 13, "U": 1, "N": 0, "likes": 0, "en": "Branch requests"}, {"key": "Q", "name": "مدح الأكل والتجربة", "n": 12, "P": 10, "U": 1, "N": 1, "likes": 0, "en": "Praise for the food"}, {"key": "C", "name": "تهنئة بالافتتاح", "n": 9, "P": 9, "U": 0, "N": 0, "likes": 0, "en": "Congratulations"}, {"key": "D", "name": "دفاع ضد الطبقية", "n": 8, "P": 8, "U": 0, "N": 0, "likes": 0, "en": "Defending vs. snobbery"}, {"key": "M", "name": "قراءة تسويقية", "n": 7, "P": 5, "U": 2, "N": 0, "likes": 0, "en": "Marketing commentary"}, {"key": "A", "name": "رفض الفرع في حطين", "n": 5, "P": 0, "U": 0, "N": 5, "likes": 0, "en": "Opposing the branch"}, {"key": "O", "name": "شكاوى تشغيلية", "n": 4, "P": 0, "U": 0, "N": 4, "likes": 0, "en": "Operational complaints"}, {"key": "F", "name": "عملاء يشعرون بالتفرقة", "n": 1, "P": 0, "U": 0, "N": 1, "likes": 0, "en": "Customers feeling left out"}]}, "tiktok": {"total": 249, "likes": 0, "sent": {"P": 2, "U": 60, "N": 187}, "themes": [{"key": "B", "name": "الدعوة للمقاطعة والمشاركة", "n": 113, "P": 0, "U": 5, "N": 108, "likes": 0, "en": "Calling to boycott"}, {"key": "R", "name": "تنظيم التقييم بنجمة", "n": 40, "P": 0, "U": 1, "N": 39, "likes": 0, "en": "One-star ratings"}, {"key": "H", "name": "نكت وأعراض انسحاب", "n": 35, "P": 0, "U": 34, "N": 1, "likes": 0, "en": "Jokes and withdrawal"}, {"key": "C", "name": "شكاوى حذف المحتوى", "n": 21, "P": 0, "U": 0, "N": 21, "likes": 0, "en": "Deleted content"}, {"key": "M", "name": "نقاش حول الجدوى", "n": 14, "P": 0, "U": 11, "N": 3, "likes": 0, "en": "Debating impact"}, {"key": "I", "name": "محاسبة المشاهير", "n": 11, "P": 0, "U": 1, "N": 10, "likes": 0, "en": "Calling out influencers"}, {"key": "A", "name": "الانتقال لمنصات بديلة", "n": 10, "P": 0, "U": 5, "N": 5, "likes": 0, "en": "Moving platforms"}, {"key": "S", "name": "مشككون في الحملة", "n": 5, "P": 2, "U": 3, "N": 0, "likes": 0, "en": "Sceptics"}]}, "coffee": {"total": 279, "likes": 47202, "sent": {"P": 114, "U": 133, "N": 32}, "themes": [{"key": "LK", "name": "شكل المؤثر ولحيته", "n": 90, "P": 0, "U": 90, "N": 0, "likes": 19278, "en": "Creator’s look and beard"}, {"key": "PR", "name": "الحديث عن المنتج", "n": 45, "P": 8, "U": 21, "N": 16, "likes": 827, "en": "Talk about the product"}, {"key": "T", "name": "نكتة «ريحة الشاورما»", "n": 44, "P": 44, "U": 0, "N": 0, "likes": 11196, "en": "“Shawarma smell” joke"}, {"key": "AD", "name": "مدح الإعلان", "n": 43, "P": 42, "U": 0, "N": 1, "likes": 609, "en": "Praise for the ad"}, {"key": "LOG", "name": "منطق المشهد", "n": 22, "P": 0, "U": 22, "N": 0, "likes": 121, "en": "Logic of the scene"}, {"key": "L", "name": "ضحك عام", "n": 9, "P": 9, "U": 0, "N": 0, "likes": 21, "en": "General laughter"}, {"key": "SV", "name": "شكاوى الخدمة", "n": 9, "P": 0, "U": 0, "N": 9, "likes": 8, "en": "Service complaints"}, {"key": "Q", "name": "ترديد جمل الإعلان", "n": 6, "P": 6, "U": 0, "N": 0, "likes": 11061, "en": "Quoting the ad"}, {"key": "BR", "name": "اعتراض على الحلاقة", "n": 6, "P": 0, "U": 0, "N": 6, "likes": 4075, "en": "Objection to shaving"}, {"key": "CV", "name": "«جربته» أو «بشتريه»", "n": 3, "P": 3, "U": 0, "N": 0, "likes": 4, "en": "“Tried it” / “will buy”"}, {"key": "EX", "name": "طلب فرع جديد", "n": 2, "P": 2, "U": 0, "N": 0, "likes": 2, "en": "New branch request"}]}};
   const S={case:'shawarma',by:'theme',val:'pct',metric:'n',view:'chart'};
-  const SENT=[['P','إيجابي','pos'],['U','محايد','neu'],['N','سلبي','neg']];
-  const CASEN={shawarma:'بيت الشاورما في حطين',tiktok:'مقاطعة تيك توك',coffee:'إعلان عنوان القهوة'};
+  const T=()=>document.documentElement.lang==='en';
+  const SENTA=[['P','إيجابي','pos'],['U','محايد','neu'],['N','سلبي','neg']], SENTE=[['P','Positive','pos'],['U','Neutral','neu'],['N','Negative','neg']];
+  let SENT=SENTA;
+  const CASEA={shawarma:'بيت الشاورما في حطين',tiktok:'مقاطعة تيك توك',coffee:'إعلان عنوان القهوة'}, CASEE={shawarma:'Shawarma House in Hittin',tiktok:'TikTok boycott',coffee:'Coffee Address ad'};
   const out=document.getElementById('exOut'), tip=document.getElementById('exTip');
   const fmt=n=>n.toLocaleString('en-US');
   const pct=(v,t)=>t?(100*v/t):0;
@@ -370,43 +450,43 @@
   function rows(){
     const d=D[S.case]; const likes=S.case==='coffee'&&S.metric==='likes';
     if(S.by==='sent'){ if(likes){ return null; }
-      return {total:d.total,unit:S.case==='coffee'?'تعليق':'تغريدة',items:SENT.map(([k,l,c])=>({name:l,v:d.sent[k],parts:[[c,d.sent[k],l]]}))}; }
+      return {total:d.total,unit:T()?(S.case==='coffee'?'comments':'posts'):(S.case==='coffee'?'تعليق':'تغريدة'),items:SENT.map(([k,l,c])=>({name:l,v:d.sent[k],parts:[[c,d.sent[k],l]]}))}; }
     const total=likes?d.likes:d.total;
-    return {total,unit:likes?'لايك':(S.case==='coffee'?'تعليق':'تغريدة'),items:d.themes.map(t=>({name:t.name,v:likes?t.likes:t.n,parts:likes?[['s2',t.likes,'اللايكات']]:SENT.map(([k,l,c])=>[c,t[k],l])})).sort((a,b)=>b.v-a.v)};
+    return {total,unit:T()?(likes?'likes':(S.case==='coffee'?'comments':'posts')):(likes?'لايك':(S.case==='coffee'?'تعليق':'تغريدة')),items:d.themes.map(t=>({name:T()?t.en:t.name,v:likes?t.likes:t.n,parts:likes?[['s2',t.likes,T()?'Likes':'اللايكات']]:SENT.map(([k,l,c])=>[c,t[k],l])})).sort((a,b)=>b.v-a.v)};
   }
   function render(){
     document.getElementById('ctrl-metric').hidden=S.case!=='coffee';
     document.querySelectorAll('#explore .seg').forEach(g=>g.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(S[g.dataset.k]===b.dataset.v))));
-    let R=rows(); const leg=document.getElementById('exLegend');
+    SENT=T()?SENTE:SENTA; let R=rows(); const leg=document.getElementById('exLegend');
     if(!R){ S.metric='n'; return render(); }
     const likes=S.case==='coffee'&&S.metric==='likes';
-    document.getElementById('exTitle').textContent=CASEN[S.case]+' — '+(S.by==='sent'?'توزيع المشاعر':'المواضيع')+(likes?' حسب اللايكات':'')+' ('+fmt(R.total)+' '+R.unit+')';
-    leg.innerHTML=likes?'<span><i class="s2"></i>اللايكات</span>':SENT.map(([k,l,c])=>'<span><i class="'+c+'"></i>'+l+'</span>').join('');
+    const CN=T()?CASEE:CASEA; document.getElementById('exTitle').textContent=CN[S.case]+' — '+(T()?(S.by==='sent'?'sentiment':'topics')+(likes?' by likes':''):(S.by==='sent'?'توزيع المشاعر':'المواضيع')+(likes?' حسب اللايكات':''))+' ('+fmt(R.total)+' '+R.unit+')';
+    leg.innerHTML=likes?'<span><i class="s2"></i>'+(T()?'Likes':'اللايكات')+'</span>':SENT.map(([k,l,c])=>'<span><i class="'+c+'"></i>'+l+'</span>').join('');
     leg.hidden=S.view==='table'||S.by==='sent';
     if(S.view==='table'){
       const cols=likes?'':SENT.map(s=>'<th>'+s[1]+'</th>').join('');
-      out.innerHTML='<div class="tbl-wrap"><table class="ex-tbl"><thead><tr><th>'+(S.by==='sent'?'المشاعر':'الموضوع')+'</th><th>'+(S.val==='pct'?'النسبة':'العدد')+'</th>'+(S.by==='theme'&&!likes?cols:'')+'</tr></thead><tbody>'+
+      out.innerHTML='<div class="tbl-wrap"><table class="ex-tbl"><thead><tr><th>'+(T()?(S.by==='sent'?'Sentiment':'Topic'):(S.by==='sent'?'المشاعر':'الموضوع'))+'</th><th>'+(T()?(S.val==='pct'?'Share':'Count'):(S.val==='pct'?'النسبة':'العدد'))+'</th>'+(S.by==='theme'&&!likes?cols:'')+'</tr></thead><tbody>'+
         R.items.map(it=>'<tr><td>'+it.name+'</td><td>'+show(it.v,R.total)+'</td>'+(S.by==='theme'&&!likes?it.parts.map(p=>'<td>'+show(p[1],R.total)+'</td>').join(''):'')+'</tr>').join('')+'</tbody></table></div>';
       return;
     }
-    const narrow=out.clientWidth<520,W=narrow?420:640,lab=narrow?165:200,base=W-lab,span=base-(narrow?48:70),bh=18,gap=14,H=R.items.length*(bh+gap)+8;
+    const en=T(),narrow=out.clientWidth<520,W=narrow?420:640,lab=narrow?165:200,base=en?lab:W-lab,span=W-lab-(narrow?48:70),bh=18,gap=14,H=R.items.length*(bh+gap)+8;
     const mx=Math.max(...R.items.map(i=>i.v))||1;
     let s='<svg class="chart ex" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+document.getElementById('exTitle').textContent+'">';
     R.items.forEach((it,i)=>{
-      const y=4+i*(bh+gap); s+='<text x="'+(W-4)+'" y="'+(y+13.5)+'" class="lab" text-anchor="start" direction="rtl">'+it.name+'</text>';
+      const y=4+i*(bh+gap); s+=en?'<text x="4" y="'+(y+13.5)+'" class="lab">'+it.name+'</text>':'<text x="'+(W-4)+'" y="'+(y+13.5)+'" class="lab" text-anchor="start" direction="rtl">'+it.name+'</text>';
       let x=base; const parts=it.parts.filter(p=>p[1]>0);
       parts.forEach((p,j)=>{ const w=span*p[1]/mx; const ww=Math.max(w-(j<parts.length-1?2:0),1);
         const r=j===parts.length-1?4:0;
-        s+='<path class="'+p[0]+' hit" data-tip="'+it.name+(S.by==='theme'&&!likes?' · '+p[2]:'')+': '+show(p[1],R.total)+(S.val==='pct'?' ('+fmt(p[1])+')':'')+'" d="M'+x+','+y+'h'+(-(ww-r))+(r?'a4,4 0 0 0 -4,4v'+(bh-8)+'a4,4 0 0 0 4,4':'v'+bh)+'h'+(ww-r)+'z"/>';
-        x-=w; });
-      s+='<text x="'+(x-6)+'" y="'+(y+13.5)+'" class="val" direction="ltr" text-anchor="end">'+show(it.v,R.total)+'</text>';
+        s+='<path class="'+p[0]+' hit" data-tip="'+it.name+(S.by==='theme'&&!likes?' · '+p[2]:'')+': '+show(p[1],R.total)+(S.val==='pct'?' ('+fmt(p[1])+')':'')+'" d="'+(en?('M'+x+','+y+'h'+(ww-r)+(r?'a4,4 0 0 1 4,4v'+(bh-8)+'a4,4 0 0 1 -4,4':'v'+bh)+'h'+(-(ww-r))+'z'):('M'+x+','+y+'h'+(-(ww-r))+(r?'a4,4 0 0 0 -4,4v'+(bh-8)+'a4,4 0 0 0 4,4':'v'+bh)+'h'+(ww-r)+'z'))+'"/>';
+        x+=en?w:-w; });
+      s+='<text x="'+(en?x+6:x-6)+'" y="'+(y+13.5)+'" class="val" direction="ltr" text-anchor="'+(en?'start':'end')+'">'+show(it.v,R.total)+'</text>';
     });
     out.innerHTML=s+'</svg>';
   }
   document.querySelectorAll('#explore .seg').forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('button'); if(!b)return; S[g.dataset.k]=b.dataset.v; if(g.dataset.k==='case'&&b.dataset.v!=='coffee')S.metric='n'; render();}));
   out.addEventListener('pointermove',e=>{const t=e.target.closest('.hit'); if(!t){tip.hidden=true;return;} tip.textContent=t.dataset.tip; tip.hidden=false; const r=out.getBoundingClientRect(); tip.style.left=(e.clientX-r.left)+'px'; tip.style.top=(e.clientY-r.top-12)+'px';});
   out.addEventListener('pointerleave',()=>tip.hidden=true);
-  render();
+  window.__exRender=render; render();
 })();
 </script>
 
@@ -443,6 +523,29 @@
 </footer>
 
 </div>
+<script>
+(function(){
+  const EN={"0": "Joud Albaiti", "1": "Download PDF ↓", "2": "Case study · AI audience sentiment analysis · November 2026", "3": "What did the audience actually say? Three Saudi brand trends, read with AI", "4": "I collected public posts on X about the controversy over Shawarma House opening in the Hittin district and the 27 October TikTok boycott, plus TikTok comments on Coffee Address's ad with Abdullah Al-Hussein, and classified every post by sentiment and topic. The aim is a practical question: what can advertising agencies and marketing teams learn from this kind of analysis?", "5": "Download the report (PDF) ↓", "6": "Takeaways for marketers", "7": "posts and comments classified after cleaning, out of about 1,800 collected", "8": "of the Shawarma House conversation was negative, despite the uproar", "9": "drop in boycott chatter on the day after the TikTok campaign", "10": "of comment likes on the Coffee Address ad went to the “shawarma smell” line", "11": "How the analysis was done", "12": "Public Arabic posts were collected from X search results (latest and top) during each event, along with the visible TikTok comments on the ad. Duplicates and off-topic posts were removed, such as spam or uses of the Arabic word for “clips”, which looks like “boycott”. Each post was then classified by a large language model against a fixed codebook: sentiment toward the brand (positive, neutral, negative) and the topic it discusses. This is the same approach I used in my LREC 2026 paper on sentiment in Saudi financial text. The topic layer matters most, because the share of positive and negative alone does not tell a marketer what to do.", "13": "Case one", "14": "Shawarma House in Hittin: a class debate that became a free ad", "15": "On 1 November, Shawarma House opened its largest branch in Hittin, an upscale district in north Riyadh. People split between those who felt a mass-market restaurant didn’t fit the neighbourhood’s “identity” and those who defended it as a rejection of class snobbery. I analysed 126 posts about the brand over the following weeks.", "16": "<i class=\"pos\"></i>Positive", "17": "<i class=\"neu\"></i>Neutral", "18": "<i class=\"neg\"></i>Negative", "19": "What were people talking about?", "20": "Jokes and satire about the story", "21": "Everyday mentions and cravings", "22": "Requests for a branch in their city", "23": "Praise for the food and experience", "24": "Congratulations on the opening", "25": "Defending the restaurant against snobbery", "26": "Marketing commentary", "27": "Opposing the Hittin branch", "28": "Operational complaints (delivery, parking)", "29": "Shares of all 126 posts; each post has one main topic.", "30": "“An ad that broke records across all of Saudi, and they didn’t pay a single riyal for it”<cite>Marketing commentary</cite>", "31": "“We want a branch in Jeddah, call it ‘Jeddah-style Shawarma House by the sea’”<cite>Expansion request</cite>", "32": "“Went to the Shawarma House in Hittin… honestly, its smell fills the neighbourhood”<cite>Opposing the branch</cite>", "33": "“Why is the Hittin branch fancier than the branches in our neighbourhoods, when we were your first customers?”<cite>Long-time customer feeling left out</cite>", "34": "What do these numbers mean?", "35": "The voice against the branch was loud in the coverage but small in the numbers: no more than 4% of the conversation, against roughly a third of posts that congratulated, praised, defended or asked for a new branch. The largest block was jokes. They look neutral, but they kept the brand name circulating for weeks after the opening, exactly what one user called an ad nobody paid for. Notably, the real risk to the brand was not the class debate but smaller, more practical things: long-time customers feeling their neighbourhood branches get less attention, and complaints about delivery and parking. And 11% of the conversation was explicit demand for branches in Jeddah, Makkah, Najran, Al-Kharj and elsewhere: free market-demand data.", "36": "Case two", "37": "The 27 October TikTok boycott: national anger that lasted one day", "38": "Saudi users called for a full-day boycott of TikTok, protesting what they described as the deletion and down-ranking of patriotic videos, and asked people to delete the app and rate it one star in the app stores. I analysed 249 posts about the campaign.", "39": "<i class=\"neg\"></i>Negative toward TikTok", "40": "<i class=\"neu\"></i>Neutral", "41": "<i class=\"pos\"></i>Positive (under 1%)", "42": "What were people talking about?", "43": "Announcing participation, calling to boycott", "44": "Organising one-star ratings", "45": "Jokes and “withdrawal symptoms”", "46": "Complaints about deleted patriotic content", "47": "Debating the campaign’s impact and length", "48": "Calling out influencers who didn’t join", "49": "Moving to other platforms", "50": "Sceptics of the campaign", "51": "Daily volume of the conversation", "52": "25 Oct", "53": "26", "54": "27", "55": "28", "56": "29", "57": "30", "58": "Riyadh time, from the classified posts in the sample.", "59": "“I posted a clip praying for our martyrs and defending the country, and got a violation warning!!”<cite>Deleted content</cite>", "60": "“Why are you all rating them 4 and 5 stars???”<cite>Organising ratings</cite>", "61": "“Turns out I can live without TikTok”<cite>Withdrawal symptoms</cite>", "62": "“What’s the point if you delete it today and reinstall it tomorrow?”<cite>Debating impact</cite>", "63": "What do these numbers mean?", "64": "The anger here wasn’t about product quality or price; it was a feeling that the platform doesn’t respect national identity. That kind of anger mobilises people very quickly and leaves almost no room for anyone defending the brand (under 1%). But it is also short-lived: the conversation peaked on the day of the campaign and fell by about 80% the next day. Most important for marketers, 16% of posts were directly organising app-store ratings. The audience didn’t just talk; it used a lever that affects the app’s ranking and its image with new users. Part of the pressure was also aimed at influencers who kept live-streaming, which means brands tied to them that day were exposed too.", "65": "Case three", "66": "Coffee Address × Abdullah Al-Hussein: riding someone else’s trend at the right moment", "67": "On 13 November, less than two weeks after the Hittin debate, creator Abdullah Al-Hussein posted a paid TikTok ad for Coffee Address about a new drink. He played several characters and slipped in the line “I’ve just come from Hittin… don’t you smell shawarma?”. The ad reached 88.5 million views, 138K likes and 3,373 comments. I analysed 279 of the top comments after removing duplicates, emoji-only and unrelated comments.", "68": "<i class=\"pos\"></i>Positive", "69": "<i class=\"neu\"></i>Neutral", "70": "<i class=\"neg\"></i>Negative", "71": "What did commenters talk about, and where did the likes go?", "72": "Each topic has two bars: its share of comments, and the share of likes its comments received. The gap between them shows what the audience actually engaged with.", "73": "<i class=\"s1\"></i>Share of comments", "74": "<i class=\"s2\"></i>Share of likes", "75": "“Shawarma smell, hahaha, honestly a masterclass in marketing”<cite>The Hittin joke</cite>", "76": "“Brilliant ad. I never watch ads to the end, but this one is legendary”<cite>Praise for the ad</cite>", "77": "“The single most important piece of information… how much is this drink?”<cite>Product question</cite>", "78": "“The drink is nice, true, but its calories are kind of high”<cite>Product reservation</cite>", "79": "What do these numbers mean?", "80": "The ad succeeded at being watched and liked: positive comments outnumbered negative ones three and a half to one, and “the first ad I watched to the end” came up again and again. Its smartest move was timing. The Hittin joke landed while the story was still fresh, became the moment people remembered and quoted most, and its comments drew about a quarter of the likes. But the numbers also show that attention went to the creator more than the drink. Talk about his look and shaved beard took a third of the comments and 41% of the likes, while product comments drew under 2% of the likes, and within them negative views (price, calories, peanut taste) outnumbered positive ones. Only three comments said outright that the writer had tried or would buy the drink because of the ad. That doesn’t mean the ad didn’t sell, since comments don’t measure sales, but it does mean the product message itself was not what stayed with the audience.", "81": "To check that this picture isn’t limited to the top comments, I scanned every available Arabic comment (1,927 of the 2,172 collected) for keywords: 11% mentioned Hittin or shawarma and about 16% commented on the creator’s look, beard or who he resembles, against only 5% mentioning price or calories and 2% talking about trying or buying the drink. Same direction.", "82": "The three cases side by side", "83": "Three trends, three different pictures. The Hittin debate looked angry in the coverage but was mostly positive or joking; the TikTok boycott was almost pure anger; and the Coffee Address ad earned far more praise than criticism, with a large neutral block focused on the creator.", "84": "<i class=\"neg\"></i>Negative", "85": "<i class=\"neu\"></i>Neutral", "86": "<i class=\"pos\"></i>Positive", "87": "Explore the data yourself", "88": "Pick a case and a view, and the chart updates instantly. Hover over or tap any bar to see its value.", "89": "Case", "90": "Shawarma House", "91": "TikTok boycott", "92": "Coffee Address", "93": "Group by", "94": "Topic", "95": "Sentiment", "96": "Value", "97": "Percentage", "98": "Count", "99": "Measure", "100": "Comments", "101": "Likes", "102": "View", "103": "Chart", "104": "Table", "105": "How can agencies and marketing teams use this?", "106": "<b>Measure topics, not just sentiment.</b> Had Shawarma House looked only at the negative share, it would have assumed the crisis was the class debate. The topic view shows that what really needs fixing is long-time customers feeling left out, and delivery quality.", "107": "<b>Don’t confuse the loudest voice with the real volume.</b> The opposing view dominated the coverage but was only 4% of the conversation. Whether to respond or stay quiet should rest on the numbers, not on the loudest post.", "108": "<b>A controversy is free market research.</b> Requests for new branches (11% of the conversation) give a free demand map by city to compare against expansion plans.", "109": "<b>National identity is the fastest crisis trigger in the Saudi market.</b> Anything read as disrespect to the country turns into an organised campaign within hours, so the response has to be fast and clear, not a late, generic statement.", "110": "<b>Watch the app stores during a crisis.</b> When anger turns into organised ratings, the damage becomes measurable and lasts long after the conversation on social platforms dies down.", "111": "<b>Mind the timing of your campaigns and creator partnerships.</b> Running an ad on a platform under boycott, or with a creator accused of breaking it, can drop your brand into a crisis that has nothing to do with it.", "112": "<b>Know how long a crisis lives.</b> Measuring how fast the conversation rises and falls helps decide when to respond, and when silence is better than prolonging the story.", "113": "<b>Someone else’s trend can be your opportunity.</b> Coffee Address used the Hittin story within two weeks, with a light touch that took no side, and it became the most-quoted line in the ad. Timing and lightness mattered more than budget.", "114": "<b>Measure product talk separately from ad buzz.</b> Views and likes may belong to the creator, not the product. Track the share of comments about the product, and answer price and calorie questions, because that is the purchase-decision moment.", "115": "<b>The creator’s persona is part of the message.</b> A single creative choice, shaving his beard, took the biggest share of attention and drew a religious objection with thousands of likes. That is a risk worth discussing with the creator before filming.", "116": "Limits of this analysis", "117": "The Shawarma House and TikTok samples come from X search results only. They are not a random sample of everything written and exclude Snapchat and Instagram, where much of the discussion took place. The detailed classification of the Coffee Address ad is based on the top comments TikTok shows (396), with a keyword scan of the rest of the available comments. The Shawarma House sample leans toward the weeks after the peak, so it measures the lasting effect more than the initial explosion. Classification is automated, so it can miss sarcasm and innuendo, both common in Saudi posts. Treat these numbers as indicators of where the conversation went, not a precise measure of public opinion.", "118": "Joud Albaiti — AI engineer specialising in Arabic NLP · <a href=\"https://www.linkedin.com/in/joudalbaiti\">LinkedIn</a> · <a href=\"https://github.com/joudalbaiti\">GitHub</a>", "119": "<a href=\"../\">← Back to the homepage</a>"};
+  const SEL='.wrap > header .mark, .wrap > header a.btn, .eyebrow, h1, h2, h3, section > p, .actions .btn, .stat span, .legend span, .case-tag, .bars .label, blockquote, .tl-labels span, .ctrl-l, .seg button, .takeaways li, footer p';
+  const els=[...document.querySelectorAll(SEL)].filter(e=>!e.closest('.en')&&!e.closest('#exLegend')&&e.id!=='exTitle');
+  const AR=els.map(e=>e.innerHTML);
+  const root=document.documentElement, btn=document.getElementById('langBtn');
+  const TITLE={ar:document.title,en:'What did the audience say? Three Saudi brand trends — Joud Albaiti'};
+  function set(l){
+    root.lang=l; root.dir=(l==='en')?'ltr':'rtl';
+    els.forEach((e,i)=>{ const k=String(i); e.innerHTML=(l==='en'&&EN[k]!==undefined)?EN[k]:AR[i]; });
+    document.querySelectorAll('a[href$=".pdf"]').forEach(a=>{ a.setAttribute('href', l==='en'?'brand-sentiment-en.pdf':'brand-sentiment.pdf'); });
+    btn.textContent=l==='en'?'العربية':'English'; btn.lang=l==='en'?'ar':'en';
+    document.title=TITLE[l];
+    if(window.__exRender) window.__exRender();
+    try{ localStorage.setItem('bs-lang',l); }catch(e){}
+  }
+  btn.addEventListener('click',()=>set(root.lang==='en'?'ar':'en'));
+  let start='ar'; const q=new URLSearchParams(location.search).get('lang');
+  if(q==='en'||q==='ar') start=q; else { try{ start=localStorage.getItem('bs-lang')||'ar'; }catch(e){} }
+  if(start==='en') set('en');
+})();
+</script>
 <script data-goatcounter="https://joudalbaiti.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
