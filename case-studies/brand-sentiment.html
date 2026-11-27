@@ -120,6 +120,23 @@
   .md-tbl{font-size:.85rem;margin-bottom:.6rem}
   .md-tbl td{vertical-align:top}
   @media print{.method-d{border:0;background:none}.method-d summary{display:none}.md{padding:0}}
+  .cases-head{padding-block:2.5rem .5rem;border-block-start:1px solid var(--hairline)}
+  .cases-h2{font-size:var(--step-2);font-weight:500;line-height:1.3}
+  .cases-sub{color:var(--muted);font-size:var(--step--1)}
+  .cases-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(16.5rem,1fr));gap:1rem;padding-block:1rem 2rem;align-items:stretch}
+  section.case-card{background:var(--card);border:1px solid var(--hairline);border-radius:14px;padding:1.25rem 1.25rem 1rem;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+  section.case-card.collapsed{cursor:pointer;display:flex;flex-direction:column}
+  section.case-card.collapsed .case-toggle{margin-top:auto;align-self:flex-start}
+  section.case-card.collapsed:hover,section.case-card.collapsed:focus-within{transform:translateY(-6px) scale(1.025);box-shadow:0 14px 34px rgba(0,0,0,.35);border-color:var(--accent)}
+  section.case-card.collapsed > :nth-child(n+7){display:none}
+  section.case-card.collapsed h2{font-size:var(--step-1);line-height:1.4}
+  section.case-card.collapsed > p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:.95rem;color:var(--muted)}
+  section.case-card.open{grid-column:1/-1;padding:1.75rem}
+  .case-toggle{font:inherit;font-size:var(--step--1);font-weight:500;color:var(--accent);background:transparent;border:1px solid var(--hairline);border-radius:999px;padding:.4rem 1rem;cursor:pointer;margin-block:.25rem .5rem}
+  .case-toggle:hover{border-color:var(--accent)}
+  .case-card .t-close{display:none} .case-card.open .t-close{display:inline} .case-card.open .t-open{display:none}
+  @media (prefers-reduced-motion:reduce){section.case-card{transition:none}section.case-card.collapsed:hover{transform:none}}
+  @media print{.cases-head,.case-toggle{display:none!important}.cases-grid{display:block;padding:0}section.case-card{background:none;border:0;border-radius:0;padding:1rem 0;box-shadow:none;transform:none}section.case-card > *{display:revert!important}section.case-card.collapsed > p{-webkit-line-clamp:unset;color:inherit}}
   .hdr-r{display:flex;gap:.5rem;align-items:center}
   @media (max-width:36rem){ .chart .lab{font-size:19px} .chart .sub,.chart .tick,.chart .val{font-size:16px} .chart .in{font-size:15px}
     .bars li{grid-template-columns:1fr 3rem} .bars .label{grid-column:1/-1} }
@@ -244,7 +261,12 @@
   </details>
 </section>
 
-<section class="block" id="case-shawarma">
+<div class="cases-head" id="cases">
+  <div class="cases-h2"><span data-l="ar">الحالات الثلاث</span><span data-l="en">The three cases</span></div>
+  <div class="cases-sub"><span data-l="ar">اختر بطاقة لتفتح تفاصيلها.</span><span data-l="en">Pick a card to open its details.</span></div>
+</div>
+<div class="cases-grid">
+<section class="block case-card" id="case-shawarma">
   <span class="case-tag">الحالة الأولى</span>
   <h2>بيت الشاورما في حطين: جدل طبقي تحوّل إلى إعلان مجاني</h2>
   <p>في الأول من نوفمبر افتتح بيت الشاورما أكبر فروعه في حي حطين شمال الرياض، فانقسم النقاش بين من رأى أن مطعماً شعبياً لا يناسب «هوية» حي راقٍ، ومن دافع عن المطعم رفضاً للنظرة الطبقية. حلّلت 126 تغريدة تتحدث عن البراند خلال الأسابيع التالية.</p>
@@ -253,6 +275,7 @@
     <div class="pos" style="width:49.2%">49%</div><div class="neu" style="width:42.1%">42%</div><div class="neg" style="width:8.7%">9%</div>
   </div>
   <div class="legend"><span><i class="pos"></i>إيجابي</span><span><i class="neu"></i>محايد</span><span><i class="neg"></i>سلبي</span></div>
+  <button class="case-toggle" type="button" aria-expanded="false"><span class="t-open"><span data-l="ar">عرض التفاصيل</span><span data-l="en">Show details</span></span><span class="t-close"><span data-l="ar">إخفاء التفاصيل</span><span data-l="en">Hide details</span></span></button>
 
   <h3>عن ماذا كان الناس يتحدثون؟</h3>
   <ul class="bars">
@@ -279,7 +302,7 @@
   <p>الصوت الرافض للفرع كان عالياً في الإعلام لكنه صغير في الأرقام، إذ لم يتجاوز 4% من الحديث، مقابل نحو ثلث التغريدات التي هنّأت أو مدحت أو دافعت أو طالبت بفرع جديد. أكبر كتلة كانت النكت، وهي محايدة في ظاهرها لكنها أبقت اسم البراند متداولاً لأسابيع بعد الافتتاح، وهذا بالضبط ما وصفه أحد المغردين بأنه إعلان لم يُدفع فيه ريال. اللافت أن الخطر الحقيقي على البراند لم يكن الجدل الطبقي، بل أشياء أصغر وأكثر واقعية: عملاء قدامى يشعرون أن فروع أحيائهم أقل اهتماماً، وشكاوى من التوصيل والمواقف. كما أن 11% من الحديث كان مطالبات صريحة بفروع في جدة ومكة ونجران والخرج وغيرها، وهذه بيانات مجانية عن الطلب في السوق.</p>
 </section>
 
-<section class="block" id="case-tiktok">
+<section class="block case-card" id="case-tiktok">
   <span class="case-tag">الحالة الثانية</span>
   <h2>مقاطعة تيك توك في 27 أكتوبر: غضب وطني بعمر يوم واحد</h2>
   <p>دعا مستخدمون سعوديون إلى مقاطعة تيك توك ليوم كامل، احتجاجاً على ما وصفوه بحذف المقاطع الوطنية وتقييد انتشارها، مع حذف التطبيق وتقييمه بنجمة واحدة في متاجر التطبيقات. حلّلت 249 تغريدة عن الحملة.</p>
@@ -288,6 +311,7 @@
     <div class="neg" style="width:75.1%">75%</div><div class="neu" style="width:24.1%">24%</div><div class="pos" style="width:0.8%;min-width:.4rem"></div>
   </div>
   <div class="legend"><span><i class="neg"></i>سلبي تجاه تيك توك</span><span><i class="neu"></i>محايد</span><span><i class="pos"></i>إيجابي (أقل من 1%)</span></div>
+  <button class="case-toggle" type="button" aria-expanded="false"><span class="t-open"><span data-l="ar">عرض التفاصيل</span><span data-l="en">Show details</span></span><span class="t-close"><span data-l="ar">إخفاء التفاصيل</span><span data-l="en">Hide details</span></span></button>
 
   <h3>عن ماذا كان الناس يتحدثون؟</h3>
   <ul class="bars">
@@ -324,7 +348,7 @@
   <p>الغضب هنا لم يكن عن جودة المنتج أو سعره، بل عن شعور بأن المنصة لا تحترم الهوية الوطنية، وهذا النوع من الغضب يجمع الناس بسرعة كبيرة ويكاد لا يترك مكاناً للرأي المؤيد للبراند (أقل من 1%). لكنه أيضاً قصير العمر: بلغ الحديث ذروته يوم الحملة ثم هبط بنحو 80% في اليوم التالي. الأهم للمسوّقين أن 16% من التغريدات كانت تنظيماً مباشراً للتقييمات في متاجر التطبيقات، أي أن الجمهور لم يكتفِ بالكلام بل استخدم أداة تؤثر في ترتيب التطبيق وصورته أمام مستخدمين جدد. كذلك توجّه جزء من الضغط إلى المشاهير الذين استمروا في البث، مما يعني أن البراندات المرتبطة بهم في ذلك اليوم كانت معرّضة للضرر أيضاً.</p>
 </section>
 
-<section class="block" id="case-coffee">
+<section class="block case-card" id="case-coffee">
   <span class="case-tag">الحالة الثالثة</span>
   <h2>إعلان عنوان القهوة مع عبدالله الحسين: ركوب الترند في الوقت المناسب</h2>
   <p>في 13 نوفمبر، بعد أقل من أسبوعين من جدل حطين، نشر صانع المحتوى عبدالله الحسين على تيك توك إعلاناً مدفوعاً لعنوان القهوة عن مشروب جديد، أدّى فيه عدة شخصيات، ومرّر فيه جملة «توني طالع من حطين… ما تشم ريحة شاورما». وصل الإعلان إلى 88.5 مليون مشاهدة و138 ألف إعجاب و3,373 تعليقاً. حلّلت 279 تعليقاً من التعليقات الأبرز بعد حذف المكرر والرموز التعبيرية والتعليقات غير المرتبطة.</p>
@@ -333,6 +357,7 @@
     <div class="pos" style="width:40.9%">41%</div><div class="neu" style="width:47.7%">48%</div><div class="neg" style="width:11.5%">12%</div>
   </div>
   <div class="legend"><span><i class="pos"></i>إيجابي</span><span><i class="neu"></i>محايد</span><span><i class="neg"></i>سلبي</span></div>
+  <button class="case-toggle" type="button" aria-expanded="false"><span class="t-open"><span data-l="ar">عرض التفاصيل</span><span data-l="en">Show details</span></span><span class="t-close"><span data-l="ar">إخفاء التفاصيل</span><span data-l="en">Hide details</span></span></button>
 
   <h3>عن ماذا تحدّث المعلّقون؟ وأين ذهبت اللايكات؟</h3>
   <p class="note">لكل موضوع عمودان: نسبته من التعليقات، ونسبة اللايكات التي حصلت عليها تعليقاته. الفرق بينهما يكشف ما تفاعل معه الجمهور فعلاً.</p>
@@ -449,6 +474,8 @@
   <p>الإعلان نجح في أن يُشاهَد ويُحَب، فالتعليقات الإيجابية أكثر بثلاث مرات ونصف من السلبية، وتكرر كثيراً أن هذا «أول إعلان أكمله للنهاية». وأذكى ما فيه كان التوقيت: نكتة حطين جاءت والقصة ما زالت حاضرة، فصارت أكثر لحظة يتذكرها الناس ويقتبسونها، وحصلت تعليقاتها على ربع اللايكات تقريباً. لكن الأرقام تكشف أيضاً أن الانتباه ذهب للمؤثر أكثر من المشروب: الحديث عن شكله ولحيته استحوذ على ثلث التعليقات و41% من اللايكات، بينما لم تتجاوز تعليقات المنتج 2% من اللايكات، والسلبي فيها (السعر والسعرات وطعم الفول السوداني) أكثر من الإيجابي. وظهرت ثلاثة تعليقات فقط تقول صراحة إن أصحابها جرّبوا المشروب أو سيشترونه بسبب الإعلان. هذا لا يعني أن الإعلان لم يبع، فالتعليقات لا تقيس المبيعات، لكنه يعني أن رسالة المنتج نفسها لم تكن ما بقي في ذهن الجمهور.</p>
   <p class="note">للتأكد من أن الصورة لا تخص التعليقات الأبرز وحدها، فحصت كل التعليقات العربية المتاحة (1,927 تعليقاً من أصل 2,172 أمكن جمعها) بالكلمات المفتاحية: 11% منها ذكرت حطين أو الشاورما، ونحو 16% علّقت على شكل المؤثر أو لحيته أو من يشبه، مقابل 5% فقط ذكرت السعر أو السعرات، و2% تحدثت عن تجربة المشروب أو شرائه. الاتجاه نفسه.</p>
 </section>
+
+</div>
 
 <section class="block" id="compare">
   <h2>الحالات الثلاث جنباً إلى جنب</h2>
@@ -624,6 +651,26 @@
   let start='ar'; const q=new URLSearchParams(location.search).get('lang');
   if(q==='en'||q==='ar') start=q; else { try{ start=localStorage.getItem('bs-lang')||'ar'; }catch(e){} }
   if(start==='en') set('en');
+})();
+</script>
+<script>
+(function(){
+  const cards=[...document.querySelectorAll('.case-card')];
+  function setOpen(card,open){
+    card.classList.toggle('open',open); card.classList.toggle('collapsed',!open);
+    card.querySelector('.case-toggle').setAttribute('aria-expanded',String(open));
+  }
+  cards.forEach(c=>{
+    setOpen(c,false);
+    c.addEventListener('click',e=>{
+      const btn=e.target.closest('.case-toggle');
+      if(c.classList.contains('open')&&!btn) return;
+      const willOpen=!c.classList.contains('open');
+      cards.forEach(o=>setOpen(o,false));
+      if(willOpen){ setOpen(c,true); c.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'}); }
+    });
+  });
+  window.addEventListener('beforeprint',()=>cards.forEach(c=>setOpen(c,true)));
 })();
 </script>
 <script>window.addEventListener("beforeprint",()=>document.querySelectorAll("details").forEach(d=>d.open=true));</script>
