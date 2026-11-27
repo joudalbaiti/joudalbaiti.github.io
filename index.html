@@ -430,21 +430,21 @@ html[data-lang="ar"] body{font-size:17.5px;line-height:1.85}
         <summary>
           <div>
             <h3><span data-l="en">BAZ Racing face match</span><span data-l="ar">تطبيق مطابقة الوجوه لفريق BAZ Racing</span></h3>
-            <p class="what"><span data-l="en">An iPad web app that photographs visitors at the team's stand and shows them their closest lookalike, used live at the 2026 STEM Racing World Finals in Singapore.</span><span data-l="ar">تطبيق ويب على الآيباد يصوّر زوار جناح الفريق ويعرض لهم أقرب شبيه لهم، استُخدم مباشرة في نهائيات العالم لمسابقة STEM Racing 2026 في سنغافورة.</span></p>
+            <p class="what"><span data-l="en">A computer vision app on an iPad that tells visitors which famous project manager they look like, used live at the 2026 STEM Racing World Finals in Singapore.</span><span data-l="ar">تطبيق رؤية حاسوبية على الآيباد يخبر زوار الجناح أي قائد مشاريع مشهور يشبهون، استُخدم مباشرة في نهائيات العالم لمسابقة STEM Racing 2026 في سنغافورة.</span></p>
           </div>
-          <div class="metric"><b>91</b><span data-l="en">teams at the World Finals</span><span data-l="ar">فريقًا في نهائيات العالم</span></div>
+          <div class="metric"><b>512-d</b><span data-l="en">face embeddings</span><span data-l="ar">تمثيل رقمي للوجه</span></div>
           <span class="plus" aria-hidden="true"></span>
         </summary>
         <div class="detail">
           <ol class="flow">
-            <li><span data-l="en">The visitor takes a photo on the iPad, straight from the browser.</span><span data-l="ar">الزائر يلتقط صورته على الآيباد مباشرة من المتصفح.</span></li>
-            <li><span data-l="en">The face is detected and turned into an embedding.</span><span data-l="ar">يُكتشف الوجه ويُحوَّل إلى تمثيل رقمي (embedding).</span></li>
-            <li><span data-l="en">The embedding is compared against the reference gallery by similarity.</span><span data-l="ar">يُقارَن التمثيل بمعرض الصور المرجعية حسب درجة التشابه.</span></li>
-            <li><span data-l="en">The closest match is shown on screen in the team's branding.</span><span data-l="ar">يظهر أقرب تطابق على الشاشة بهوية الفريق.</span></li>
+            <li><span data-l="en">The iPad camera watches in the browser and a light detector spots when a face is in frame.</span><span data-l="ar">كاميرا الآيباد تعمل من المتصفح، ونموذج كشف خفيف يلتقط لحظة دخول الوجه للإطار.</span></li>
+            <li><span data-l="en">InsightFace (buffalo_l) finds the largest face and turns it into a 512-dimension identity vector.</span><span data-l="ar">نموذج InsightFace (buffalo_l) يحدد أكبر وجه ويحوّله إلى متجه هوية من 512 بُعدًا.</span></li>
+            <li><span data-l="en">Cosine similarity ranks it against a gallery of 17 project-management figures, from Henry Gantt to Toto Wolff and past World Finals PM winners.</span><span data-l="ar">تشابه جيب التمام يرتّبه مقابل معرض من 17 شخصية في إدارة المشاريع، من هنري غانت إلى توتو وولف وفائزين سابقين بجائزة إدارة المشاريع.</span></li>
+            <li><span data-l="en">The match appears with a score and a one-line story of how that person manages projects, in the team's branding.</span><span data-l="ar">تظهر النتيجة مع نسبة التشابه وسطر عن أسلوب الشخصية في إدارة المشاريع، بهوية الفريق.</span></li>
           </ol>
           <div class="side">
             <h4><span data-l="en">Built with</span><span data-l="ar">التقنيات</span></h4>
-            <ul class="stack"><li>Python</li><li>Face embeddings</li><li>Modal</li><li>Web app</li></ul>
+            <ul class="stack"><li>Computer vision</li><li>InsightFace</li><li>ONNX Runtime</li><li>OpenCV</li><li>FastAPI</li><li>Modal</li></ul>
             <p><span data-l="en">Built for BAZ Racing (Thamer International Schools), 2nd in Saudi Arabia, who went on to win the Knockout Competition and Best Application of Project Management at the World Finals, Resorts World Sentosa, October 2026. Deployed serverless on Modal so it only runs during the event.</span><span data-l="ar">صُمّم لفريق BAZ Racing من مدارس ثامر العالمية، صاحب المركز الثاني على المملكة، والذي فاز في نهائيات العالم بسباقات الإقصاء وجائزة أفضل تطبيق لإدارة المشاريع، في منتجع Resorts World Sentosa، أكتوبر 2026. يعمل على Modal بدون خادم دائم، فيشتغل وقت الفعالية فقط.</span></p>
           </div>
         </div>
