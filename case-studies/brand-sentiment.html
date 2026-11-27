@@ -88,6 +88,25 @@
   .chart .s1{fill:var(--s1)} .chart .s2{fill:var(--s2)}
   .chart rect:hover,.chart path:hover{opacity:.8}
   .legend i.s1{background:var(--s1)} .legend i.s2{background:var(--s2)}
+  #explore{position:relative}
+  .ctrls{display:flex;flex-wrap:wrap;gap:.75rem 1.5rem;margin:1rem 0 1.25rem}
+  .ctrl{display:flex;flex-direction:column;gap:.35rem}
+  .ctrl[hidden]{display:none}
+  .ctrl-l{font-size:var(--step--1);color:var(--muted)}
+  .seg{display:inline-flex;background:var(--card);border:1px solid var(--hairline);border-radius:999px;padding:3px;gap:2px;flex-wrap:wrap}
+  .seg button{font:inherit;font-size:.85rem;color:var(--muted);background:transparent;border:0;border-radius:999px;padding:.3rem .85rem;cursor:pointer}
+  .seg button[aria-pressed="true"]{background:var(--accent);color:var(--on-ink);font-weight:500}
+  .seg button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+  .ex-title{font-weight:500;margin:.25rem 0 .5rem}
+  #exOut{position:relative}
+  .ex-tip{position:absolute;transform:translate(50%,-100%);background:var(--ink);color:var(--paper);font-size:.8rem;padding:.3rem .6rem;border-radius:6px;pointer-events:none;white-space:nowrap;z-index:2}
+  #explore .ex-tip{top:0;left:0}
+  .tbl-wrap{overflow-x:auto;max-width:44rem}
+  .ex-tbl{border-collapse:collapse;width:100%;font-size:.92rem}
+  .ex-tbl th,.ex-tbl td{text-align:start;padding:.45rem .6rem;border-bottom:1px solid var(--hairline);font-variant-numeric:tabular-nums}
+  .ex-tbl th{color:var(--muted);font-weight:500;font-size:.85rem}
+  .chart.ex .hit{cursor:pointer}
+  @media (max-width:36rem){.chart.ex .lab{font-size:13px}.chart.ex .val{font-size:11px}}
   @media (max-width:36rem){ .chart .lab{font-size:19px} .chart .sub,.chart .tick,.chart .val{font-size:16px} .chart .in{font-size:15px}
     .bars li{grid-template-columns:1fr 3rem} .bars .label{grid-column:1/-1} }
   @media print{
@@ -317,6 +336,79 @@
 <text x="384.8" y="157.5" class="in" direction="ltr" text-anchor="middle">41%</text>
 </svg>
 </section>
+
+<section class="block no-print" id="explore">
+  <h2>استكشف البيانات بنفسك</h2>
+  <p>اختر الحالة وطريقة العرض، وستتغير الرسمة مباشرة. مرّر الماوس أو المس أي عمود لترى قيمته.</p>
+  <div class="ctrls">
+    <div class="ctrl"><span class="ctrl-l">الحالة</span><div class="seg" data-k="case" role="radiogroup" aria-label="الحالة">
+      <button data-v="shawarma" aria-pressed="true">بيت الشاورما</button><button data-v="tiktok" aria-pressed="false">مقاطعة تيك توك</button><button data-v="coffee" aria-pressed="false">عنوان القهوة</button></div></div>
+    <div class="ctrl"><span class="ctrl-l">عرض حسب</span><div class="seg" data-k="by" role="radiogroup" aria-label="عرض حسب">
+      <button data-v="theme" aria-pressed="true">الموضوع</button><button data-v="sent" aria-pressed="false">المشاعر</button></div></div>
+    <div class="ctrl"><span class="ctrl-l">القيمة</span><div class="seg" data-k="val" role="radiogroup" aria-label="القيمة">
+      <button data-v="pct" aria-pressed="true">نسبة مئوية</button><button data-v="count" aria-pressed="false">العدد</button></div></div>
+    <div class="ctrl" id="ctrl-metric" hidden><span class="ctrl-l">المقياس</span><div class="seg" data-k="metric" role="radiogroup" aria-label="المقياس">
+      <button data-v="n" aria-pressed="true">التعليقات</button><button data-v="likes" aria-pressed="false">اللايكات</button></div></div>
+    <div class="ctrl"><span class="ctrl-l">الشكل</span><div class="seg" data-k="view" role="radiogroup" aria-label="الشكل">
+      <button data-v="chart" aria-pressed="true">رسم بياني</button><button data-v="table" aria-pressed="false">جدول</button></div></div>
+  </div>
+  <p class="ex-title" id="exTitle"></p>
+  <div class="legend" id="exLegend"></div>
+  <div id="exOut" aria-live="polite"></div>
+  <div class="ex-tip" id="exTip" hidden></div>
+</section>
+<script>
+(function(){
+  const D={"shawarma": {"total": 126, "likes": 0, "sent": {"P": 62, "U": 53, "N": 11}, "themes": [{"key": "G", "name": "ذكر عادي واشتهاء", "n": 33, "P": 17, "U": 16, "N": 0, "likes": 0}, {"key": "H", "name": "نكت وسخرية على القصة", "n": 33, "P": 0, "U": 33, "N": 0, "likes": 0}, {"key": "E", "name": "مطالبة بفرع في مدينتهم", "n": 14, "P": 13, "U": 1, "N": 0, "likes": 0}, {"key": "Q", "name": "مدح الأكل والتجربة", "n": 12, "P": 10, "U": 1, "N": 1, "likes": 0}, {"key": "C", "name": "تهنئة بالافتتاح", "n": 9, "P": 9, "U": 0, "N": 0, "likes": 0}, {"key": "D", "name": "دفاع ضد الطبقية", "n": 8, "P": 8, "U": 0, "N": 0, "likes": 0}, {"key": "M", "name": "قراءة تسويقية", "n": 7, "P": 5, "U": 2, "N": 0, "likes": 0}, {"key": "A", "name": "رفض الفرع في حطين", "n": 5, "P": 0, "U": 0, "N": 5, "likes": 0}, {"key": "O", "name": "شكاوى تشغيلية", "n": 4, "P": 0, "U": 0, "N": 4, "likes": 0}, {"key": "F", "name": "عملاء يشعرون بالتفرقة", "n": 1, "P": 0, "U": 0, "N": 1, "likes": 0}]}, "tiktok": {"total": 249, "likes": 0, "sent": {"P": 2, "U": 60, "N": 187}, "themes": [{"key": "B", "name": "الدعوة للمقاطعة والمشاركة", "n": 113, "P": 0, "U": 5, "N": 108, "likes": 0}, {"key": "R", "name": "تنظيم التقييم بنجمة", "n": 40, "P": 0, "U": 1, "N": 39, "likes": 0}, {"key": "H", "name": "نكت وأعراض انسحاب", "n": 35, "P": 0, "U": 34, "N": 1, "likes": 0}, {"key": "C", "name": "شكاوى حذف المحتوى", "n": 21, "P": 0, "U": 0, "N": 21, "likes": 0}, {"key": "M", "name": "نقاش حول الجدوى", "n": 14, "P": 0, "U": 11, "N": 3, "likes": 0}, {"key": "I", "name": "محاسبة المشاهير", "n": 11, "P": 0, "U": 1, "N": 10, "likes": 0}, {"key": "A", "name": "الانتقال لمنصات بديلة", "n": 10, "P": 0, "U": 5, "N": 5, "likes": 0}, {"key": "S", "name": "مشككون في الحملة", "n": 5, "P": 2, "U": 3, "N": 0, "likes": 0}]}, "coffee": {"total": 279, "likes": 47202, "sent": {"P": 114, "U": 133, "N": 32}, "themes": [{"key": "LK", "name": "شكل المؤثر ولحيته", "n": 90, "P": 0, "U": 90, "N": 0, "likes": 19278}, {"key": "PR", "name": "الحديث عن المنتج", "n": 45, "P": 8, "U": 21, "N": 16, "likes": 827}, {"key": "T", "name": "نكتة «ريحة الشاورما»", "n": 44, "P": 44, "U": 0, "N": 0, "likes": 11196}, {"key": "AD", "name": "مدح الإعلان", "n": 43, "P": 42, "U": 0, "N": 1, "likes": 609}, {"key": "LOG", "name": "منطق المشهد", "n": 22, "P": 0, "U": 22, "N": 0, "likes": 121}, {"key": "L", "name": "ضحك عام", "n": 9, "P": 9, "U": 0, "N": 0, "likes": 21}, {"key": "SV", "name": "شكاوى الخدمة", "n": 9, "P": 0, "U": 0, "N": 9, "likes": 8}, {"key": "Q", "name": "ترديد جمل الإعلان", "n": 6, "P": 6, "U": 0, "N": 0, "likes": 11061}, {"key": "BR", "name": "اعتراض على الحلاقة", "n": 6, "P": 0, "U": 0, "N": 6, "likes": 4075}, {"key": "CV", "name": "«جربته» أو «بشتريه»", "n": 3, "P": 3, "U": 0, "N": 0, "likes": 4}, {"key": "EX", "name": "طلب فرع جديد", "n": 2, "P": 2, "U": 0, "N": 0, "likes": 2}]}};
+  const S={case:'shawarma',by:'theme',val:'pct',metric:'n',view:'chart'};
+  const SENT=[['P','إيجابي','pos'],['U','محايد','neu'],['N','سلبي','neg']];
+  const CASEN={shawarma:'بيت الشاورما في حطين',tiktok:'مقاطعة تيك توك',coffee:'إعلان عنوان القهوة'};
+  const out=document.getElementById('exOut'), tip=document.getElementById('exTip');
+  const fmt=n=>n.toLocaleString('en-US');
+  const pct=(v,t)=>t?(100*v/t):0;
+  const show=(v,t)=>{if(S.val!=='pct')return fmt(v);const q=pct(v,t);return (q>0&&q<1?q.toFixed(q<0.1?2:1):Math.round(q))+'%';};
+  function rows(){
+    const d=D[S.case]; const likes=S.case==='coffee'&&S.metric==='likes';
+    if(S.by==='sent'){ if(likes){ return null; }
+      return {total:d.total,unit:S.case==='coffee'?'تعليق':'تغريدة',items:SENT.map(([k,l,c])=>({name:l,v:d.sent[k],parts:[[c,d.sent[k],l]]}))}; }
+    const total=likes?d.likes:d.total;
+    return {total,unit:likes?'لايك':(S.case==='coffee'?'تعليق':'تغريدة'),items:d.themes.map(t=>({name:t.name,v:likes?t.likes:t.n,parts:likes?[['s2',t.likes,'اللايكات']]:SENT.map(([k,l,c])=>[c,t[k],l])})).sort((a,b)=>b.v-a.v)};
+  }
+  function render(){
+    document.getElementById('ctrl-metric').hidden=S.case!=='coffee';
+    document.querySelectorAll('#explore .seg').forEach(g=>g.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(S[g.dataset.k]===b.dataset.v))));
+    let R=rows(); const leg=document.getElementById('exLegend');
+    if(!R){ S.metric='n'; return render(); }
+    const likes=S.case==='coffee'&&S.metric==='likes';
+    document.getElementById('exTitle').textContent=CASEN[S.case]+' — '+(S.by==='sent'?'توزيع المشاعر':'المواضيع')+(likes?' حسب اللايكات':'')+' ('+fmt(R.total)+' '+R.unit+')';
+    leg.innerHTML=likes?'<span><i class="s2"></i>اللايكات</span>':SENT.map(([k,l,c])=>'<span><i class="'+c+'"></i>'+l+'</span>').join('');
+    leg.hidden=S.view==='table'||S.by==='sent';
+    if(S.view==='table'){
+      const cols=likes?'':SENT.map(s=>'<th>'+s[1]+'</th>').join('');
+      out.innerHTML='<div class="tbl-wrap"><table class="ex-tbl"><thead><tr><th>'+(S.by==='sent'?'المشاعر':'الموضوع')+'</th><th>'+(S.val==='pct'?'النسبة':'العدد')+'</th>'+(S.by==='theme'&&!likes?cols:'')+'</tr></thead><tbody>'+
+        R.items.map(it=>'<tr><td>'+it.name+'</td><td>'+show(it.v,R.total)+'</td>'+(S.by==='theme'&&!likes?it.parts.map(p=>'<td>'+show(p[1],R.total)+'</td>').join(''):'')+'</tr>').join('')+'</tbody></table></div>';
+      return;
+    }
+    const narrow=out.clientWidth<520,W=narrow?420:640,lab=narrow?165:200,base=W-lab,span=base-(narrow?48:70),bh=18,gap=14,H=R.items.length*(bh+gap)+8;
+    const mx=Math.max(...R.items.map(i=>i.v))||1;
+    let s='<svg class="chart ex" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+document.getElementById('exTitle').textContent+'">';
+    R.items.forEach((it,i)=>{
+      const y=4+i*(bh+gap); s+='<text x="'+(W-4)+'" y="'+(y+13.5)+'" class="lab" text-anchor="start" direction="rtl">'+it.name+'</text>';
+      let x=base; const parts=it.parts.filter(p=>p[1]>0);
+      parts.forEach((p,j)=>{ const w=span*p[1]/mx; const ww=Math.max(w-(j<parts.length-1?2:0),1);
+        const r=j===parts.length-1?4:0;
+        s+='<path class="'+p[0]+' hit" data-tip="'+it.name+(S.by==='theme'&&!likes?' · '+p[2]:'')+': '+show(p[1],R.total)+(S.val==='pct'?' ('+fmt(p[1])+')':'')+'" d="M'+x+','+y+'h'+(-(ww-r))+(r?'a4,4 0 0 0 -4,4v'+(bh-8)+'a4,4 0 0 0 4,4':'v'+bh)+'h'+(ww-r)+'z"/>';
+        x-=w; });
+      s+='<text x="'+(x-6)+'" y="'+(y+13.5)+'" class="val" direction="ltr" text-anchor="end">'+show(it.v,R.total)+'</text>';
+    });
+    out.innerHTML=s+'</svg>';
+  }
+  document.querySelectorAll('#explore .seg').forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('button'); if(!b)return; S[g.dataset.k]=b.dataset.v; if(g.dataset.k==='case'&&b.dataset.v!=='coffee')S.metric='n'; render();}));
+  out.addEventListener('pointermove',e=>{const t=e.target.closest('.hit'); if(!t){tip.hidden=true;return;} tip.textContent=t.dataset.tip; tip.hidden=false; const r=out.getBoundingClientRect(); tip.style.left=(e.clientX-r.left)+'px'; tip.style.top=(e.clientY-r.top-12)+'px';});
+  out.addEventListener('pointerleave',()=>tip.hidden=true);
+  render();
+})();
+</script>
 
 <section class="block" id="takeaways">
   <h2>كيف تستفيد وكالات الإعلان وإدارات التسويق؟</h2>
