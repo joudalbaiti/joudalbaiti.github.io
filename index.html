@@ -276,8 +276,8 @@ html[data-lang="ar"] body{font-size:17.5px;line-height:1.85}
       <textarea id="src" rows="2" lang="ar" spellcheck="false"></textarea>
       <ol class="stages" id="stages" aria-live="polite"></ol>
       <p class="foot">
-        <span data-l="en">Light prefix splitting shown in purple; emojis stay as their own token because they carry sentiment. Real systems go further with morphological analysis and subword tokenizers.</span>
-        <span data-l="ar">السوابق المفصولة باللون البنفسجي، والإيموجي يبقى وحدة مستقلة لأنه يحمل مشاعر. الأنظمة الفعلية تتعمق أكثر بالتحليل الصرفي ومقطِّعات الوحدات الجزئية.</span>
+        <span data-l="en">Light prefix splitting shown in purple. For sentiment work, emojis are often mapped to words instead of dropped. Real systems go further with morphological analysis and subword tokenizers.</span>
+        <span data-l="ar">السوابق المفصولة باللون البنفسجي. وفي تحليل المشاعر يُحوَّل الإيموجي غالباً إلى كلمات بدل حذفه. الأنظمة الفعلية تتعمق أكثر بالتحليل الصرفي ومقطِّعات الوحدات الجزئية.</span>
       </p>
     </div>
   </div>
@@ -616,10 +616,10 @@ html[data-lang="ar"] body{font-size:17.5px;line-height:1.85}
     'هل تستطيعُ الآلةُ أن تفهمَ لهجتَنا؟'
   ];
   var T={
-    en:{s:['Original text','Remove diacritics','Normalize letters','Clean elongation','Split into tokens'],
-        c:function(n,i){return n===0?'no change':(i===1?n+' mark'+(n>1?'s':'')+' removed':i===2?n+' letter'+(n>1?'s':'')+' unified':i===3?n+' character'+(n>1?'s':'')+' trimmed':n+' token'+(n>1?'s':''))}},
-    ar:{s:['النص الأصلي','حذف التشكيل','توحيد الحروف','إزالة التطويل والتكرار','التقطيع إلى وحدات'],
-        c:function(n,i){if(n===0)return 'بلا تغيير';var w=i===1?'المحذوف':i===2?'الموحَّد':i===3?'المحذوف':'عدد الوحدات';return w+': '+n}}
+    en:{s:['Original text','Remove diacritics','Normalize letters','Clean elongation','Remove emojis','Split into tokens'],
+        c:function(n,i){return n===0?'no change':(i===1?n+' mark'+(n>1?'s':'')+' removed':i===2?n+' letter'+(n>1?'s':'')+' unified':i===3?n+' character'+(n>1?'s':'')+' trimmed':i===4?n+' emoji'+(n>1?'s':'')+' removed':n+' token'+(n>1?'s':''))}},
+    ar:{s:['النص الأصلي','حذف التشكيل','توحيد الحروف','إزالة التطويل والتكرار','حذف الإيموجي','التقطيع إلى وحدات'],
+        c:function(n,i){if(n===0)return 'بلا تغيير';var w=i===1?'المحذوف':i===2?'الموحَّد':i===3?'المحذوف':i===4?'المحذوف':'عدد الوحدات';return w+': '+n}}
   };
   var DIAC=/[ؐ-ًؚ-ٰٟۖ-ۭ]/g;
   function esc(s){return s.replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
@@ -659,11 +659,15 @@ html[data-lang="ar"] body{font-size:17.5px;line-height:1.85}
       clean3+=cc;h3+=esc(cc);
     }
     steps.push({html:h3,n:n3});
-    // 4 tokens with light prefix split
-    var toks=clean3.match(/[\p{L}\p{N}]+|\p{Extended_Pictographic}(?:\p{Emoji_Modifier}|\uFE0F|\u200D\p{Extended_Pictographic})*/gu)||[];
+    // 4 emojis: removed, counted
+    var EM=/\p{Extended_Pictographic}(?:\p{Emoji_Modifier}|\uFE0F|\u200D\p{Extended_Pictographic})*/gu;
+    var n4=(clean3.match(EM)||[]).length;
+    var clean4=clean3.replace(EM,'').replace(/\s+/g,' ').trim();
+    steps.push({html:esc(clean4),n:n4});
+    // 5 tokens with light prefix split
+    var toks=clean4.match(/[\p{L}\p{N}]+/gu)||[];
     var PRE=['وال','بال','فال','كال','لل','ال'];
     var th='<div class="tokens">'+toks.map(function(t){
-      if(/\p{Extended_Pictographic}/u.test(t)) return '<span class="tok emo">'+t+'</span>';
       for(var p=0;p<PRE.length;p++){
         if(t.indexOf(PRE[p])===0&&t.length-PRE[p].length>=2){
           return '<span class="tok"><span class="pre">'+PRE[p]+'</span>'+esc(t.slice(PRE[p].length))+'</span>';
