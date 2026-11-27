@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تحليل مشاعر الجمهور تجاه البراندات — جود البيتي</title>
+<meta name="description" content="دراسة حالة: كيف تفاعل الجمهور السعودي على X مع جدل بيت الشاورما في حطين وحملة مقاطعة تيك توك، وماذا تستفيد منها وكالات الإعلان وإدارات التسويق.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:#ECE6DA; --paper:#0F1E2E; --card:#13263A; --accent:#4FB3A2; --amber:#E3B23C;
+    --neg:#D0654F; --neu:#6F8496; --hairline:#2A4560; --muted:#9AAEC0; --track:#1A3149; --on-ink:#0F1E2E;
+    color-scheme:dark;
+    --step--1:0.875rem; --step-0:1.0625rem; --step-1:1.375rem; --step-2:2rem;
+    --step-3:clamp(2rem,6vw,3.5rem); --measure:64ch;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Readex Pro",system-ui,sans-serif;font-weight:300;font-size:1.0625rem;line-height:1.9;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:60rem;margin-inline:auto;padding-inline:1.25rem}
+  a{color:var(--accent);text-underline-offset:3px}
+  header.site{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-block:1.25rem;border-block-end:1px solid var(--hairline)}
+  .mark{font-weight:600;color:var(--ink);text-decoration:none}
+  .btn{font:inherit;font-size:var(--step--1);font-weight:500;color:var(--on-ink);background:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:.45rem 1.1rem;text-decoration:none;display:inline-flex;gap:.4rem;align-items:center;white-space:nowrap}
+  .btn:hover{background:#63c3b2;border-color:#63c3b2}
+  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--hairline)}
+  .btn.ghost:hover{border-color:var(--ink)}
+
+  .hero{padding-block:clamp(2.5rem,7vw,4.5rem) 2rem}
+  .eyebrow{font-size:var(--step--1);color:var(--accent);font-weight:600;margin:0 0 .5rem}
+  h1{font-size:var(--step-3);font-weight:500;line-height:1.25;margin:0 0 1rem}
+  .lede{font-size:var(--step-1);font-weight:300;line-height:1.7;color:var(--muted);max-width:var(--measure);margin:0 0 1.75rem}
+  .actions{display:flex;flex-wrap:wrap;gap:.75rem}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:1px;background:var(--hairline);border:1px solid var(--hairline);border-radius:10px;overflow:hidden;margin-block:2rem 1rem}
+  .stat{background:var(--card);padding:1rem 1.25rem}
+  .stat b{display:block;font-size:var(--step-2);font-weight:600;line-height:1.2;font-variant-numeric:tabular-nums}
+  .stat span{font-size:var(--step--1);color:var(--muted)}
+
+  section.block{padding-block:2.5rem;border-block-start:1px solid var(--hairline)}
+  h2{font-size:var(--step-2);font-weight:500;line-height:1.3;margin:0 0 .75rem}
+  h3{font-size:var(--step-1);font-weight:600;margin:2rem 0 .75rem}
+  p{max-width:var(--measure);margin:0 0 1rem}
+  .case-tag{display:block;font-size:var(--step--1);font-weight:600;color:var(--amber);margin-block-end:.25rem}
+
+  .sentbar{display:flex;height:2.25rem;border-radius:6px;overflow:hidden;margin:.75rem 0 .5rem;max-width:40rem}
+  .sentbar div{display:flex;align-items:center;justify-content:center;color:#fff;font-size:var(--step--1);font-weight:600;font-variant-numeric:tabular-nums;min-width:2.5rem}
+  .pos{background:var(--accent)} .neu{background:var(--neu)} .neg{background:var(--neg)}
+  .legend{display:flex;gap:1.25rem;font-size:var(--step--1);color:var(--muted);margin-block-end:1.25rem;flex-wrap:wrap}
+  .legend i{display:inline-block;width:.7rem;height:.7rem;border-radius:2px;margin-inline-end:.35rem;vertical-align:middle}
+
+  .bars{list-style:none;padding:0;margin:0 0 1rem;max-width:44rem}
+  .bars li{display:grid;grid-template-columns:minmax(9rem,15rem) 1fr 3.5rem;gap:.75rem;align-items:center;padding-block:.3rem;font-size:.95rem}
+  .bars .track{height:.85rem;background:var(--track);border-radius:3px;overflow:hidden}
+  .bars .fill{height:100%;border-radius:3px}
+  .bars .num{font-variant-numeric:tabular-nums;color:var(--muted);font-size:var(--step--1);text-align:end}
+
+  .quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:.75rem;margin-block:1rem 1.5rem}
+  blockquote{margin:0;background:var(--card);border:1px solid var(--hairline);border-inline-start:3px solid var(--neu);border-radius:6px;padding:.75rem 1rem;font-size:.95rem;line-height:1.8}
+  blockquote.p{border-inline-start-color:var(--accent)} blockquote.n{border-inline-start-color:var(--neg)}
+  blockquote cite{display:block;font-style:normal;font-size:.8rem;color:var(--muted);margin-block-start:.35rem}
+
+  .timeline{display:flex;align-items:flex-end;gap:.5rem;height:10rem;max-width:34rem;margin-block:1rem .25rem;border-block-end:1px solid var(--hairline);padding-inline:.25rem}
+  .timeline .col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+  .timeline .col div{width:100%;background:var(--neg);border-radius:3px 3px 0 0}
+  .timeline .col span{font-size:.75rem;color:var(--muted);font-variant-numeric:tabular-nums}
+  .tl-labels{display:flex;gap:.5rem;max-width:34rem;padding-inline:.25rem;margin-block-end:1rem}
+  .tl-labels span{flex:1;text-align:center;font-size:.75rem;color:var(--muted)}
+
+  .takeaways{counter-reset:t;list-style:none;padding:0;margin:1rem 0 0;max-width:var(--measure)}
+  .takeaways li{counter-increment:t;position:relative;padding-inline-start:2.5rem;margin-block-end:1.1rem}
+  .takeaways li::before{content:counter(t);position:absolute;inset-inline-start:0;top:.1rem;width:1.7rem;height:1.7rem;border-radius:50%;background:var(--accent);color:var(--on-ink);font-size:.85rem;font-weight:600;display:flex;align-items:center;justify-content:center}
+  .takeaways b{font-weight:600}
+
+  .note{font-size:var(--step--1);color:var(--muted)}
+  .en{direction:ltr;text-align:left;font-size:.95rem;line-height:1.7;background:var(--card);border:1px solid var(--hairline);border-radius:8px;padding:1rem 1.25rem;max-width:var(--measure)}
+  .en p{margin:0}
+  footer.site{border-block-start:1px solid var(--hairline);padding-block:2rem 3rem;font-size:var(--step--1);color:var(--muted)}
+
+  @media (max-width:36rem){ .bars li{grid-template-columns:1fr 3rem} .bars .label{grid-column:1/-1} }
+  @media print{
+    @page{size:A4;margin:14mm 13mm}
+    :root{--ink:#101E26;--paper:#fff;--card:#fff;--accent:#2F6F62;--amber:#B07A12;--neg:#A64B3C;--neu:#8A979B;--hairline:#D2D8D5;--muted:#5C6B70;--track:#E6EAE8;--on-ink:#fff;color-scheme:light}
+    body{background:#fff;font-size:10.5pt;line-height:1.75}
+    .no-print{display:none!important}
+    .wrap{max-width:none;padding:0}
+    .hero{padding-block:0 .5rem}
+    h1{font-size:22pt} h2{font-size:15pt} h3{font-size:12pt;margin-top:1rem}
+    section.block{padding-block:1rem;break-inside:auto}
+    h2,h3,.case-tag{break-after:avoid;page-break-after:avoid}
+    .stats,.quotes,.sentbar,.bars,.timeline,blockquote,.takeaways li{break-inside:avoid}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="site no-print">
+  <a class="mark" href="../">جود البيتي</a>
+  <a class="btn" href="brand-sentiment.pdf" download data-goatcounter-click="pdf-download" data-goatcounter-title="تحميل PDF — تحليل مشاعر البراندات">تحميل PDF ↓</a>
+</header>
+
+<section class="hero">
+  <p class="eyebrow">دراسة حالة · تحليل مشاعر الجمهور بالذكاء الاصطناعي · نوفمبر 2026</p>
+  <h1>ماذا قال الجمهور فعلاً؟ قراءة في ترندين سعوديين</h1>
+  <p class="lede">جمعت تغريدات عامة على منصة X حول جدل افتتاح بيت الشاورما في حي حطين، وحملة مقاطعة تيك توك في 27 أكتوبر، وصنّفت كل تغريدة حسب المشاعر والموضوع. الهدف هو الإجابة عن سؤال عملي: ما الذي تستطيع وكالات الإعلان وإدارات التسويق أن تتعلمه من هذا النوع من التحليل؟</p>
+  <div class="actions no-print">
+    <a class="btn" href="brand-sentiment.pdf" download data-goatcounter-click="pdf-download" data-goatcounter-title="تحميل PDF — تحليل مشاعر البراندات">تحميل التقرير PDF ↓</a>
+    <a class="btn ghost" href="#takeaways">الخلاصة للمسوّقين</a>
+  </div>
+  <div class="stats">
+    <div class="stat"><b>375</b><span>تغريدة صُنّفت بعد التنظيف من أصل أكثر من 1,300 جُمعت</span></div>
+    <div class="stat"><b>8.7%</b><span>فقط من الحديث عن بيت الشاورما كان سلبياً رغم ضجة الجدل</span></div>
+    <div class="stat"><b dir="ltr" style="text-align:right">−80%</b><span>تراجع حجم الحديث عن مقاطعة تيك توك في اليوم التالي للحملة</span></div>
+  </div>
+</section>
+
+<section class="block" id="method">
+  <h2>كيف أُجري التحليل</h2>
+  <p>جُمعت التغريدات العربية العامة من نتائج البحث في X (الأحدث والأبرز) خلال فترة كل حدث، ثم حُذف المكرر والتغريدات التي لا علاقة لها بالبراند، مثل الإعلانات العشوائية أو استخدام كلمة «مقاطع» بمعنى المقاطع المرئية. بعدها صُنّفت كل تغريدة بنموذج لغوي كبير وفق دليل تصنيف ثابت يحدد المشاعر تجاه البراند (إيجابي، محايد، سلبي) والموضوع الذي تتحدث عنه، وهو نفس المنهج الذي اتبعته في بحثي المنشور في LREC 2026 لتحليل المشاعر في النصوص المالية السعودية. التصنيف حسب الموضوع هو الجزء الأهم هنا، لأن معرفة نسبة الإيجابي والسلبي وحدها لا تخبر المسوّق بما يجب أن يفعله.</p>
+</section>
+
+<section class="block" id="case-shawarma">
+  <span class="case-tag">الحالة الأولى</span>
+  <h2>بيت الشاورما في حطين: جدل طبقي تحوّل إلى إعلان مجاني</h2>
+  <p>في الأول من نوفمبر افتتح بيت الشاورما أكبر فروعه في حي حطين شمال الرياض، فانقسم النقاش بين من رأى أن مطعماً شعبياً لا يناسب «هوية» حي راقٍ، ومن دافع عن المطعم رفضاً للنظرة الطبقية. حلّلت 126 تغريدة تتحدث عن البراند خلال الأسابيع التالية.</p>
+
+  <div class="sentbar" role="img" aria-label="إيجابي 49%، محايد 42%، سلبي 9%">
+    <div class="pos" style="width:49.2%">49%</div><div class="neu" style="width:42.1%">42%</div><div class="neg" style="width:8.7%">9%</div>
+  </div>
+  <div class="legend"><span><i class="pos"></i>إيجابي</span><span><i class="neu"></i>محايد</span><span><i class="neg"></i>سلبي</span></div>
+
+  <h3>عن ماذا كان الناس يتحدثون؟</h3>
+  <ul class="bars">
+    <li><span class="label">نكت وسخرية على القصة</span><span class="track"><span class="fill neu" style="width:100%;display:block"></span></span><span class="num">26%</span></li>
+    <li><span class="label">ذكر عادي للمطعم واشتهاء</span><span class="track"><span class="fill pos" style="width:100%;display:block"></span></span><span class="num">26%</span></li>
+    <li><span class="label">مطالبة بفرع في مدينتهم</span><span class="track"><span class="fill pos" style="width:42.4%;display:block"></span></span><span class="num">11%</span></li>
+    <li><span class="label">مدح الأكل والتجربة</span><span class="track"><span class="fill pos" style="width:36.4%;display:block"></span></span><span class="num">10%</span></li>
+    <li><span class="label">تهنئة بالافتتاح</span><span class="track"><span class="fill pos" style="width:27.3%;display:block"></span></span><span class="num">7%</span></li>
+    <li><span class="label">دفاع عن المطعم ضد الطبقية</span><span class="track"><span class="fill pos" style="width:24.2%;display:block"></span></span><span class="num">6%</span></li>
+    <li><span class="label">قراءة تسويقية للحدث</span><span class="track"><span class="fill pos" style="width:21.2%;display:block"></span></span><span class="num">6%</span></li>
+    <li><span class="label">رفض الفرع في حطين</span><span class="track"><span class="fill neg" style="width:15.2%;display:block"></span></span><span class="num">4%</span></li>
+    <li><span class="label">شكاوى تشغيلية (توصيل، مواقف)</span><span class="track"><span class="fill neg" style="width:12.1%;display:block"></span></span><span class="num">3%</span></li>
+  </ul>
+  <p class="note">النسب من إجمالي 126 تغريدة، وكل تغريدة لها موضوع واحد رئيسي.</p>
+
+  <div class="quotes">
+    <blockquote class="p">«اعلان حطم المقاييس… ع مستوى السعودية كلها لم يدفع فيه ريال واحد»<cite>قراءة تسويقية</cite></blockquote>
+    <blockquote class="p">«نتمنى فرع بجده ويسمى (جده كدا بيت الشاورما وبحر)»<cite>مطالبة بالتوسع</cite></blockquote>
+    <blockquote class="n">«رحت بيت الشاورما الي بحطين… صدق ريحته ممليه الحي»<cite>رفض الفرع</cite></blockquote>
+    <blockquote class="n">«ليه فرع حطين افخم من الفروع الي بأحيائنا وحنا أول العملاء لك»<cite>عميل قديم يشعر بالتفرقة</cite></blockquote>
+  </div>
+
+  <h3>ماذا تعني هذه الأرقام؟</h3>
+  <p>الصوت الرافض للفرع كان عالياً في الإعلام لكنه صغير في الأرقام، إذ لم يتجاوز 4% من الحديث، مقابل نحو ثلث التغريدات التي هنّأت أو مدحت أو دافعت أو طالبت بفرع جديد. أكبر كتلة كانت النكت، وهي محايدة في ظاهرها لكنها أبقت اسم البراند متداولاً لأسابيع بعد الافتتاح، وهذا بالضبط ما وصفه أحد المغردين بأنه إعلان لم يُدفع فيه ريال. اللافت أن الخطر الحقيقي على البراند لم يكن الجدل الطبقي، بل أشياء أصغر وأكثر واقعية: عملاء قدامى يشعرون أن فروع أحيائهم أقل اهتماماً، وشكاوى من التوصيل والمواقف. كما أن 11% من الحديث كان مطالبات صريحة بفروع في جدة ومكة ونجران والخرج وغيرها، وهذه بيانات مجانية عن الطلب في السوق.</p>
+</section>
+
+<section class="block" id="case-tiktok">
+  <span class="case-tag">الحالة الثانية</span>
+  <h2>مقاطعة تيك توك في 27 أكتوبر: غضب وطني بعمر يوم واحد</h2>
+  <p>دعا مستخدمون سعوديون إلى مقاطعة تيك توك ليوم كامل، احتجاجاً على ما وصفوه بحذف المقاطع الوطنية وتقييد انتشارها، مع حذف التطبيق وتقييمه بنجمة واحدة في متاجر التطبيقات. حلّلت 249 تغريدة عن الحملة.</p>
+
+  <div class="sentbar" role="img" aria-label="سلبي 75%، محايد 24%، إيجابي 1%">
+    <div class="neg" style="width:75.1%">75%</div><div class="neu" style="width:24.1%">24%</div><div class="pos" style="width:0.8%;min-width:.4rem"></div>
+  </div>
+  <div class="legend"><span><i class="neg"></i>سلبي تجاه تيك توك</span><span><i class="neu"></i>محايد</span><span><i class="pos"></i>إيجابي (أقل من 1%)</span></div>
+
+  <h3>عن ماذا كان الناس يتحدثون؟</h3>
+  <ul class="bars">
+    <li><span class="label">إعلان المشاركة والدعوة للمقاطعة</span><span class="track"><span class="fill neg" style="width:100%;display:block"></span></span><span class="num">45%</span></li>
+    <li><span class="label">تنظيم التقييم بنجمة واحدة</span><span class="track"><span class="fill neg" style="width:35.4%;display:block"></span></span><span class="num">16%</span></li>
+    <li><span class="label">نكت و«أعراض انسحاب»</span><span class="track"><span class="fill neu" style="width:31%;display:block"></span></span><span class="num">14%</span></li>
+    <li><span class="label">شكاوى من حذف المحتوى الوطني</span><span class="track"><span class="fill neg" style="width:18.6%;display:block"></span></span><span class="num">8%</span></li>
+    <li><span class="label">نقاش حول جدوى الحملة ومدتها</span><span class="track"><span class="fill neu" style="width:12.4%;display:block"></span></span><span class="num">6%</span></li>
+    <li><span class="label">محاسبة المشاهير غير الملتزمين</span><span class="track"><span class="fill neg" style="width:9.7%;display:block"></span></span><span class="num">4%</span></li>
+    <li><span class="label">الانتقال لمنصات بديلة</span><span class="track"><span class="fill neu" style="width:8.8%;display:block"></span></span><span class="num">4%</span></li>
+    <li><span class="label">مشككون في الحملة</span><span class="track"><span class="fill neu" style="width:4.4%;display:block"></span></span><span class="num">2%</span></li>
+  </ul>
+
+  <h3>حجم الحديث يوماً بيوم</h3>
+  <div class="timeline" role="img" aria-label="عدد التغريدات يومياً من 25 إلى 30 أكتوبر: 8، 50، 138، 27، 14، 7">
+    <div class="col"><span>8</span><div style="height:5.8%"></div></div>
+    <div class="col"><span>50</span><div style="height:36.2%"></div></div>
+    <div class="col"><span>138</span><div style="height:100%"></div></div>
+    <div class="col"><span>27</span><div style="height:19.6%"></div></div>
+    <div class="col"><span>14</span><div style="height:10.1%"></div></div>
+    <div class="col"><span>7</span><div style="height:5.1%"></div></div>
+  </div>
+  <div class="tl-labels"><span>25 أكت</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span></div>
+  <p class="note">بتوقيت الرياض، من التغريدات المصنّفة في العينة.</p>
+
+  <div class="quotes">
+    <blockquote class="n">«نزلت مقطع ادعي فيه للشهداء وادافع عن الوطن وجاني تحذير انتهاك !!»<cite>شكوى من حذف المحتوى</cite></blockquote>
+    <blockquote class="n">«ليش كلكم مقيمينهم 4 و 5 نجوم؟؟؟»<cite>تنظيم التقييمات</cite></blockquote>
+    <blockquote>«اكتشفت اني اقدر اعيش بدون التيك»<cite>أعراض انسحاب</cite></blockquote>
+    <blockquote>«ايش الفايدة انكم بتحذفونه اليوم وبترجعونه بكره؟»<cite>نقاش حول الجدوى</cite></blockquote>
+  </div>
+
+  <h3>ماذا تعني هذه الأرقام؟</h3>
+  <p>الغضب هنا لم يكن عن جودة المنتج أو سعره، بل عن شعور بأن المنصة لا تحترم الهوية الوطنية، وهذا النوع من الغضب يجمع الناس بسرعة كبيرة ويكاد لا يترك مكاناً للرأي المؤيد للبراند (أقل من 1%). لكنه أيضاً قصير العمر: بلغ الحديث ذروته يوم الحملة ثم هبط بنحو 80% في اليوم التالي. الأهم للمسوّقين أن 16% من التغريدات كانت تنظيماً مباشراً للتقييمات في متاجر التطبيقات، أي أن الجمهور لم يكتفِ بالكلام بل استخدم أداة تؤثر في ترتيب التطبيق وصورته أمام مستخدمين جدد. كذلك توجّه جزء من الضغط إلى المشاهير الذين استمروا في البث، مما يعني أن البراندات المرتبطة بهم في ذلك اليوم كانت معرّضة للضرر أيضاً.</p>
+</section>
+
+<section class="block" id="takeaways">
+  <h2>كيف تستفيد وكالات الإعلان وإدارات التسويق؟</h2>
+  <ol class="takeaways">
+    <li><b>قِس الموضوع لا المشاعر فقط.</b> لو اكتفى بيت الشاورما بنسبة السلبي لظن أن الأزمة هي الجدل الطبقي، بينما التحليل حسب الموضوع يكشف أن ما يستحق المعالجة فعلاً هو شعور العملاء القدامى بالتفرقة وجودة التوصيل.</li>
+    <li><b>لا تخلط بين الصوت العالي والحجم الحقيقي.</b> الرأي الرافض كان الأكثر تداولاً في التغطيات، لكنه 4% فقط من الحديث. قرار الرد أو الصمت يجب أن يُبنى على الأرقام لا على أعلى تغريدة.</li>
+    <li><b>الجدل فرصة لأبحاث السوق.</b> مطالبات الفروع الجديدة (11% من الحديث) تعطي خريطة طلب مجانية حسب المدينة يمكن مقارنتها بخطط التوسع.</li>
+    <li><b>قضايا الهوية الوطنية هي أسرع مُشعل للأزمات في السوق السعودي.</b> أي شيء يُفهم على أنه انتقاص من الوطن يتحول إلى حملة منظمة خلال ساعات، لذا يجب أن يكون الرد سريعاً وواضحاً، لا بيانات عامة متأخرة.</li>
+    <li><b>راقب متاجر التطبيقات وقت الأزمات.</b> عندما يتحول الغضب إلى تقييمات منظمة، يصبح الضرر قابلاً للقياس وطويل الأمد حتى بعد أن يهدأ الحديث على المنصات.</li>
+    <li><b>انتبه لتوقيت حملاتك وشراكاتك مع المشاهير.</b> نشر إعلان على منصة تحت المقاطعة، أو مع مشهور يُتّهم بكسرها، قد يضع البراند في قلب أزمة لا علاقة له بها.</li>
+    <li><b>اعرف عمر الأزمة.</b> قياس سرعة صعود الحديث وهبوطه يساعد على قرار متى ترد، ومتى يكون الصمت أفضل من إطالة عمر القصة.</li>
+  </ol>
+</section>
+
+<section class="block" id="limits">
+  <h2>حدود هذا التحليل</h2>
+  <p>العينة مأخوذة من نتائج البحث في X وحدها، وليست عينة عشوائية من كل ما كُتب، ولا تشمل تيك توك أو سناب شات أو إنستغرام حيث جرى جزء كبير من النقاش. عينة بيت الشاورما تميل إلى الأسابيع التي تلت ذروة الجدل، لذا فهي تقيس الأثر الممتد أكثر من لحظة الانفجار. والتصنيف آلي، لذلك قد يخطئ في السخرية والتلميح، وهما شائعان في التغريدات السعودية. الأرقام هنا مؤشرات على اتجاه الحديث، لا قياس دقيق لرأي المجتمع.</p>
+</section>
+
+<section class="block" id="english">
+  <div class="en" lang="en">
+    <p><strong>In English.</strong> Two Saudi brand moments analysed with LLM-based Arabic sentiment and topic classification on public X posts (375 labelled tweets). The Shawarma House "Hittin" controversy was only 8.7% negative; the vocal anti-branch camp was 4% of the conversation, while humour kept the brand trending and 11% of posts were explicit demand for new branches. The 27 October TikTok boycott was 75% negative, driven by national-identity grievance rather than product, peaked on the day and fell ~80% the next, and 16% of posts coordinated one-star app-store reviews. Takeaways for agencies: classify topics, not just polarity; separate loud voices from volume; and monitor app stores and creator partnerships during identity-driven crises.</p>
+  </div>
+</section>
+
+<footer class="site">
+  <p>جود البيتي — مهندسة ذكاء اصطناعي متخصصة في معالجة اللغة العربية · <a href="https://www.linkedin.com/in/joudalbaiti">LinkedIn</a> · <a href="https://github.com/joudalbaiti">GitHub</a></p>
+  <p class="no-print"><a href="../">← العودة إلى الصفحة الرئيسية</a></p>
+</footer>
+
+</div>
+<script data-goatcounter="https://joudalbaiti.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
