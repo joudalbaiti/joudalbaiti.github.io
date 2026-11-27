@@ -14,14 +14,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&family=Reem+Kufi:wght@500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --night:#0F1E2E;
-  --deep:#13263A;
-  --raised:#1A3149;
-  --line:#2A4560;
-  --text:#ECE6DA;
-  --muted:#9AAEC0;
-  --teal:#4FB3A2;
-  --teal-soft:rgba(79,179,162,.14);
+  --night:#120E22;
+  --deep:#1A1530;
+  --raised:#241D3F;
+  --line:#352B57;
+  --text:#EEEAF6;
+  --muted:#A9A1C4;
+  --teal:#A78BFA;
+  --teal-soft:rgba(167,139,250,.14);
   --saffron:#E3B23C;
   --saffron-soft:rgba(227,178,60,.16);
   --radius-s:6px;
@@ -46,7 +46,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,textarea:focus-visibl
 @media (max-width:600px){.wrap{padding-inline:16px}}
 
 /* header */
-.top{position:sticky;top:0;z-index:10;background:rgba(15,30,46,.86);
+.top{position:sticky;top:0;z-index:10;background:rgba(18,14,34,.86);
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid transparent;transition:border-color .2s}
 .top.scrolled{border-bottom-color:var(--line)}
 .top .wrap{display:flex;align-items:center;gap:24px;height:64px}
@@ -57,7 +57,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,textarea:focus-visibl
 .nav a:hover{color:var(--text)}
 .lang{font:inherit;font-size:14px;font-weight:500;color:var(--night);background:var(--teal);
   border:0;border-radius:999px;padding:6px 14px;cursor:pointer}
-.lang:hover{background:#63c3b2}
+.lang:hover{background:#C4B5FD}
 @media (max-width:760px){.nav{display:none}.lang{margin-inline-start:auto}}
 
 /* hero */
@@ -77,8 +77,8 @@ html[data-lang="ar"] .role{max-width:20ch;line-height:1.45}
 .btn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:15px;font-weight:500;
   text-decoration:none;padding:11px 20px;border-radius:999px;border:1px solid var(--line);color:var(--text);transition:border-color .15s,background .15s}
 .btn:hover{border-color:var(--teal)}
-.btn.primary{background:var(--saffron);border-color:var(--saffron);color:var(--night)}
-.btn.primary:hover{background:#ecc25a}
+.btn.primary{background:var(--teal);border-color:var(--teal);color:var(--night)}
+.btn.primary:hover{background:#C4B5FD;border-color:#C4B5FD;box-shadow:0 0 22px rgba(167,139,250,.45)}
 .btn svg{width:17px;height:17px}
 
 /* pipeline */
@@ -108,8 +108,8 @@ html[data-lang="ar"] .role{max-width:20ch;line-height:1.45}
 .stage.anim{opacity:0;transform:translateY(6px)}
 .stage.show{opacity:1;transform:none;transition:opacity .35s ease,transform .35s ease}
 .tokens{direction:rtl;display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.tok{font-size:16px;padding:3px 10px;border-radius:var(--radius-s);background:var(--teal-soft);color:var(--text);border:1px solid rgba(79,179,162,.35)}
-.tok .pre{color:var(--teal);font-weight:500;padding-inline-end:5px;margin-inline-end:5px;border-inline-end:1px solid rgba(79,179,162,.5)}
+.tok{font-size:16px;padding:3px 10px;border-radius:var(--radius-s);background:var(--teal-soft);color:var(--text);border:1px solid rgba(167,139,250,.35)}
+.tok .pre{color:var(--teal);font-weight:500;padding-inline-end:5px;margin-inline-end:5px;border-inline-end:1px solid rgba(167,139,250,.5)}
 .lab .foot{margin:14px 0 0;font-size:13px;color:var(--muted)}
 
 /* sections */
@@ -245,8 +245,8 @@ html[data-lang="ar"] body{font-size:17.5px;line-height:1.85}
         <span data-l="ar">مهندسة ذكاء اصطناعي أبني أنظمة لغوية تفهم العربية.</span>
       </p>
       <p class="lede">
-        <span data-l="en">I build Arabic NLP and LLM systems for Saudi and GCC markets, from peer-reviewed research to production on Google Cloud, and I turn raw data into clear decisions with SQL and Power BI. Based in Jeddah, Saudi Arabia.</span>
-        <span data-l="ar">أطوّر أنظمة معالجة اللغة العربية والنماذج اللغوية الكبيرة لأسواق السعودية والخليج، من البحث المحكَّم إلى التشغيل الفعلي على Google Cloud، وأحوّل البيانات الخام إلى قرارات واضحة باستخدام SQL و Power BI. مقيمة في جدة، المملكة العربية السعودية.</span>
+        <span data-l="en">I build Arabic NLP and LLM systems for Saudi and GCC markets, from peer-reviewed research to production on Google Cloud, and I turn raw data into clear decisions with SQL and Power BI. Saudi national, based in Jeddah.</span>
+        <span data-l="ar">أطوّر أنظمة معالجة اللغة العربية والنماذج اللغوية الكبيرة لأسواق السعودية والخليج، من البحث المحكَّم إلى التشغيل الفعلي على Google Cloud، وأحوّل البيانات الخام إلى قرارات واضحة باستخدام SQL و Power BI. سعودية الجنسية، مقيمة في جدة.</span>
       </p>
       <div class="ctas">
         <a class="btn primary" href="#work"><span data-l="en">See my work</span><span data-l="ar">شاهد مشاريعي</span></a>
@@ -274,8 +274,8 @@ html[data-lang="ar"] body{font-size:17.5px;line-height:1.85}
       <textarea id="src" rows="2" lang="ar" spellcheck="false"></textarea>
       <ol class="stages" id="stages" aria-live="polite"></ol>
       <p class="foot">
-        <span data-l="en">Light prefix splitting shown in teal. Real systems go further with morphological analysis and subword tokenizers.</span>
-        <span data-l="ar">السوابق المفصولة باللون الأخضر. الأنظمة الفعلية تتعمق أكثر بالتحليل الصرفي ومقطِّعات الوحدات الجزئية.</span>
+        <span data-l="en">Light prefix splitting shown in purple. Real systems go further with morphological analysis and subword tokenizers.</span>
+        <span data-l="ar">السوابق المفصولة باللون البنفسجي. الأنظمة الفعلية تتعمق أكثر بالتحليل الصرفي ومقطِّعات الوحدات الجزئية.</span>
       </p>
     </div>
   </div>
@@ -563,7 +563,7 @@ html[data-lang="ar"] body{font-size:17.5px;line-height:1.85}
     <p><span data-l="en">I'm open to AI engineering and data roles in Saudi Arabia and remote: building AI agents, data analysis, Arabic NLP and LLM systems, and applied research.</span><span data-l="ar">أبحث عن فرص في هندسة الذكاء الاصطناعي والبيانات داخل السعودية أو عن بُعد، خصوصًا في بناء الوكلاء الذكيين، وتحليل البيانات، ومعالجة اللغة العربية وأنظمة النماذج اللغوية، والبحث التطبيقي.</span></p>
     <div class="reach"><a class="mail" href="mailto:joudalbaiti.7@gmail.com">joudalbaiti.7@gmail.com</a>
     <a class="mail" href="tel:+966559507575" dir="ltr">+966 55 950 7575</a></div>
-    <p class="loc"><span data-l="en">Jeddah, Saudi Arabia</span><span data-l="ar">جدة، المملكة العربية السعودية</span></p>
+    <p class="loc"><span data-l="en">Saudi national · Jeddah, Saudi Arabia</span><span data-l="ar">سعودية الجنسية · جدة، المملكة العربية السعودية</span></p>
     <div class="ctas">
       <a class="btn" href="https://www.linkedin.com/in/joud-albaiti/" target="_blank" rel="noopener">LinkedIn</a>
       <a class="btn" href="https://github.com/joudalbaiti" target="_blank" rel="noopener">GitHub</a>

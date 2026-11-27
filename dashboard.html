@@ -10,10 +10,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --night:#0F1E2E;--deep:#13263A;--raised:#1A3149;--line:#2A4560;
-  --text:#ECE6DA;--muted:#9AAEC0;
-  --series-1:#00a888;--series-2:#d28e05;
-  --heat-0:#173543;--heat-1:#5fd3bd;
+  --night:#120E22;--deep:#1A1530;--raised:#241D3F;--line:#352B57;
+  --text:#EEEAF6;--muted:#A9A1C4;
+  --series-1:#8B5CF6;--series-2:#d28e05;
+  --heat-0:#22193D;--heat-1:#B9A2FF;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -29,7 +29,7 @@ h1{font-size:clamp(26px,3.4vw,36px);font-weight:500;line-height:1.2;margin:14px 
 .sub{color:var(--muted);max-width:70ch;margin:0}
 .note{display:inline-block;margin-top:10px;font-size:13.5px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:3px 12px}
 
-.filters{position:sticky;top:0;z-index:5;background:rgba(15,30,46,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+.filters{position:sticky;top:0;z-index:5;background:rgba(18,14,34,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   padding-block:14px;margin-top:18px;border-bottom:1px solid var(--line)}
 .filters .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center}
 .group{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
@@ -128,7 +128,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
       <h2>Daily revenue anomalies</h2>
       <p class="cap" id="anomCap"></p>
       <div class="chart"><canvas id="anom" role="img" aria-label="Daily revenue with anomalies"></canvas></div>
-      <div class="legend"><span><i style="background:var(--series-1)"></i>Daily revenue</span><span><i style="background:#9AAEC0"></i>Expected (28-day rolling median)</span><span><i class="dot" style="background:var(--series-2)"></i>Flagged anomaly</span></div>
+      <div class="legend"><span><i style="background:var(--series-1)"></i>Daily revenue</span><span><i style="background:#A9A1C4"></i>Expected (28-day rolling median)</span><span><i class="dot" style="background:var(--series-2)"></i>Flagged anomaly</span></div>
     </section>
   </div>
 </main>
@@ -147,10 +147,10 @@ const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).
 const C1 = css('--series-1'), C2 = css('--series-2'), MUTED = css('--muted'), LINE = css('--line'), TEXT = css('--text');
 Chart.defaults.font.family = '"Readex Pro", system-ui, sans-serif';
 Chart.defaults.color = MUTED;
-Chart.defaults.borderColor = 'rgba(42,69,96,.6)';
+Chart.defaults.borderColor = 'rgba(53,43,87,.6)';
 Chart.defaults.plugins.legend.display = false;
 Chart.defaults.layout.padding = {left: 6, right: 6};
-Chart.defaults.plugins.tooltip.backgroundColor = '#0B1622';
+Chart.defaults.plugins.tooltip.backgroundColor = '#0C0918';
 Chart.defaults.plugins.tooltip.borderColor = LINE;
 Chart.defaults.plugins.tooltip.borderWidth = 1;
 Chart.defaults.plugins.tooltip.padding = 10;
@@ -215,7 +215,7 @@ function upsert(id, cfg) {
   if (charts[id]) { charts[id].data = cfg.data; charts[id].options = cfg.options; charts[id].update(); }
   else charts[id] = new Chart(document.getElementById(id), cfg);
 }
-const axis = (extra = {}) => ({grid: {color: 'rgba(42,69,96,.45)', drawTicks: false}, border: {display: false}, ticks: {padding: 8}, ...extra});
+const axis = (extra = {}) => ({grid: {color: 'rgba(53,43,87,.45)', drawTicks: false}, border: {display: false}, ticks: {padding: 8}, ...extra});
 
 function render() {
   const R = rows(), RA = rows(false);
@@ -279,7 +279,7 @@ function render() {
   /* category bars (ignores category filter) */
   const byCat = D.cats.map((_, c) => sum(RA.filter(r => r[1] === c), 5)), totA = byCat.reduce((a, b) => a + b, 0);
   upsert('category', {type: 'bar', data: {labels: D.cats, datasets: [{data: byCat,
-      backgroundColor: D.cats.map((_, i) => state.cat === 'all' || String(i) === state.cat ? C1 : 'rgba(0,168,136,.28)'),
+      backgroundColor: D.cats.map((_, i) => state.cat === 'all' || String(i) === state.cat ? C1 : 'rgba(139,92,246,.28)'),
       borderRadius: 4, borderSkipped: 'start', maxBarThickness: 46}]},
     options: {maintainAspectRatio: false,
       scales: {x: axis({grid: {display: false}}), y: axis({ticks: {callback: v => fmtSAR(v)}})},
@@ -294,7 +294,7 @@ function render() {
     `<thead><tr><th scope="col">Plant</th>${D.cats.map((c, i) => `<th scope="col"${state.cat !== 'all' && String(i) !== state.cat ? ' style="opacity:.45"' : ''}>${c}</th>`).join('')}</tr></thead>` +
     `<tbody>${M.map((row, p) => `<tr><th scope="row">${D.plants[p]}</th>${row.map((v, c) => {
       const t = (v - mn) / (mx - mn || 1);
-      return `<td class="${v === mx ? 'hi' : ''}" style="background:${mix(t)};color:${t > .62 ? '#0F1E2E' : TEXT}" title="${D.plants[p]}, ${D.cats[c]}: ${pct(v)}">${pct(v, 1)}</td>`;
+      return `<td class="${v === mx ? 'hi' : ''}" style="background:${mix(t)};color:${t > .62 ? '#120E22' : TEXT}" title="${D.plants[p]}, ${D.cats[c]}: ${pct(v)}">${pct(v, 1)}</td>`;
     }).join('')}</tr>`).join('')}</tbody>`;
   document.getElementById('hmMin').textContent = pct(mn, 1);
   document.getElementById('hmMax').textContent = pct(mx, 1);
@@ -325,8 +325,8 @@ function render() {
     `${flags.length} unusual day${flags.length === 1 ? '' : 's'} flagged: revenue more than 3.5 robust deviations from the 28-day rolling median.`;
   upsert('anom', {type: 'line', data: {labels: idx.map(i => dates[i]), datasets: [
       {label: 'Daily revenue', data: idx.map(i => y[i]), borderColor: C1, borderWidth: 1.5, pointRadius: 0, pointHoverRadius: 4, order: 2},
-      {label: 'Expected', data: idx.map(i => exp[i]), borderColor: '#9AAEC0', borderWidth: 1.5, borderDash: [4, 3], pointRadius: 0, pointHoverRadius: 0, order: 3},
-      {label: 'Anomaly', type: 'scatter', data: flags.map(i => ({x: dates[i], y: y[i]})), backgroundColor: C2, borderColor: '#13263A', borderWidth: 2, pointRadius: 6, pointHoverRadius: 8, order: 1}]},
+      {label: 'Expected', data: idx.map(i => exp[i]), borderColor: '#A9A1C4', borderWidth: 1.5, borderDash: [4, 3], pointRadius: 0, pointHoverRadius: 0, order: 3},
+      {label: 'Anomaly', type: 'scatter', data: flags.map(i => ({x: dates[i], y: y[i]})), backgroundColor: C2, borderColor: '#1A1530', borderWidth: 2, pointRadius: 6, pointHoverRadius: 8, order: 1}]},
     options: {maintainAspectRatio: false, interaction: {mode: 'nearest', axis: 'x', intersect: false},
       scales: {x: axis({type: 'category', grid: {display: false}, ticks: {maxTicksLimit: 8, autoSkip: true}}), y: axis({ticks: {callback: v => fmtSAR(v)}})},
       plugins: {tooltip: {callbacks: {
