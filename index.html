@@ -109,6 +109,7 @@ html[data-lang="ar"] .role{max-width:20ch;line-height:1.45}
 .stage.show{opacity:1;transform:none;transition:opacity .35s ease,transform .35s ease}
 .tokens{direction:rtl;display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
 .tok{font-size:16px;padding:3px 10px;border-radius:var(--radius-s);background:var(--teal-soft);color:var(--text);border:1px solid rgba(167,139,250,.35)}
+.tok.emo{background:var(--saffron-soft);border-color:rgba(227,178,60,.45)}
 .tok .pre{color:var(--teal);font-weight:500;padding-inline-end:5px;margin-inline-end:5px;border-inline-end:1px solid rgba(167,139,250,.5)}
 .lab .foot{margin:14px 0 0;font-size:13px;color:var(--muted)}
 
@@ -275,8 +276,8 @@ html[data-lang="ar"] body{font-size:17.5px;line-height:1.85}
       <textarea id="src" rows="2" lang="ar" spellcheck="false"></textarea>
       <ol class="stages" id="stages" aria-live="polite"></ol>
       <p class="foot">
-        <span data-l="en">Light prefix splitting shown in purple. Real systems go further with morphological analysis and subword tokenizers.</span>
-        <span data-l="ar">السوابق المفصولة باللون البنفسجي. الأنظمة الفعلية تتعمق أكثر بالتحليل الصرفي ومقطِّعات الوحدات الجزئية.</span>
+        <span data-l="en">Light prefix splitting shown in purple; emojis stay as their own token because they carry sentiment. Real systems go further with morphological analysis and subword tokenizers.</span>
+        <span data-l="ar">السوابق المفصولة باللون البنفسجي، والإيموجي يبقى وحدة مستقلة لأنه يحمل مشاعر. الأنظمة الفعلية تتعمق أكثر بالتحليل الصرفي ومقطِّعات الوحدات الجزئية.</span>
       </p>
     </div>
   </div>
@@ -659,9 +660,10 @@ html[data-lang="ar"] body{font-size:17.5px;line-height:1.85}
     }
     steps.push({html:h3,n:n3});
     // 4 tokens with light prefix split
-    var toks=clean3.match(/[\p{L}\p{N}]+/gu)||[];
+    var toks=clean3.match(/[\p{L}\p{N}]+|\p{Extended_Pictographic}(?:\p{Emoji_Modifier}|\uFE0F|\u200D\p{Extended_Pictographic})*/gu)||[];
     var PRE=['وال','بال','فال','كال','لل','ال'];
     var th='<div class="tokens">'+toks.map(function(t){
+      if(/\p{Extended_Pictographic}/u.test(t)) return '<span class="tok emo">'+t+'</span>';
       for(var p=0;p<PRE.length;p++){
         if(t.indexOf(PRE[p])===0&&t.length-PRE[p].length>=2){
           return '<span class="tok"><span class="pre">'+PRE[p]+'</span>'+esc(t.slice(PRE[p].length))+'</span>';
