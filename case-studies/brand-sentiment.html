@@ -137,6 +137,7 @@
   .case-card .t-close{display:none} .case-card.open .t-close{display:inline} .case-card.open .t-open{display:none}
   @media (prefers-reduced-motion:reduce){section.case-card{transition:none}section.case-card.collapsed:hover{transform:none}}
   @media print{.cases-head,.case-toggle{display:none!important}.cases-grid{display:block;padding:0}section.case-card{background:none;border:0;border-radius:0;padding:1rem 0;box-shadow:none;transform:none}section.case-card > *{display:revert!important}section.case-card.collapsed > p{-webkit-line-clamp:unset;color:inherit}}
+  .actions2{margin-top:.75rem}
   .hdr-r{display:flex;gap:.5rem;align-items:center}
   @media (max-width:36rem){ .chart .lab{font-size:19px} .chart .sub,.chart .tick,.chart .val{font-size:16px} .chart .in{font-size:15px}
     .bars li{grid-template-columns:1fr 3rem} .bars .label{grid-column:1/-1} }
@@ -172,6 +173,7 @@
     <a class="btn" href="brand-sentiment.pdf" download data-goatcounter-click="pdf-download" data-goatcounter-title="تحميل PDF — تحليل مشاعر البراندات">تحميل التقرير PDF ↓</a>
     <a class="btn ghost" href="#takeaways">الخلاصة للمسوّقين</a>
   </div>
+  <div class="actions2 no-print"><a class="btn ghost dash-link" id="dashLink" href="brand-dashboard.html"><span data-l="ar">افتح الداشبورد التفاعلي ↗</span><span data-l="en">Open the interactive dashboard ↗</span></a></div>
   <div class="stats">
     <div class="stat"><b>654</b><span>تغريدة وتعليقاً صُنّفت بعد التنظيف من أصل نحو 1,800 جُمعت</span></div>
     <div class="stat"><b>8.7%</b><span>فقط من الحديث عن بيت الشاورما كان سلبياً رغم ضجة الجدل</span></div>
@@ -642,6 +644,7 @@
     root.lang=l; root.dir=(l==='en')?'ltr':'rtl';
     els.forEach((e,i)=>{ const k=String(i); e.innerHTML=(l==='en'&&EN[k]!==undefined)?EN[k]:AR[i]; });
     document.querySelectorAll('a[href$=".pdf"]').forEach(a=>{ a.setAttribute('href', l==='en'?'brand-sentiment-en.pdf':'brand-sentiment.pdf'); });
+    const dl=document.getElementById('dashLink'); if(dl) dl.setAttribute('href','brand-dashboard.html?lang='+l);
     btn.textContent=l==='en'?'العربية':'English'; btn.lang=l==='en'?'ar':'en';
     document.title=TITLE[l];
     if(window.__exRender) window.__exRender();

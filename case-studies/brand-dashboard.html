@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>داشبورد مشاعر الجمهور · جود البيتي</title>
+<meta name="description" content="Interactive dashboard of audience sentiment on three Saudi brand trends: Shawarma House in Hittin, the TikTok boycott and the Coffee Address ad. Built by Joud Albaiti.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23120E22'/%3E%3Ctext x='32' y='43' font-size='30' text-anchor='middle' fill='%23A78BFA' font-family='sans-serif'%3EJ%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#120E22;--deep:#1A1530;--raised:#241D3F;--line:#352B57;
+  --text:#EEEAF6;--muted:#A9A1C4;--accent:#A78BFA;
+  --pos:#2FA98C;--neu:#7D7699;--neg:#E0705A;--s1:#8B5CF6;--s2:#CC9222;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--night);color:var(--text);font-family:"Readex Pro",system-ui,sans-serif;font-weight:300;font-size:16px;line-height:1.6}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1200px;margin-inline:auto;padding-inline:24px}
+@media (max-width:600px){.wrap{padding-inline:16px}}
+header{padding-block:28px 8px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.back{font-size:14.5px;color:var(--muted);text-decoration:none}
+.back:hover{color:var(--text)}
+.lang{font:inherit;font-size:13.5px;color:var(--text);background:transparent;border:1px solid var(--line);border-radius:999px;padding:5px 14px;cursor:pointer}
+.lang:hover{border-color:var(--accent);box-shadow:0 0 18px rgba(167,139,250,.35)}
+h1{font-size:clamp(26px,3.4vw,36px);font-weight:500;line-height:1.25;margin:14px 0 8px}
+.sub{color:var(--muted);max-width:72ch;margin:0}
+.note{display:inline-block;margin-top:10px;font-size:13.5px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:3px 12px}
+.note a{color:var(--accent)}
+
+.filters{position:sticky;top:0;z-index:5;background:rgba(18,14,34,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding-block:14px;margin-top:18px;border-bottom:1px solid var(--line)}
+.filters .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center}
+.group{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.group > span{font-size:13.5px;color:var(--muted);margin-inline-end:4px}
+.seg{font:inherit;font-size:13.5px;color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:999px;padding:4px 12px;cursor:pointer}
+.seg:hover{color:var(--text);border-color:var(--muted)}
+.seg[aria-pressed="true"]{background:var(--accent);color:var(--night);border-color:var(--accent);font-weight:500}
+
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-block:22px}
+@media (max-width:980px){.kpis{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:560px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:var(--deep);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.kpi:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 0 22px rgba(167,139,250,.18)}
+.kpi .l{font-size:13.5px;color:var(--muted)}
+.kpi .v{font-size:clamp(19px,1.9vw,24px);font-weight:600;line-height:1.3;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi .d{font-size:13px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:56px}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.panel{background:var(--deep);border:1px solid var(--line);border-radius:14px;padding:18px 18px 14px;min-width:0}
+.panel.wide{grid-column:1/-1}
+.panel h2{font-size:17px;font-weight:500;margin:0}
+.panel p.cap{font-size:13.5px;color:var(--muted);margin:2px 0 12px}
+.chart{position:relative;height:300px}
+.panel.wide .chart{height:320px}
+.chart.tall{height:380px}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;vertical-align:middle;margin-inline-end:6px}
+
+footer{border-top:1px solid var(--line);padding-block:24px;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
+footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <div class="top">
+    <a class="back" href="../" data-t="back"></a>
+    <button class="lang" id="langBtn" type="button"></button>
+  </div>
+  <h1 data-t="title"></h1>
+  <p class="sub" data-t="sub"></p>
+  <span class="note" data-t="note"></span>
+</header>
+
+<div class="filters" role="region" aria-label="Filters">
+  <div class="wrap">
+    <div class="group" role="group" id="gCase"><span data-t="fCase"></span></div>
+    <div class="group" role="group" id="gSent"><span data-t="fSent"></span></div>
+  </div>
+</div>
+
+<main class="wrap">
+  <section class="kpis" id="kpis" aria-live="polite"></section>
+
+  <div class="grid">
+    <section class="panel wide">
+      <h2 data-t="tTime"></h2>
+      <p class="cap" id="capTime"></p>
+      <div class="chart"><canvas id="cTime" role="img"></canvas></div>
+      <div class="legend" id="legSent"></div>
+    </section>
+
+    <section class="panel">
+      <h2 data-t="tCase"></h2>
+      <p class="cap" data-t="cCase"></p>
+      <div class="chart"><canvas id="cCase" role="img"></canvas></div>
+    </section>
+
+    <section class="panel">
+      <h2 data-t="tTopic"></h2>
+      <p class="cap" id="capTopic"></p>
+      <div class="chart tall"><canvas id="cTopic" role="img"></canvas></div>
+    </section>
+
+    <section class="panel wide">
+      <h2 data-t="tLikes"></h2>
+      <p class="cap" data-t="cLikes"></p>
+      <div class="chart tall"><canvas id="cLikes" role="img"></canvas></div>
+      <div class="legend"><span><i style="background:var(--s1)"></i><span data-t="lgCom"></span></span><span><i style="background:var(--s2)"></i><span data-t="lgLik"></span></span></div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span data-t="foot"></span>
+    <a href="brand-sentiment.html" id="caseLink" data-t="read"></a>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+(function(){
+const RECS=[[0,"2026-11-26","U","G",0],[0,"2026-11-26","P","G",0],[0,"2026-11-26","P","E",0],[0,"2026-11-26","U","H",0],[0,"2026-11-26","P","M",0],[0,"2026-11-26","P","G",0],[0,"2026-11-26","P","G",0],[0,"2026-11-26","P","G",0],[0,"2026-11-26","U","G",0],[0,"2026-11-26","U","H",0],[0,"2026-11-26","U","G",0],[0,"2026-11-26","U","G",0],[0,"2026-11-26","P","G",0],[0,"2026-11-26","U","G",0],[0,"2026-11-26","P","E",0],[0,"2026-11-26","P","G",0],[0,"2026-11-26","U","G",0],[0,"2026-11-26","U","H",0],[0,"2026-11-26","U","H",0],[0,"2026-11-26","U","M",0],[0,"2026-11-26","P","G",0],[0,"2026-11-25","N","A",0],[0,"2026-11-25","U","G",0],[0,"2026-11-25","U","G",0],[0,"2026-11-25","U","M",0],[0,"2026-11-25","P","Q",0],[0,"2026-11-25","P","Q",0],[0,"2026-11-25","P","G",0],[0,"2026-11-25","U","G",0],[0,"2026-11-25","P","G",0],[0,"2026-11-25","N","O",0],[0,"2026-11-25","U","H",0],[0,"2026-11-25","U","G",0],[0,"2026-11-25","P","Q",0],[0,"2026-11-25","N","O",0],[0,"2026-11-25","U","E",0],[0,"2026-11-25","P","G",0],[0,"2026-11-25","P","D",0],[0,"2026-11-25","P","G",0],[0,"2026-11-25","P","G",0],[0,"2026-11-25","N","A",0],[0,"2026-11-25","N","A",0],[0,"2026-11-24","P","G",0],[0,"2026-11-24","U","Q",0],[0,"2026-11-24","U","G",0],[0,"2026-11-24","P","E",0],[0,"2026-11-24","P","Q",0],[0,"2026-11-24","P","M",0],[0,"2026-11-24","U","H",0],[0,"2026-11-24","U","H",0],[0,"2026-11-24","U","H",0],[0,"2026-11-24","N","Q",0],[0,"2026-11-24","P","G",0],[0,"2026-11-24","U","H",0],[0,"2026-11-23","U","G",0],[0,"2026-11-23","U","H",0],[0,"2026-11-23","P","D",0],[0,"2026-11-23","U","H",0],[0,"2026-11-23","N","O",0],[0,"2026-11-23","U","G",0],[0,"2026-11-23","P","G",0],[0,"2026-11-23","P","G",0],[0,"2026-11-23","N","O",0],[0,"2026-11-23","U","H",0],[0,"2026-11-23","U","H",0],[0,"2026-11-23","P","D",0],[0,"2026-11-23","U","H",0],[0,"2026-11-23","P","E",0],[0,"2026-11-23","U","H",0],[0,"2026-11-23","P","Q",0],[0,"2026-11-23","P","D",0],[0,"2026-11-22","U","G",0],[0,"2026-11-22","P","Q",0],[0,"2026-11-22","U","H",0],[0,"2026-11-22","U","G",0],[0,"2026-11-22","U","H",0],[0,"2026-11-22","U","G",0],[0,"2026-11-02","P","D",0],[0,"2026-11-02","P","Q",0],[0,"2026-11-05","P","D",0],[0,"2026-11-06","U","H",0],[0,"2026-11-06","U","H",0],[0,"2026-11-05","P","C",0],[0,"2026-11-05","U","H",0],[0,"2026-11-06","P","E",0],[0,"2026-11-05","U","H",0],[0,"2026-11-10","P","E",0],[0,"2026-11-06","P","C",0],[0,"2026-11-06","P","E",0],[0,"2026-11-06","P","E",0],[0,"2026-11-06","U","H",0],[0,"2026-11-06","P","C",0],[0,"2026-11-06","P","M",0],[0,"2026-11-07","P","E",0],[0,"2026-11-06","N","F",0],[0,"2026-11-10","U","H",0],[0,"2026-11-05","P","Q",0],[0,"2026-11-06","P","D",0],[0,"2026-11-09","P","M",0],[0,"2026-11-06","U","H",0],[0,"2026-11-10","P","E",0],[0,"2026-11-08","P","Q",0],[0,"2026-11-06","P","E",0],[0,"2026-11-05","P","C",0],[0,"2026-11-06","P","E",0],[0,"2026-11-06","P","C",0],[0,"2026-11-06","P","E",0],[0,"2026-11-06","U","H",0],[0,"2026-11-19","P","C",0],[0,"2026-11-06","P","G",0],[0,"2026-11-19","P","C",0],[0,"2026-11-19","U","H",0],[0,"2026-11-19","P","C",0],[0,"2026-11-21","U","H",0],[0,"2026-11-20","U","H",0],[0,"2026-11-06","U","H",0],[0,"2026-11-20","U","H",0],[0,"2026-11-20","N","A",0],[0,"2026-11-19","P","C",0],[0,"2026-11-20","U","H",0],[0,"2026-11-26","P","D",0],[0,"2026-11-19","P","Q",0],[0,"2026-11-04","N","A",0],[0,"2026-11-25","U","H",0],[0,"2026-11-19","P","M",0],[0,"2026-11-09","U","H",0],[1,"2026-10-25","U","M",0],[1,"2026-10-25","N","B",0],[1,"2026-10-25","N","B",0],[1,"2026-10-25","N","B",0],[1,"2026-10-25","N","B",0],[1,"2026-10-25","N","C",0],[1,"2026-10-25","N","C",0],[1,"2026-10-25","N","B",0],[1,"2026-10-26","N","C",0],[1,"2026-10-26","N","C",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","C",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","R",0],[1,"2026-10-26","N","C",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","C",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","R",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","R",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","R",0],[1,"2026-10-26","N","I",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","R",0],[1,"2026-10-26","U","H",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","C",0],[1,"2026-10-26","N","A",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","U","H",0],[1,"2026-10-26","N","R",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","C",0],[1,"2026-10-26","N","R",0],[1,"2026-10-26","N","R",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","U","H",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","B",0],[1,"2026-10-26","N","H",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","U","B",0],[1,"2026-10-27","N","R",0],[1,"2026-10-27","U","B",0],[1,"2026-10-27","N","I",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","R",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","U","H",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","U","H",0],[1,"2026-10-27","U","H",0],[1,"2026-10-27","U","A",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","U","R",0],[1,"2026-10-27","N","R",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","U","H",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","I",0],[1,"2026-10-27","N","A",0],[1,"2026-10-27","U","H",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","C",0],[1,"2026-10-27","N","C",0],[1,"2026-10-27","U","A",0],[1,"2026-10-27","P","S",0],[1,"2026-10-27","N","C",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","I",0],[1,"2026-10-27","U","H",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","U","B",0],[1,"2026-10-27","U","H",0],[1,"2026-10-27","N","R",0],[1,"2026-10-27","U","H",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","R",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","U","H",0],[1,"2026-10-27","U","M",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","U","H",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","I",0],[1,"2026-10-27","N","R",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","U","S",0],[1,"2026-10-27","U","H",0],[1,"2026-10-27","U","M",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","U","H",0],[1,"2026-10-27","U","I",0],[1,"2026-10-27","N","I",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","R",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","R",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","U","H",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","R",0],[1,"2026-10-27","N","R",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","U","H",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","U","M",0],[1,"2026-10-27","N","I",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","R",0],[1,"2026-10-27","U","M",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","I",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","R",0],[1,"2026-10-27","N","M",0],[1,"2026-10-27","U","H",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","U","H",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","R",0],[1,"2026-10-27","N","I",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","U","M",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","P","S",0],[1,"2026-10-27","U","H",0],[1,"2026-10-27","U","S",0],[1,"2026-10-27","N","C",0],[1,"2026-10-27","U","H",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","C",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","R",0],[1,"2026-10-27","N","R",0],[1,"2026-10-27","N","C",0],[1,"2026-10-27","N","M",0],[1,"2026-10-27","N","A",0],[1,"2026-10-27","N","R",0],[1,"2026-10-27","N","R",0],[1,"2026-10-27","N","R",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","U","M",0],[1,"2026-10-27","N","A",0],[1,"2026-10-27","N","M",0],[1,"2026-10-27","U","M",0],[1,"2026-10-27","N","R",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","C",0],[1,"2026-10-27","N","R",0],[1,"2026-10-27","N","C",0],[1,"2026-10-27","N","B",0],[1,"2026-10-27","N","R",0],[1,"2026-10-28","N","C",0],[1,"2026-10-28","N","R",0],[1,"2026-10-28","N","R",0],[1,"2026-10-28","N","A",0],[1,"2026-10-28","N","R",0],[1,"2026-10-28","U","H",0],[1,"2026-10-28","N","R",0],[1,"2026-10-28","N","B",0],[1,"2026-10-28","U","H",0],[1,"2026-10-28","N","B",0],[1,"2026-10-28","N","R",0],[1,"2026-10-28","U","H",0],[1,"2026-10-28","N","B",0],[1,"2026-10-28","U","H",0],[1,"2026-10-28","N","B",0],[1,"2026-10-28","U","S",0],[1,"2026-10-28","U","M",0],[1,"2026-10-28","U","H",0],[1,"2026-10-28","N","R",0],[1,"2026-10-28","U","M",0],[1,"2026-10-28","N","B",0],[1,"2026-10-28","N","B",0],[1,"2026-10-28","U","A",0],[1,"2026-10-28","U","A",0],[1,"2026-10-28","U","M",0],[1,"2026-10-28","N","B",0],[1,"2026-10-28","U","H",0],[1,"2026-10-29","U","H",0],[1,"2026-10-29","N","R",0],[1,"2026-10-29","U","H",0],[1,"2026-10-29","U","H",0],[1,"2026-10-29","N","B",0],[1,"2026-10-29","N","B",0],[1,"2026-10-29","N","B",0],[1,"2026-10-29","U","A",0],[1,"2026-10-29","N","C",0],[1,"2026-10-29","N","I",0],[1,"2026-10-29","N","B",0],[1,"2026-10-29","N","R",0],[1,"2026-10-29","U","H",0],[1,"2026-10-29","U","H",0],[1,"2026-10-30","N","C",0],[1,"2026-10-30","N","B",0],[1,"2026-10-30","N","B",0],[1,"2026-10-30","U","B",0],[1,"2026-10-30","N","B",0],[1,"2026-10-30","U","B",0],[1,"2026-10-30","U","H",0],[1,"2026-10-31","U","H",0],[1,"2026-11-01","N","R",0],[1,"2026-11-01","N","R",0],[1,"2026-11-02","N","B",0],[1,"2026-11-24","N","C",0],[2,"2026-11-13","U","LK",18949],[2,"2026-11-14","P","Q",7619],[2,"2026-11-13","P","T",6867],[2,"2026-11-15","N","BR",4043],[2,"2026-11-15","P","Q",3440],[2,"2026-11-13","P","T",1356],[2,"2026-11-14","P","T",1291],[2,"2026-11-13","U","PR",730],[2,"2026-11-13","P","T",701],[2,"2026-11-15","P","T",514],[2,"2026-11-13","P","AD",370],[2,"2026-11-13","P","T",332],[2,"2026-11-15","U","LK",204],[2,"2026-11-13","P","AD",119],[2,"2026-11-16","P","AD",73],[2,"2026-11-13","P","T",65],[2,"2026-11-13","U","LOG",41],[2,"2026-11-14","U","LOG",29],[2,"2026-11-16","N","BR",28],[2,"2026-11-15","U","PR",17],[2,"2026-11-14","P","L",16],[2,"2026-11-15","U","LOG",14],[2,"2026-11-15","U","PR",11],[2,"2026-11-16","N","PR",10],[2,"2026-11-14","P","T",10],[2,"2026-11-15","P","T",10],[2,"2026-11-16","P","T",9],[2,"2026-11-14","U","LOG",9],[2,"2026-11-15","U","LK",8],[2,"2026-11-15","U","PR",7],[2,"2026-11-14","U","PR",6],[2,"2026-11-13","U","LK",6],[2,"2026-11-13","U","LK",6],[2,"2026-11-14","U","PR",5],[2,"2026-11-13","P","AD",5],[2,"2026-11-14","U","PR",4],[2,"2026-11-16","P","PR",4],[2,"2026-11-20","P","AD",4],[2,"2026-11-18","U","LOG",4],[2,"2026-11-14","U","PR",4],[2,"2026-11-15","U","LK",4],[2,"2026-11-15","N","PR",4],[2,"2026-11-16","U","LK",4],[2,"2026-11-15","U","LK",4],[2,"2026-11-15","P","T",4],[2,"2026-11-18","U","PR",3],[2,"2026-11-15","N","PR",3],[2,"2026-11-18","U","LOG",3],[2,"2026-11-18","U","LK",3],[2,"2026-11-16","P","T",3],[2,"2026-11-15","U","LK",3],[2,"2026-11-15","U","LOG",3],[2,"2026-11-16","U","LK",3],[2,"2026-11-18","U","LK",3],[2,"2026-11-16","U","LK",3],[2,"2026-11-20","P","AD",3],[2,"2026-11-19","U","LK",3],[2,"2026-11-19","P","AD",3],[2,"2026-11-19","U","LK",3],[2,"2026-11-19","U","LK",3],[2,"2026-11-13","U","LK",3],[2,"2026-11-17","U","LK",3],[2,"2026-11-16","U","LK",3],[2,"2026-11-16","P","AD",3],[2,"2026-11-15","P","AD",3],[2,"2026-11-15","P","T",3],[2,"2026-11-15","U","LOG",3],[2,"2026-11-14","P","T",3],[2,"2026-11-13","P","T",3],[2,"2026-11-21","N","PR",2],[2,"2026-11-16","U","LK",2],[2,"2026-11-20","U","PR",2],[2,"2026-11-17","U","LK",2],[2,"2026-11-15","N","PR",2],[2,"2026-11-20","P","AD",2],[2,"2026-11-16","U","LK",2],[2,"2026-11-16","U","LOG",2],[2,"2026-11-15","P","CV",2],[2,"2026-11-15","N","BR",2],[2,"2026-11-16","U","LK",2],[2,"2026-11-17","U","LK",2],[2,"2026-11-16","P","T",2],[2,"2026-11-21","U","LOG",2],[2,"2026-11-17","U","LK",2],[2,"2026-11-21","P","AD",2],[2,"2026-11-21","P","T",2],[2,"2026-11-20","N","SV",2],[2,"2026-11-20","P","L",2],[2,"2026-11-19","U","LK",2],[2,"2026-11-19","U","LK",2],[2,"2026-11-19","P","T",2],[2,"2026-11-19","P","AD",2],[2,"2026-11-19","U","PR",2],[2,"2026-11-19","P","T",2],[2,"2026-11-19","P","T",2],[2,"2026-11-19","U","LK",2],[2,"2026-11-18","P","T",2],[2,"2026-11-17","U","PR",2],[2,"2026-11-17","P","T",2],[2,"2026-11-17","P","AD",2],[2,"2026-11-17","U","LK",2],[2,"2026-11-16","U","LK",2],[2,"2026-11-16","U","LK",2],[2,"2026-11-16","P","PR",2],[2,"2026-11-16","U","LK",2],[2,"2026-11-16","P","CV",2],[2,"2026-11-16","U","LK",2],[2,"2026-11-16","P","T",2],[2,"2026-11-16","P","AD",2],[2,"2026-11-15","N","SV",2],[2,"2026-11-15","U","LOG",2],[2,"2026-11-15","U","LOG",2],[2,"2026-11-15","U","LK",2],[2,"2026-11-15","U","LK",2],[2,"2026-11-15","U","LK",2],[2,"2026-11-15","P","AD",2],[2,"2026-11-15","U","LK",2],[2,"2026-11-14","P","Q",2],[2,"2026-11-14","U","LK",2],[2,"2026-11-16","N","BR",2],[2,"2026-11-13","U","LOG",2],[2,"2026-11-20","U","LK",1],[2,"2026-11-20","U","PR",1],[2,"2026-11-20","P","AD",1],[2,"2026-11-20","U","LOG",1],[2,"2026-11-21","N","SV",1],[2,"2026-11-21","P","AD",1],[2,"2026-11-21","P","AD",1],[2,"2026-11-20","U","LK",1],[2,"2026-11-20","P","PR",1],[2,"2026-11-20","P","T",1],[2,"2026-11-20","P","L",1],[2,"2026-11-20","P","AD",1],[2,"2026-11-20","P","AD",1],[2,"2026-11-20","U","LK",1],[2,"2026-11-20","P","AD",1],[2,"2026-11-20","U","LK",1],[2,"2026-11-20","U","LK",1],[2,"2026-11-20","P","T",1],[2,"2026-11-20","P","AD",1],[2,"2026-11-20","U","LK",1],[2,"2026-11-20","U","LK",1],[2,"2026-11-20","U","LK",1],[2,"2026-11-20","U","LK",1],[2,"2026-11-20","P","T",1],[2,"2026-11-20","U","LK",1],[2,"2026-11-20","U","LK",1],[2,"2026-11-20","P","AD",1],[2,"2026-11-19","P","AD",1],[2,"2026-11-19","P","AD",1],[2,"2026-11-19","P","T",1],[2,"2026-11-18","N","PR",1],[2,"2026-11-17","U","LK",1],[2,"2026-11-17","U","LK",1],[2,"2026-11-17","P","AD",1],[2,"2026-11-17","U","LK",1],[2,"2026-11-17","U","LK",1],[2,"2026-11-17","U","LK",1],[2,"2026-11-16","U","LOG",1],[2,"2026-11-16","P","T",1],[2,"2026-11-16","N","PR",1],[2,"2026-11-16","P","T",1],[2,"2026-11-16","P","AD",1],[2,"2026-11-16","P","EX",1],[2,"2026-11-16","U","LK",1],[2,"2026-11-16","U","LOG",1],[2,"2026-11-16","P","AD",1],[2,"2026-11-16","P","T",1],[2,"2026-11-16","P","L",1],[2,"2026-11-16","U","PR",1],[2,"2026-11-15","N","SV",1],[2,"2026-11-14","U","LOG",1],[2,"2026-11-14","P","T",1],[2,"2026-11-14","U","LOG",1],[2,"2026-11-13","P","L",1],[2,"2026-11-21","P","AD",1],[2,"2026-11-21","P","EX",1],[2,"2026-11-21","U","PR",1],[2,"2026-11-18","U","LK",1],[2,"2026-11-16","P","T",1],[2,"2026-11-20","N","SV",1],[2,"2026-11-14","U","LK",1],[2,"2026-11-13","U","LK",1],[2,"2026-11-13","P","PR",1],[2,"2026-11-13","U","LK",1],[2,"2026-11-19","N","SV",1],[2,"2026-11-16","U","LK",1],[2,"2026-11-21","U","PR",0],[2,"2026-11-27","P","L",0],[2,"2026-11-24","N","PR",0],[2,"2026-11-22","P","T",0],[2,"2026-11-22","P","L",0],[2,"2026-11-21","U","PR",0],[2,"2026-11-21","U","LOG",0],[2,"2026-11-21","U","LK",0],[2,"2026-11-21","P","L",0],[2,"2026-11-21","P","PR",0],[2,"2026-11-21","P","PR",0],[2,"2026-11-21","N","PR",0],[2,"2026-11-21","U","LOG",0],[2,"2026-11-21","U","LK",0],[2,"2026-11-21","P","T",0],[2,"2026-11-21","U","LK",0],[2,"2026-11-21","P","T",0],[2,"2026-11-21","P","AD",0],[2,"2026-11-21","P","AD",0],[2,"2026-11-21","P","T",0],[2,"2026-11-21","U","LK",0],[2,"2026-11-21","N","SV",0],[2,"2026-11-21","P","AD",0],[2,"2026-11-21","P","AD",0],[2,"2026-11-21","P","AD",0],[2,"2026-11-21","N","PR",0],[2,"2026-11-21","U","LK",0],[2,"2026-11-21","P","T",0],[2,"2026-11-21","P","AD",0],[2,"2026-11-21","P","AD",0],[2,"2026-11-21","U","PR",0],[2,"2026-11-21","U","PR",0],[2,"2026-11-21","U","LK",0],[2,"2026-11-21","N","SV",0],[2,"2026-11-21","U","LOG",0],[2,"2026-11-21","P","AD",0],[2,"2026-11-21","U","LK",0],[2,"2026-11-21","P","PR",0],[2,"2026-11-21","N","PR",0],[2,"2026-11-21","P","Q",0],[2,"2026-11-21","U","LK",0],[2,"2026-11-21","P","CV",0],[2,"2026-11-21","U","LK",0],[2,"2026-11-21","P","AD",0],[2,"2026-11-21","N","SV",0],[2,"2026-11-20","P","PR",0],[2,"2026-11-20","P","T",0],[2,"2026-11-20","N","PR",0],[2,"2026-11-20","U","LK",0],[2,"2026-11-20","P","T",0],[2,"2026-11-20","P","T",0],[2,"2026-11-20","P","AD",0],[2,"2026-11-20","N","PR",0],[2,"2026-11-20","U","PR",0],[2,"2026-11-20","U","LK",0],[2,"2026-11-20","U","LK",0],[2,"2026-11-20","P","T",0],[2,"2026-11-20","U","LK",0],[2,"2026-11-20","U","LOG",0],[2,"2026-11-20","P","Q",0],[2,"2026-11-20","U","LK",0],[2,"2026-11-20","P","L",0],[2,"2026-11-21","U","LK",0],[2,"2026-11-21","P","T",0],[2,"2026-11-21","U","LK",0],[2,"2026-11-21","U","LK",0],[2,"2026-11-21","U","LK",0],[2,"2026-11-21","P","AD",0],[2,"2026-11-21","N","PR",0],[2,"2026-11-21","P","AD",0],[2,"2026-11-21","N","BR",0],[2,"2026-11-21","U","LK",0],[2,"2026-11-21","U","LK",0],[2,"2026-11-21","U","LK",0],[2,"2026-11-21","N","BR",0],[2,"2026-11-21","U","LK",0],[2,"2026-11-21","P","Q",0],[2,"2026-11-21","U","LK",0],[2,"2026-11-21","U","PR",0],[2,"2026-11-21","U","LK",0],[2,"2026-11-21","N","PR",0],[2,"2026-11-21","U","LK",0],[2,"2026-11-21","P","T",0],[2,"2026-11-21","U","LK",0],[2,"2026-11-21","P","T",0],[2,"2026-11-20","U","LK",0],[2,"2026-11-20","U","LK",0],[2,"2026-11-20","U","LK",0],[2,"2026-11-20","N","PR",0],[2,"2026-11-20","U","LK",0],[2,"2026-11-20","N","AD",0],[2,"2026-11-20","P","AD",0]];   // [case, day, sentiment, topic, likes]
+const NAMES=[{"G":["ذكر عادي واشتهاء","Everyday mentions"],"H":["نكت وسخرية على القصة","Jokes and satire"],"E":["مطالبة بفرع في مدينتهم","Branch requests"],"Q":["مدح الأكل والتجربة","Praise for the food"],"C":["تهنئة بالافتتاح","Congratulations"],"D":["دفاع ضد الطبقية","Defending vs. snobbery"],"M":["قراءة تسويقية","Marketing commentary"],"A":["رفض الفرع في حطين","Opposing the branch"],"O":["شكاوى تشغيلية","Operational complaints"],"F":["عملاء قدامى يشعرون بالتفرقة","Customers feeling left out"]},{"B":["الدعوة للمقاطعة والمشاركة","Calling to boycott"],"R":["تنظيم التقييم بنجمة","One-star ratings"],"H":["نكت وأعراض انسحاب","Jokes and withdrawal"],"C":["شكاوى حذف المحتوى","Deleted content"],"M":["نقاش حول الجدوى","Debating impact"],"I":["محاسبة المشاهير","Calling out influencers"],"A":["الانتقال لمنصات بديلة","Moving platforms"],"S":["مشككون في الحملة","Sceptics"]},{"LK":["شكل المؤثر ولحيته","Creator’s look and beard"],"PR":["الحديث عن المنتج","Talk about the product"],"T":["نكتة «ريحة الشاورما»","“Shawarma smell” joke"],"AD":["مدح الإعلان","Praise for the ad"],"LOG":["منطق المشهد","Logic of the scene"],"L":["ضحك عام","General laughter"],"SV":["شكاوى الخدمة","Service complaints"],"Q":["ترديد جمل الإعلان","Quoting the ad"],"BR":["اعتراض على الحلاقة","Objection to shaving"],"CV":["«جربته» أو «بشتريه»","“Tried it” / “will buy”"],"EX":["طلب فرع جديد","New branch request"]}]; // per case: {topic:[ar,en]}
+const T={
+ ar:{back:'← العودة إلى الصفحة الرئيسية',lang:'English',title:'داشبورد مشاعر الجمهور: ثلاثة ترندات سعودية',
+   sub:'كل رقم هنا محسوب مباشرة في متصفحك من 654 تغريدة وتعليقاً صنّفها نموذج لغوي حسب المشاعر والموضوع: جدل بيت الشاورما في حطين، ومقاطعة تيك توك في 27 أكتوبر، وإعلان عنوان القهوة مع عبدالله الحسين.',
+   note:'بيانات حقيقية من X وتيك توك، أكتوبر–نوفمبر 2026 · <a href="brand-sentiment.html">اقرأ الدراسة كاملة</a>',
+   fCase:'الحالة',fSent:'المشاعر',cases:['بيت الشاورما','مقاطعة تيك توك','عنوان القهوة'],all:'الكل',sents:{P:'إيجابي',U:'محايد',N:'سلبي'},
+   kShown:'منشورات معروضة',kPos:'إيجابي',kNeg:'سلبي',kPeak:'يوم الذروة',kTop:'أكثر موضوع',ofCase:'من منشورات الحالة',posts:'منشور',
+   tTime:'حجم الحديث يوماً بيوم',capTime:n=>'عدد المنشورات المصنّفة في كل يوم بتوقيت الرياض، مقسّمة حسب المشاعر ('+n+' منشور).',
+   tCase:'المشاعر في كل حالة',cCase:'لا يتأثر بفلتر الحالة حتى تقارن بينها، والحالة المختارة مُبرزة.',
+   tTopic:'عن ماذا تحدّث الناس؟',capTopic:(c)=>c<0?'أبرز المواضيع في الحالات الثلاث، مقسّمة حسب المشاعر.':'مواضيع '+['بيت الشاورما','مقاطعة تيك توك','عنوان القهوة'][c]+'، مقسّمة حسب المشاعر.',
+   tLikes:'إعلان عنوان القهوة: التعليقات مقابل اللايكات',cLikes:'نسبة كل موضوع من التعليقات، ونسبته من اللايكات. الفرق يكشف ما تفاعل معه الجمهور فعلاً. هذا الرسم خاص بإعلان عنوان القهوة.',
+   lgCom:'من التعليقات',lgLik:'من اللايكات',foot:'من إعداد جود البيتي · التصنيف بنموذج Claude Opus 5.5، والحسابات في المتصفح.',read:'اقرأ الدراسة كاملة',
+   locale:'ar-SA-u-nu-latn',none:'—'},
+ en:{back:'← Back to portfolio',lang:'العربية',title:'Audience sentiment dashboard: three Saudi brand trends',
+   sub:'Every number here is computed live in your browser from 654 posts and comments classified by sentiment and topic with a language model: the Shawarma House “Hittin” debate, the 27 October TikTok boycott and the Coffee Address ad with Abdullah Al-Hussein.',
+   note:'Real data from X and TikTok, Oct–Nov 2026 · <a href="brand-sentiment.html?lang=en">Read the full case study</a>',
+   fCase:'Case',fSent:'Sentiment',cases:['Shawarma House','TikTok boycott','Coffee Address'],all:'All',sents:{P:'Positive',U:'Neutral',N:'Negative'},
+   kShown:'Posts shown',kPos:'Positive',kNeg:'Negative',kPeak:'Peak day',kTop:'Top topic',ofCase:'of the case’s posts',posts:'posts',
+   tTime:'Daily volume of the conversation',capTime:n=>'Classified posts per day, Riyadh time, split by sentiment ('+n+' posts).',
+   tCase:'Sentiment by case',cCase:'Ignores the case filter so you can compare; the selected case is highlighted.',
+   tTopic:'What were people talking about?',capTopic:(c)=>c<0?'Top topics across the three cases, split by sentiment.':'Topics for '+['Shawarma House','the TikTok boycott','Coffee Address'][c]+', split by sentiment.',
+   tLikes:'Coffee Address ad: comments versus likes',cLikes:'Each topic’s share of comments and its share of likes. The gap shows what the audience actually engaged with. This chart covers the Coffee Address ad only.',
+   lgCom:'Share of comments',lgLik:'Share of likes',foot:'Built by Joud Albaiti · Classified with Claude Opus 5.5, computed in the browser.',read:'Read the full case study',
+   locale:'en-GB',none:'—'}
+};
+const SK=['P','U','N'];
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const COL={P:css('--pos'),U:css('--neu'),N:css('--neg')};
+const S={c:-1,s:'all'};
+let L='ar'; try{ const q=new URLSearchParams(location.search).get('lang'); L=(q==='en'||q==='ar')?q:(localStorage.getItem('bs-lang')||'ar'); }catch(e){}
+const charts={};
+
+// day axis
+const days=[...new Set(RECS.map(r=>r[1]))].sort();
+const allDays=[]; { let d=new Date(days[0]+'T12:00:00Z'); const end=new Date(days[days.length-1]+'T12:00:00Z'); while(d<=end){ allDays.push(d.toISOString().slice(0,10)); d=new Date(d.getTime()+864e5);} }
+const fmtDay=(iso)=>new Date(iso+'T12:00:00Z').toLocaleDateString(T[L].locale,{day:'numeric',month:'short',timeZone:'UTC'});
+const pct=(a,b)=>b?Math.round(100*a/b):0;
+const tName=(c,k)=>NAMES[c][k][L==='en'?1:0];
+
+function inView(r){ return (S.c<0||r[0]===S.c)&&(S.s==='all'||r[2]===S.s); }
+
+function buttons(){
+  const gc=document.getElementById('gCase'), gs=document.getElementById('gSent');
+  gc.querySelectorAll('button').forEach(b=>b.remove()); gs.querySelectorAll('button').forEach(b=>b.remove());
+  [[-1,T[L].all],...T[L].cases.map((n,i)=>[i,n])].forEach(([v,n])=>{ const b=document.createElement('button'); b.className='seg'; b.textContent=n; b.setAttribute('aria-pressed',String(S.c===v)); b.onclick=()=>{S.c=v; update();}; gc.appendChild(b); });
+  [['all',T[L].all],...SK.map(k=>[k,T[L].sents[k]])].forEach(([v,n])=>{ const b=document.createElement('button'); b.className='seg'; b.textContent=n; b.setAttribute('aria-pressed',String(S.s===v)); b.onclick=()=>{S.s=v; update();}; gs.appendChild(b); });
+  document.getElementById('legSent').innerHTML=SK.map(k=>'<span><i style="background:'+COL[k]+'"></i>'+T[L].sents[k]+'</span>').join('');
+}
+
+function kpis(){
+  const t=T[L]; const rv=RECS.filter(inView); const base=RECS.filter(r=>S.c<0||r[0]===S.c);
+  const cnt=k=>base.filter(r=>r[2]===k).length;
+  const byDay={}; rv.forEach(r=>byDay[r[1]]=(byDay[r[1]]||0)+1);
+  const peak=Object.entries(byDay).sort((a,b)=>b[1]-a[1])[0];
+  const byT={}; rv.forEach(r=>{const k=r[0]+'|'+r[3]; byT[k]=(byT[k]||0)+1;});
+  const top=Object.entries(byT).sort((a,b)=>b[1]-a[1])[0];
+  const box=(l,v,d)=>'<div class="kpi"><div class="l">'+l+'</div><div class="v">'+v+'</div><div class="d">'+(d||'&nbsp;')+'</div></div>';
+  document.getElementById('kpis').innerHTML=
+    box(t.kShown,rv.length.toLocaleString('en-US'),S.c<0?t.all:t.cases[S.c])+
+    box(t.kPos,pct(cnt('P'),base.length)+'%',t.ofCase)+
+    box(t.kNeg,pct(cnt('N'),base.length)+'%',t.ofCase)+
+    box(t.kPeak,peak?fmtDay(peak[0]):t.none,peak?peak[1]+' '+t.posts:'')+
+    box(t.kTop,top?tName(+top[0].split('|')[0],top[0].split('|')[1]):t.none,top?pct(top[1],rv.length)+'% · '+(S.c<0?t.cases[+top[0].split('|')[0]]:''):'');
+}
+
+function base(){
+  const rtl=L==='ar';
+  Chart.defaults.color=css('--muted'); Chart.defaults.font.family='"Readex Pro", system-ui, sans-serif'; Chart.defaults.font.size=12;
+  Chart.defaults.borderColor=css('--line');
+  return {rtl, tip:{rtl, textDirection:rtl?'rtl':'ltr', backgroundColor:'#0C0918', borderColor:css('--line'), borderWidth:1, padding:10, titleColor:css('--text'), bodyColor:css('--text')}};
+}
+
+function draw(){
+  Object.values(charts).forEach(c=>c.destroy());
+  const {rtl,tip}=base(); const t=T[L];
+  // timeline: stacked bars per day
+  const rv=RECS.filter(inView);
+  const ds=SK.filter(k=>S.s==='all'||S.s===k).map(k=>({label:t.sents[k],backgroundColor:COL[k],borderRadius:3,borderSkipped:false,
+     data:allDays.map(d=>rv.filter(r=>r[1]===d&&r[2]===k).length), maxBarThickness:22}));
+  document.getElementById('capTime').textContent=t.capTime(rv.length);
+  charts.time=new Chart(document.getElementById('cTime'),{type:'bar',data:{labels:allDays.map(fmtDay),datasets:ds},
+    options:{maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{...tip,filter:i=>i.raw>0}},
+      scales:{x:{stacked:true,reverse:rtl,grid:{display:false},ticks:{maxRotation:0,autoSkip:true,maxTicksLimit:12}},y:{stacked:true,position:rtl?'right':'left',beginAtZero:true,ticks:{precision:0},grid:{color:'rgba(53,43,87,.55)'}}}}});
+  // sentiment by case (100%)
+  const tot=[0,1,2].map(c=>RECS.filter(r=>r[0]===c).length);
+  charts.cs=new Chart(document.getElementById('cCase'),{type:'bar',data:{labels:t.cases,datasets:SK.map(k=>({label:t.sents[k],
+      backgroundColor:[0,1,2].map(c=>COL[k]+((S.c<0||S.c===c)?'':'55')),borderColor:css('--deep'),borderWidth:{left:1,right:1},
+      data:[0,1,2].map(c=>+(100*RECS.filter(r=>r[0]===c&&r[2]===k).length/tot[c]).toFixed(1)),barThickness:30}))},
+    options:{indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tip,callbacks:{label:i=>' '+i.dataset.label+': '+i.raw+'%'}}},
+      scales:{x:{stacked:true,max:100,reverse:rtl,ticks:{callback:v=>v+'%'},grid:{color:'rgba(53,43,87,.55)'}},y:{stacked:true,position:rtl?'right':'left',grid:{display:false},ticks:{color:css('--text')}}}}});
+  // topics stacked by sentiment
+  const agg={}; rv.forEach(r=>{const k=r[0]+'|'+r[3]; agg[k]=agg[k]||{c:r[0],k:r[3],P:0,U:0,N:0,n:0}; agg[k][r[2]]++; agg[k].n++;});
+  const rows=Object.values(agg).sort((a,b)=>b.n-a.n).slice(0,S.c<0?10:12);
+  document.getElementById('capTopic').textContent=t.capTopic(S.c);
+  const short=['🥙','📱','☕'];
+  charts.tp=new Chart(document.getElementById('cTopic'),{type:'bar',data:{labels:rows.map(r=>(S.c<0?short[r.c]+' ':'')+tName(r.c,r.k)),
+      datasets:SK.filter(k=>S.s==='all'||S.s===k).map(k=>({label:t.sents[k],backgroundColor:COL[k],data:rows.map(r=>r[k]),borderColor:css('--deep'),borderWidth:{left:1,right:1},maxBarThickness:20}))},
+    options:{indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tip,mode:'index',intersect:false,filter:i=>i.raw>0}},
+      scales:{x:{stacked:true,reverse:rtl,beginAtZero:true,ticks:{precision:0},grid:{color:'rgba(53,43,87,.55)'}},y:{stacked:true,position:rtl?'right':'left',grid:{display:false},ticks:{color:css('--text'),autoSkip:false}}}}});
+  // coffee: comments vs likes
+  const co=RECS.filter(r=>r[0]===2); const tl=co.reduce((a,r)=>a+r[4],0); const g={};
+  co.forEach(r=>{g[r[3]]=g[r[3]]||{n:0,l:0}; g[r[3]].n++; g[r[3]].l+=r[4];});
+  const ks=Object.keys(g).sort((a,b)=>g[b].l-g[a].l);
+  charts.lk=new Chart(document.getElementById('cLikes'),{type:'bar',data:{labels:ks.map(k=>tName(2,k)),datasets:[
+      {label:t.lgCom,backgroundColor:css('--s1'),borderRadius:4,data:ks.map(k=>+(100*g[k].n/co.length).toFixed(1)),maxBarThickness:16},
+      {label:t.lgLik,backgroundColor:css('--s2'),borderRadius:4,data:ks.map(k=>+(100*g[k].l/tl).toFixed(1)),maxBarThickness:16}]},
+    options:{indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tip,mode:'index',intersect:false,callbacks:{label:i=>' '+i.dataset.label+': '+i.raw+'%'}}},
+      scales:{x:{reverse:rtl,beginAtZero:true,ticks:{callback:v=>v+'%'},grid:{color:'rgba(53,43,87,.55)'}},y:{position:rtl?'right':'left',grid:{display:false},ticks:{color:css('--text'),autoSkip:false}}}}});
+}
+
+function texts(){
+  const t=T[L]; document.documentElement.lang=L; document.documentElement.dir=L==='ar'?'rtl':'ltr';
+  document.querySelectorAll('[data-t]').forEach(e=>{ const v=t[e.dataset.t]; if(typeof v==='string') e.innerHTML=v; });
+  document.getElementById('langBtn').textContent=t.lang;
+  document.getElementById('caseLink').href='brand-sentiment.html?lang='+L;
+  document.querySelector('.back').href='../?lang='+L;
+  document.title=L==='ar'?'داشبورد مشاعر الجمهور · جود البيتي':'Audience sentiment dashboard · Joud Albaiti';
+}
+function update(){ buttons(); kpis(); draw(); }
+document.getElementById('langBtn').onclick=()=>{ L=L==='ar'?'en':'ar'; try{localStorage.setItem('bs-lang',L);}catch(e){} texts(); update(); };
+function start(){ texts(); if(!window.Chart){ document.getElementById('kpis').textContent='Chart library failed to load.'; return; } update(); }
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start); else start();
+})();
+</script>
+<script data-goatcounter="https://joudalbaiti.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
